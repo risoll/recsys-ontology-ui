@@ -7,11 +7,6 @@
   </ion-navbar>
 </ion-header>
 <ion-content class="card-background-page">
-  <ion-card *ngFor="let res of (radarSearchResponse$ | async)?.results">
-    <img [src]="getPhotos(res.reference)"/>
-    <div class="card-title">São Paulo</div>
-    <div class="card-subtitle">41 Listings</div>
-  </ion-card>
   <!--<ion-card>-->
     <!--<ion-card-content>-->
       <!--Content-->

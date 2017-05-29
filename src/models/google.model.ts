@@ -8,6 +8,20 @@ export interface RadarSearchParam{
   key: string;
 }
 
+export interface PhotosParam{
+  maxWidth: number;
+  maxHeight: number;
+  lat: number;
+  lng: number;
+  radius: number
+}
+
+export interface PhotosResponse{
+  photo: string;
+  address: string;
+  name: string;
+}
+
 export interface RadarSearchResponse{
   html_attributions: string[];
   results: Result[];
@@ -28,10 +42,4 @@ export interface Geometry{
 export interface Location{
   lat: string;
   lng: string;
-}
-
-export interface PhotosParam{
-  maxwidth: string;
-  photoreference: string;
-  key: string;
 }

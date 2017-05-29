@@ -4,6 +4,7 @@ import { AttractionsPage } from '../attractions/attractions';
 import { AboutPage } from '../about/about';
 import { ContactPage } from '../contact/contact';
 import {PageTab} from "../../models/common.model";
+import {RecommendationPage} from "../recommendation/recommendation";
 
 @Component({
   templateUrl: 'tabs.html'
@@ -13,9 +14,8 @@ export class TabsPage {
   // should be each tab's root Page
 
   tabs: PageTab[] = [
-    {component: AttractionsPage, title: "Attractions", icon: "planet"},
-    {component: AboutPage, title: "About", icon: "information-circle"},
-    {component: ContactPage, title: "Contact", icon: "contacts"},
+    {component: RecommendationPage, title: "Guide Me", icon: "planet"},
+    {component: AttractionsPage, title: "Attractions", icon: "albums"},
   ];
 
   constructor() {

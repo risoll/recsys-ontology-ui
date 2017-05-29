@@ -5,10 +5,32 @@ import {Observable} from "rxjs/Observable";
 import {PhotosParam, RadarSearchParam, RadarSearchResponse} from "../../models/google.model";
 import {GoogleService} from "../../services/google.service";
 import {GOOGLE_API_KEY} from "../../utils/constants";
+import {RecommendationService} from "../../services/recommendation.service";
 
 @Component({
-  selector: 'page-home',
-  templateUrl: 'attractions.html',
+  selector: 'page-recommendation',
+  template: `
+    <ion-header>
+      <ion-navbar>
+        <button ion-button menuToggle>
+          <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>For You</ion-title>
+      </ion-navbar>
+    </ion-header>
+    <ion-content class="card-background-page">
+      <ion-card>
+        <ion-card-content>
+          <ion-list *ngFor="let questions of (generalQuestions$ | async)">
+            <button ion-item>
+              {{questions}}
+            </button>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+    </ion-content>
+
+  `,
   styles: [`
     page-home .card-background-page ion-card {
       position: relative;
@@ -31,27 +53,11 @@ import {GOOGLE_API_KEY} from "../../utils/constants";
 
   `]
 })
-export class AttractionsPage {
+export class RecommendationPage {
 
-  radarSearchParam: RadarSearchParam = {
-    location: "-6.917464,107.619123",
-    radius: "5000",
-    type: "points_of_interest",
-    key: GOOGLE_API_KEY
-  };
-  radarSearchResponse$: Observable<RadarSearchResponse>;
+  private generalQuestions$: Observable<string[]>;
 
-  constructor(public navCtrl: NavController, private googleService: GoogleService) {
-    this.radarSearchResponse$ = this.googleService.radarSearch(this.radarSearchParam);
+  constructor(public navCtrl: NavController, private recommendationService: RecommendationService) {
+    this.generalQuestions$ = this.recommendationService.generalQuestions()
   }
-
-  getPhotos(reference: string){
-    let param: PhotosParam = {
-      maxwidth:"400",
-      photoreference: reference,
-      key: GOOGLE_API_KEY
-    };
-    return this.googleService.photoReference(param);
-  }
-
 }

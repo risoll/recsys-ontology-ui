@@ -4,6 +4,7 @@ import { StatusBar, Splashscreen } from 'ionic-native';
 
 import { TabsPage } from '../pages/tabs/tabs';
 
+import { AdvancedPage } from '../pages/advanced/advanced';
 import { SettingsPage } from '../pages/settings/settings';
 import { AccountPage } from '../pages/account/account';
 
@@ -23,6 +24,7 @@ export class MyApp {
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Homepage', component: TabsPage },
+      { title: 'Advanced', component: AdvancedPage },
       { title: 'Settings', component: SettingsPage },
       { title: 'Account', component: AccountPage }
     ];
