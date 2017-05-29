@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Attractions</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content class="card-background-page">
+  {{(radarSearchResponse$ | async) | json}}
+  <!--<ion-card>-->
+    <!--<ion-card-content>-->
+      <!--Content-->
+      <!--<ion-list>-->
+        <!--<button ion-item *ngFor="let res of (radarSearchResponse$ | async)?.results">-->
+          <!--{{res.reference}}-->
+        <!--</button>-->
+      <!--</ion-list>-->
+    <!--</ion-card-content>-->
+  <!--</ion-card>-->
+</ion-content>
