@@ -1,3 +1,4 @@
+import { AboutPage } from './../pages/about/about';
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
@@ -24,9 +25,10 @@ export class MyApp {
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Homepage', component: TabsPage },
-      { title: 'Advanced', component: AdvancedPage },
-      { title: 'Settings', component: SettingsPage },
-      { title: 'Account', component: AccountPage }
+      { title: 'About', component: AboutPage }
+      // { title: 'Advanced', component: AdvancedPage },
+      // { title: 'Settings', component: SettingsPage },
+      // { title: 'Account', component: AccountPage }
     ];
 
   }

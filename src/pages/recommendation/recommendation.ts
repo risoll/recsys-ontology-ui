@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { NavController } from 'ionic-angular';
+import { NavController, LoadingController, Loading } from 'ionic-angular';
 import {Observable} from "rxjs/Observable";
 import {PhotosParam, RadarSearchParam, RadarSearchResponse} from "../../models/google.model";
 import {GoogleService} from "../../services/google.service";
@@ -21,7 +21,7 @@ import {RecommendationService} from "../../services/recommendation.service";
     <ion-content class="card-background-page">
       <ion-card>
         <ion-card-content>
-          <ion-list *ngFor="let questions of (generalQuestions$ | async)">
+          <ion-list *ngFor="let questions of generalQuestions">
             <button ion-item>
               {{questions}}
             </button>
@@ -56,8 +56,28 @@ import {RecommendationService} from "../../services/recommendation.service";
 export class RecommendationPage {
 
   private generalQuestions$: Observable<string[]>;
+  private generalQuestions: string[];
+  loader: Loading;
 
-  constructor(public navCtrl: NavController, private recommendationService: RecommendationService) {
-    this.generalQuestions$ = this.recommendationService.generalQuestions()
+  constructor(public navCtrl: NavController, 
+  private recommendationService: RecommendationService,
+  public loadingCtrl: LoadingController) {
+    this.presentLoading();
+    this.recommendationService.generalQuestions().subscribe(questions=>{
+      this.generalQuestions = questions;
+      this.stopLoading();
+    })
+  }
+
+
+  stopLoading(){
+    this.loader.dismiss();
+  }
+
+  presentLoading() {
+    this.loader = this.loadingCtrl.create({
+      content: "Please wait..."
+    });
+    this.loader.present();
   }
 }

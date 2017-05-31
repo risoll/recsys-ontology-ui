@@ -21272,21 +21272,25 @@ sub {
   }
 }
 
-page-home .card-background-page ion-card {
+page-attractions .card-background-page ion-card {
   position: relative;
   text-align: center;
 }
 
-page-home .card-background-page .card-title {
+page-attractions .card-background-page .layer {
+  box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.2);
+}
+
+page-attractions .card-background-page .card-title {
   position: absolute;
-  top: 36%;
+  top: 25%;
   font-size: 2.0em;
   width: 100%;
   font-weight: bold;
   color: #fff;
 }
 
-page-home .card-background-page .card-subtitle {
+page-attractions .card-background-page .card-subtitle {
   font-size: 1.0em;
   position: absolute;
   top: 52%;
