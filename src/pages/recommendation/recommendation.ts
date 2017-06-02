@@ -1,11 +1,18 @@
+import { Store } from '@ngrx/store';
+import { IpApi } from './../../models/user.model';
+import { ResultPage } from './../result/result';
+import { FeedbackPage } from './../feedback/feedback';
 import { Component } from '@angular/core';
 
-import { NavController, LoadingController, Loading } from 'ionic-angular';
+import { NavController, LoadingController, Loading, App } from 'ionic-angular';
 import {Observable} from "rxjs/Observable";
 import {PhotosParam, RadarSearchParam, RadarSearchResponse} from "../../models/google.model";
 import {GoogleService} from "../../services/google.service";
 import {GOOGLE_API_KEY} from "../../utils/constants";
 import {RecommendationService} from "../../services/recommendation.service";
+import { AppState } from "../../services/app-state";
+import { UserActions } from "../../actions/user.actions";
+import { UserService } from "../../services/user.service";
 
 @Component({
   selector: 'page-recommendation',
@@ -22,7 +29,7 @@ import {RecommendationService} from "../../services/recommendation.service";
       <ion-card>
         <ion-card-content>
           <ion-list *ngFor="let questions of generalQuestions">
-            <button ion-item>
+            <button ion-item (click)="navigate()">
               {{questions}}
             </button>
           </ion-list>
@@ -30,43 +37,35 @@ import {RecommendationService} from "../../services/recommendation.service";
       </ion-card>
     </ion-content>
 
-  `,
-  styles: [`
-    page-home .card-background-page ion-card {
-      position: relative;
-      text-align: center; }
-
-    page-home .card-background-page .card-title {
-      position: absolute;
-      top: 36%;
-      font-size: 2.0em;
-      width: 100%;
-      font-weight: bold;
-      color: #fff; }
-
-    page-home .card-background-page .card-subtitle {
-      font-size: 1.0em;
-      position: absolute;
-      top: 52%;
-      width: 100%;
-      color: #fff; }
-
-  `]
+  `
 })
 export class RecommendationPage {
 
-  private generalQuestions$: Observable<string[]>;
+  private ipApi$: Observable<IpApi>;
   private generalQuestions: string[];
   loader: Loading;
 
   constructor(public navCtrl: NavController, 
+  private store: Store<AppState>, 
+  private userActions: UserActions, 
+  private userService: UserService,
+  private app: App,
   private recommendationService: RecommendationService,
   public loadingCtrl: LoadingController) {
+
+    this.userService.ipApi().subscribe(ipApi=>{
+      this.store.dispatch(this.userActions.setIpApi(ipApi));
+    })
+
     this.presentLoading();
     this.recommendationService.generalQuestions().subscribe(questions=>{
       this.generalQuestions = questions;
       this.stopLoading();
-    })
+    });
+
+  }
+
+  navigate(){this.app.getRootNav().push(ResultPage, {}, {animate: true, direction: 'forward'});
   }
 
 

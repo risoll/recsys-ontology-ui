@@ -1,5 +1,6 @@
-import { AttractionsState } from './../models/state.model';
+import { AttractionsState, UserState } from './../models/state.model';
 
 export interface AppState{
-    attractions: AttractionsState
+    attractions: AttractionsState,
+    user: UserState
 }

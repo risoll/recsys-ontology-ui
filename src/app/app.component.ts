@@ -1,3 +1,8 @@
+import { IpApi } from './../models/user.model';
+import { Observable } from 'rxjs/Observable';
+import { AppState } from './../services/app-state';
+import { UserActions } from './../actions/user.actions';
+import { UserService } from './../services/user.service';
 import { AboutPage } from './../pages/about/about';
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
@@ -8,6 +13,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { AdvancedPage } from '../pages/advanced/advanced';
 import { SettingsPage } from '../pages/settings/settings';
 import { AccountPage } from '../pages/account/account';
+import { Store } from "@ngrx/store";
 
 @Component({
   templateUrl: 'app.html'
@@ -18,10 +24,11 @@ export class MyApp {
   rootPage = TabsPage;
 
   pages: Array<{title: string, component: any}>;
-
-  constructor(public platform: Platform) {
+  constructor(private store: Store<AppState>, 
+  private userActions: UserActions, 
+  private userService: UserService, 
+  public platform: Platform) {
     this.initializeApp();
-
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Homepage', component: TabsPage },

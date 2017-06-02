@@ -1,3 +1,4 @@
+import { UserService } from './../services/user.service';
 import {GoogleService} from "../services/google.service";
 import {RecommendationService} from "../services/recommendation.service";
 import { PlaceService } from "../services/place.service";
@@ -7,5 +8,6 @@ import { PlaceService } from "../services/place.service";
 export const APP_SERVICES = [
   GoogleService,
   RecommendationService,
-  PlaceService
+  PlaceService,
+  UserService
 ];

@@ -1,3 +1,5 @@
+import { ResultPage } from './../pages/result/result';
+import { FeedbackPage } from './../pages/feedback/feedback';
 import { APP_REDUCERS } from './app.reducers';
 import { APP_ACTIONS } from './app.actions';
 import { NgModule, ErrorHandler } from '@angular/core';
@@ -12,6 +14,7 @@ import { SettingsPage } from '../pages/settings/settings';
 import { AccountPage } from '../pages/account/account';
 import {APP_SERVICES} from "./app.services";
 import {JsonpModule} from "@angular/http";
+import { Ionic2RatingModule } from 'ionic2-rating';
 
 import {RecommendationPage} from "../pages/recommendation/recommendation";
 import { StoreModule } from "@ngrx/store";
@@ -25,6 +28,8 @@ import { AttractionsReducer } from "../reducers/attractions.reducer";
     AttractionsPage,
     TabsPage,
     RecommendationPage,
+    ResultPage,
+    FeedbackPage,
     AdvancedPage,
     SettingsPage,
     AccountPage
@@ -32,6 +37,7 @@ import { AttractionsReducer } from "../reducers/attractions.reducer";
   imports: [
     StoreModule.provideStore(APP_REDUCERS),
     IonicModule.forRoot(MyApp),
+    Ionic2RatingModule,
     JsonpModule
   ],
   bootstrap: [IonicApp],
@@ -40,6 +46,8 @@ import { AttractionsReducer } from "../reducers/attractions.reducer";
     AboutPage,
     ContactPage,
     RecommendationPage,
+    ResultPage,
+    FeedbackPage,
     AttractionsPage,
     TabsPage,
     AccountPage,
