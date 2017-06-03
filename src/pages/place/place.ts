@@ -26,7 +26,6 @@ import { Component } from '@angular/core';
         <page-maps *ngSwitchCase="'maps'"></page-maps>
       </div>
     </ion-content>
-
   `
 })
 export class PlacePage {
