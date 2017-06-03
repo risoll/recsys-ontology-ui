@@ -1,3 +1,4 @@
+import { IntroPage } from './../pages/intro/intro';
 import { MapsPage } from './../pages/maps/maps';
 import { DetailsPage } from './../pages/details/details';
 import { PlacePage } from './../pages/place/place';
@@ -15,6 +16,7 @@ import { AboutPage } from './../pages/about/about';
 import { MyApp } from './app.component';
 export const APP_PAGES = [
     MyApp,
+    IntroPage,
     AboutPage,
     ContactPage,
     AttractionsPage,

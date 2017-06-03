@@ -22,12 +22,14 @@ import { AgmCoreModule } from 'angular2-google-maps/core';
 import {RecommendationPage} from "../pages/recommendation/recommendation";
 import { StoreModule } from "@ngrx/store";
 import { AttractionsReducer } from "../reducers/attractions.reducer";
+import { IonicStorageModule } from '@ionic/storage';
 
 @NgModule({
   declarations: APP_PAGES,
   imports: [
     StoreModule.provideStore(APP_REDUCERS),
     IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot(),
     Ionic2RatingModule,
     AgmCoreModule.forRoot({
       apiKey: GOOGLE_API_KEY
