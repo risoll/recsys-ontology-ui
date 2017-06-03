@@ -1,6 +1,8 @@
 import { IpApi } from './user.model';
-export interface AttractionsState{
-    attractionsLoadStatus: string
+import { Place } from "./place.model";
+export interface AttractionsState {
+    attractionsLoadStatus: string;
+    selectedPlace: Place;
 }
 
 export interface UserState{

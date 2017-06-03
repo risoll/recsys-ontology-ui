@@ -47,9 +47,9 @@ import { captureState, isFormFilled } from "../../utils/common.util";
                 </ion-list>
             </ion-card>
             <ion-list>
-                <ion-item [(ngModel)]="origin">
+                <ion-item [(ngModel)]="city">
                     <ion-label color="primary" stacked>City</ion-label>
-                    <ion-input placeholder="City of Origin"></ion-input>
+                    <ion-input placeholder="Current city"></ion-input>
                 </ion-item>
                 <ion-item [(ngModel)]="age">
                     <ion-label color="primary" stacked>Age</ion-label>
@@ -69,8 +69,8 @@ import { captureState, isFormFilled } from "../../utils/common.util";
                 </ion-item>
             </ion-list>
     </ion-content>
-    <ion-footer>        
-        <button style="heigth: 200%;" ion-button block (click)=navigate() >Submit</button> 
+    <ion-footer style="height: 10%;">        
+        <button style="height: 100%;" ion-button block (click)=navigate() >Submit</button> 
     </ion-footer>
 
   `
@@ -80,7 +80,6 @@ export class FeedbackPage {
   loader: Loading;
   name: string;
   gender: string;
-  origin: string;
   age: number;
   profession: string;
   univ: string;
@@ -108,10 +107,8 @@ export class FeedbackPage {
   }
 
   navigate(){
-    this.city = captureState(this.store).user.ipApi.city;
-    if(!this.city) this.city = "";
     this.ip = captureState(this.store).user.ipApi.ip;
-    if(!this.ip) this.ip = "";
+    if(!this.ip) this.ip = "-";
     let params = <Feedback>{
         id: 0,
         user_agent: navigator.userAgent,
@@ -120,7 +117,6 @@ export class FeedbackPage {
         city: this.city,
         name: this.name,
         gender: this.gender,
-        origin: this.origin,
         age: Number(this.age),
         profession: this.profession,
         univ: this.univ,

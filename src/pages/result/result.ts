@@ -1,9 +1,11 @@
+import { PlacePage } from './../place/place';
+import { ExplanationPage } from './../explanation/explanation';
 import { FeedbackPage } from './../feedback/feedback';
 import { TabsPage } from './../tabs/tabs';
 import { UserService } from './../../services/user.service';
 import { Component } from '@angular/core';
 
-import { NavController, LoadingController, Loading, AlertController } from 'ionic-angular';
+import { NavController, LoadingController, Loading, AlertController, ModalController, App } from 'ionic-angular';
 import {Observable} from "rxjs/Observable";
 import {PhotosParam, RadarSearchParam, RadarSearchResponse} from "../../models/google.model";
 import {GoogleService} from "../../services/google.service";
@@ -32,6 +34,21 @@ import { isFormFilled } from "../../utils/common.util";
             <p>
                 Jl. Raya Majalaya - Cicalengka, Cikuya, Cicalengka, Bandung, Jawa Barat 40395, Indonesia
             </p>
+            <hr>
+            <ion-row no-padding>
+                <ion-col text-center>
+                    <button (click)=explain() ion-button clear small color="danger" icon-left>
+                    <ion-icon name='help'></ion-icon>
+                    Why this
+                    </button>
+                </ion-col>
+                <ion-col text-right>
+                    <button (click)=details() ion-button clear small color="danger" icon-left>
+                    <ion-icon name='navigate'></ion-icon>
+                    Details
+                    </button>
+                </ion-col>
+            </ion-row>
         </ion-card-content>
     </ion-card>
         <ion-card style="text-align: center">
@@ -52,8 +69,8 @@ import { isFormFilled } from "../../utils/common.util";
             </ion-card-content>
         </ion-card>
     </ion-content>
-    <ion-footer>        
-        <button style="heigth: 200%;" ion-button block (click)=navigate() >Next</button> 
+    <ion-footer style="height: 10%;">        
+        <button style="height: 100%;" ion-button block (click)=navigate() >Next</button> 
     </ion-footer>
 
   `
@@ -63,12 +80,32 @@ export class ResultPage {
   loader: Loading;
   rate: number;
   comment: string;
+  explanation: string = "This is an explanation page";
+  place: string = "Place";
 
   constructor(public navCtrl: NavController, 
     private userService: UserService,
     public loadingCtrl: LoadingController,
-    public alertCtrl: AlertController) {
+    public alertCtrl: AlertController,
+    public modalCtrl: ModalController,
+    private app: App,) {
       
+  }
+
+  details(){
+    // this.navCtrl.push(PlacePage, {
+    //     place: this.place
+    // })
+    this.app.getRootNav().push(PlacePage, {}, {
+            animate: true, direction: 'forward'
+        });
+  }
+
+  explain(){
+    let modal = this.modalCtrl.create(ExplanationPage, {
+        explanation: this.explanation
+    });
+    modal.present();
   }
 
   onModelChange(value: any){

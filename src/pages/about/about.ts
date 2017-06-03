@@ -16,7 +16,7 @@ import { NavController } from 'ionic-angular';
       </ion-navbar>
     </ion-header>
     <ion-content padding>
-      <h6>
+      <h6 ion-text color="primary"> 
         Ontology-based Recommender System for tourist attraction in Bandung using semantic reasoning
       </h6>
       <p>

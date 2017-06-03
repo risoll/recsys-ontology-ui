@@ -1,3 +1,5 @@
+import { GOOGLE_API_KEY } from './../utils/constants';
+import { APP_PAGES } from './app.pages';
 import { ResultPage } from './../pages/result/result';
 import { FeedbackPage } from './../pages/feedback/feedback';
 import { APP_REDUCERS } from './app.reducers';
@@ -15,45 +17,25 @@ import { AccountPage } from '../pages/account/account';
 import {APP_SERVICES} from "./app.services";
 import {JsonpModule} from "@angular/http";
 import { Ionic2RatingModule } from 'ionic2-rating';
+import { AgmCoreModule } from 'angular2-google-maps/core';
 
 import {RecommendationPage} from "../pages/recommendation/recommendation";
 import { StoreModule } from "@ngrx/store";
 import { AttractionsReducer } from "../reducers/attractions.reducer";
 
 @NgModule({
-  declarations: [
-    MyApp,
-    AboutPage,
-    ContactPage,
-    AttractionsPage,
-    TabsPage,
-    RecommendationPage,
-    ResultPage,
-    FeedbackPage,
-    AdvancedPage,
-    SettingsPage,
-    AccountPage
-  ],
+  declarations: APP_PAGES,
   imports: [
     StoreModule.provideStore(APP_REDUCERS),
     IonicModule.forRoot(MyApp),
     Ionic2RatingModule,
+    AgmCoreModule.forRoot({
+      apiKey: GOOGLE_API_KEY
+    }),
     JsonpModule
   ],
   bootstrap: [IonicApp],
-  entryComponents: [
-    MyApp,
-    AboutPage,
-    ContactPage,
-    RecommendationPage,
-    ResultPage,
-    FeedbackPage,
-    AttractionsPage,
-    TabsPage,
-    AccountPage,
-    AdvancedPage,
-    SettingsPage
-  ],
+  entryComponents: APP_PAGES,
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, APP_SERVICES, APP_ACTIONS]
 })
 export class AppModule {}

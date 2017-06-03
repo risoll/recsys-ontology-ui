@@ -6,7 +6,6 @@ export interface Feedback{
     city: string;
     name: string;
     gender: string;
-    origin: string;
     age: number;
     profession: string;
     univ: string;

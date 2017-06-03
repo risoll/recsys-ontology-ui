@@ -65,7 +65,8 @@ export class RecommendationPage {
 
   }
 
-  navigate(){this.app.getRootNav().push(ResultPage, {}, {animate: true, direction: 'forward'});
+  navigate(){
+    this.app.getRootNav().push(ResultPage, {}, {animate: true, direction: 'forward'});
   }
 
 
