@@ -21,16 +21,28 @@ import { Place } from "../../models/place.model";
         <button ion-button menuToggle>
           <ion-icon name="menu"></ion-icon>
         </button>
-        <ion-title>Attractions</ion-title>
+        <ion-title>Browse</ion-title>
       </ion-navbar>
     </ion-header>
-    <ion-content class="card-background-page">
-      <ion-card (click)=details(place) *ngFor="let place of places">
-        <img [src]="place.photo">
-        <div class="card-title">{{place.name}}</div>
-        <div class="card-subtitle">{{place.formatted_address}}</div>
-      </ion-card>
-      <button ion-button block style="height: 10%;" (click)=loadMore() >Load More</button> 
+    <ion-content>
+      <ion-list>
+        <ion-grid>
+          <button (click)="details(place)" ion-item *ngFor="let place of places">
+            <ion-row>
+              <ion-col col-3>
+                  <ion-avatar item-start>
+                    <img [src]="place.photo">
+                  </ion-avatar>
+              </ion-col>
+              <ion-col col-9>
+                  <h2>{{place.name}}</h2>
+                  <p>{{place.formatted_address}}</p>
+              </ion-col>
+            </ion-row>
+          </button>
+        </ion-grid>
+      </ion-list>
+      <button ion-button block style="height: 10%;" (click)="loadMore()">Load More</button> 
     </ion-content>
   `,
 })

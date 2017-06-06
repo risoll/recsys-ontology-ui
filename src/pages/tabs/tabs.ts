@@ -21,7 +21,7 @@ export class TabsPage {
 
   tabs: PageTab[] = [
     {component: RecommendationPage, title: "Guide Me", icon: "planet"},
-    {component: AttractionsPage, title: "Attractions", icon: "albums"},
+    {component: AttractionsPage, title: "Browse", icon: "albums"},
   ];
 
   constructor() {}

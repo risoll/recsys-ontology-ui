@@ -1,3 +1,4 @@
+import { Question } from './../../models/recommendation.model';
 import { Store } from '@ngrx/store';
 import { IpApi } from './../../models/user.model';
 import { ResultPage } from './../result/result';
@@ -25,15 +26,10 @@ import { UserService } from "../../services/user.service";
         <ion-title>For You</ion-title>
       </ion-navbar>
     </ion-header>
-    <ion-content class="card-background-page">
-      <ion-card>
-        <ion-card-content>
-          <ion-list *ngFor="let questions of generalQuestions">
-            <button ion-item (click)="navigate()">
-              {{questions}}
-            </button>
-          </ion-list>
-        </ion-card-content>
+    <ion-content *ngIf="generalQuestions" class="card-background-page">
+      <ion-card (click)=navigate() *ngFor="let question of generalQuestions">
+        <img [src]="question.image">
+        <div class="card-title">{{question.name}}</div>
       </ion-card>
     </ion-content>
 
@@ -42,7 +38,7 @@ import { UserService } from "../../services/user.service";
 export class RecommendationPage {
 
   private ipApi$: Observable<IpApi>;
-  private generalQuestions: string[];
+  private generalQuestions: Question[] = [];
   loader: Loading;
 
   constructor(public navCtrl: NavController, 
@@ -59,10 +55,20 @@ export class RecommendationPage {
 
     this.presentLoading();
     this.recommendationService.generalQuestions().subscribe(questions=>{
-      this.generalQuestions = questions;
+      questions.forEach(question=>{
+        this.generalQuestions.push({
+          name: question, image: this.createImage(question)
+        })
+      })
       this.stopLoading();
     });
 
+  }
+
+  createImage(question: string){
+    let image = question.replace(" ", "").toLowerCase();
+    let url = `assets/images/class/${image}.png`
+    return url
   }
 
   navigate(){

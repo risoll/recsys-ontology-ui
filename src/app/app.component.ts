@@ -37,7 +37,7 @@ export class MyApp {
     this.initializeApp();
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Homepage', component: TabsPage },
+      { title: 'Home', component: TabsPage },
       { title: 'About', component: AboutPage }
       // { title: 'Advanced', component: AdvancedPage },
       // { title: 'Settings', component: SettingsPage },

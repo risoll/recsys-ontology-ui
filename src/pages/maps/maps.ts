@@ -10,7 +10,7 @@ import { captureState } from "../../utils/common.util";
 @Component({
   selector: 'page-maps',
   template: `
-    <sebm-google-map [latitude]="place.lat" [longitude]="place.lng">
+    <sebm-google-map [zoom]="zoom" [latitude]="place.lat" [longitude]="place.lng">
         <sebm-google-map-marker [latitude]="place.lat" [longitude]="place.lng"></sebm-google-map-marker>
     </sebm-google-map>
   `,
@@ -23,6 +23,7 @@ import { captureState } from "../../utils/common.util";
 })
 export class MapsPage {
   place: Place;
+  zoom = 14;
 
   constructor(
       private store: Store<AppState>,
