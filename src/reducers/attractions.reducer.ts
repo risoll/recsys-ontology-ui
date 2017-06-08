@@ -1,7 +1,11 @@
 import { Place } from './../models/place.model';
-import { AttractionsState } from './../models/state.model';
 import {ActionReducer, Action} from '@ngrx/store';  
 import {AttractionsActions} from '../actions/attractions.actions';
+
+export interface AttractionsState {
+    attractionsLoadStatus: string;
+    selectedPlace: Place;
+}
 
 const initialState = <AttractionsState>{
     attractionsLoadStatus: "not loaded",

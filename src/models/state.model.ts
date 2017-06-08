@@ -1,10 +1,9 @@
-import { IpApi } from './user.model';
-import { Place } from "./place.model";
-export interface AttractionsState {
-    attractionsLoadStatus: string;
-    selectedPlace: Place;
-}
+import { AttractionsState } from "../reducers/attractions.reducer";
+import { UserState } from "../reducers/user.reducer";
+import { RecommState } from "../reducers/recomm.reducer";
 
-export interface UserState{
-    ipApi: IpApi
+export interface AppState {
+    attractions: AttractionsState,
+    user: UserState,
+    recomm: RecommState
 }

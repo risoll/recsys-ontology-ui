@@ -14,6 +14,7 @@ import { AttractionsPage } from './../pages/attractions/attractions';
 import { ContactPage } from './../pages/contact/contact';
 import { AboutPage } from './../pages/about/about';
 import { MyApp } from './app.component';
+import { BeginPage } from "../pages/begin/begin";
 export const APP_PAGES = [
     MyApp,
     IntroPage,
@@ -30,5 +31,6 @@ export const APP_PAGES = [
     ExplanationPage,
     PlacePage,
     DetailsPage,
-    MapsPage
+    MapsPage,
+    BeginPage
 ]

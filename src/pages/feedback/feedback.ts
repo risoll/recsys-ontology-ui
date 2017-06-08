@@ -1,5 +1,4 @@
 import { Store } from '@ngrx/store';
-import { AppState } from './../../services/app-state';
 import { Feedback } from './../../models/user.model';
 import { TabsPage } from './../tabs/tabs';
 import { UserService } from './../../services/user.service';
@@ -12,6 +11,7 @@ import {GoogleService} from "../../services/google.service";
 import {GOOGLE_API_KEY} from "../../utils/constants";
 import {RecommendationService} from "../../services/recommendation.service";
 import { captureState, isFormFilled } from "../../utils/common.util";
+import { AppState } from "../../models/state.model";
 
 @Component({
   selector: 'page-feedback',

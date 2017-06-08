@@ -5,7 +5,7 @@ import { TabsPage } from './../tabs/tabs';
 import { UserService } from './../../services/user.service';
 import { Component } from '@angular/core';
 
-import { NavController, LoadingController, Loading, AlertController, ModalController, App } from 'ionic-angular';
+import { NavController, LoadingController, Loading, AlertController, ModalController, App, NavParams } from 'ionic-angular';
 import {Observable} from "rxjs/Observable";
 import {PhotosParam, RadarSearchParam, RadarSearchResponse} from "../../models/google.model";
 import {GoogleService} from "../../services/google.service";
@@ -85,11 +85,12 @@ export class ResultPage {
 
   constructor(public navCtrl: NavController, 
     private userService: UserService,
+    private navParams: NavParams,
     public loadingCtrl: LoadingController,
     public alertCtrl: AlertController,
     public modalCtrl: ModalController,
-    private app: App,) {
-      
+    private app: App) {
+      console.log("DATA", this.navParams.get("selectedClass"), this.navParams.get("loadedClass"))
   }
 
   details(){

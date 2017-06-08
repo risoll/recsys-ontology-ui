@@ -5,8 +5,8 @@ import {Input, Component} from '@angular/core';
 
 import { NavController, NavParams } from 'ionic-angular';
 import { Place } from "../../models/place.model";
-import { AppState } from "../../services/app-state";
 import { captureState } from "../../utils/common.util";
+import { AppState } from "../../models/state.model";
 
 @Component({
   selector: 'page-details',

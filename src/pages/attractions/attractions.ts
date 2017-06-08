@@ -10,8 +10,8 @@ import {Observable} from "rxjs/Observable";
 import {PhotosParam, PhotosResponse, RadarSearchParam, RadarSearchResponse} from "../../models/google.model";
 import {GoogleService} from "../../services/google.service";
 import {GOOGLE_API_KEY} from "../../utils/constants";
-import { AppState } from "../../services/app-state";
 import { Place } from "../../models/place.model";
+import { AppState } from "../../models/state.model";
 
 @Component({
   selector: 'page-attractions',
@@ -49,6 +49,7 @@ import { Place } from "../../models/place.model";
 export class AttractionsPage {
   places: Place[] = [];
   loader: Loading;
+  limit = 15
   offset = 0;
 
   constructor(private attractionsActions: AttractionsActions, 
@@ -74,11 +75,11 @@ export class AttractionsPage {
 
   loadMore(){
     let pagination = <Pagination>{
-      limit: 10,
+      limit: 15,
       offset: this.offset
     }
     this.getPlaces(pagination);
-    this.offset += 10;
+    this.offset += 15;
   }
 
   stopLoading(){

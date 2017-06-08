@@ -1,7 +1,6 @@
 import { IntroPage } from './../pages/intro/intro';
 import { IpApi } from './../models/user.model';
 import { Observable } from 'rxjs/Observable';
-import { AppState } from './../services/app-state';
 import { UserActions } from './../actions/user.actions';
 import { UserService } from './../services/user.service';
 import { AboutPage } from './../pages/about/about';
@@ -16,6 +15,7 @@ import { AdvancedPage } from '../pages/advanced/advanced';
 import { SettingsPage } from '../pages/settings/settings';
 import { AccountPage } from '../pages/account/account';
 import { Store } from "@ngrx/store";
+import { AppState } from "../models/state.model";
 
 @Component({
   templateUrl: 'app.html'
@@ -34,6 +34,9 @@ export class MyApp {
   public loadingCtrl: LoadingController, 
   public storage: Storage) {
     this.presentLoading();
+    this.userService.ipApi().subscribe(ipApi=>{
+      this.store.dispatch(this.userActions.setIpApi(ipApi));
+    });
     this.initializeApp();
     // used for an example of ngFor and navigation
     this.pages = [

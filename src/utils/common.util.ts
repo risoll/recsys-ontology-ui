@@ -1,6 +1,6 @@
 import { Store } from '@ngrx/store';
-import { AppState } from './../services/app-state';
 import { Observable } from 'rxjs/Observable';
+import { AppState } from "../models/state.model";
 export function isFormFilled(obj) {
     let tmpStatus = true;
     if (obj instanceof Object) {
@@ -57,5 +57,11 @@ export function captureState(state$:Store<AppState>): AppState {
     let subs = state$.select(state => state).subscribe((x) => state = x);
     subs.unsubscribe();
     return state;
+}
+
+export function appendState(state: any, data: any): any{
+    let tmp = state.slice();
+    tmp.push(data);
+    return tmp;
 }
 

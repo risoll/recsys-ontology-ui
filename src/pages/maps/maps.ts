@@ -1,4 +1,3 @@
-import { AppState } from './../../services/app-state';
 import { Store} from '@ngrx/store';
 import { Place } from './../../models/place.model';
 import { Observable } from 'rxjs/Observable';
@@ -6,6 +5,7 @@ import { Component, Input } from '@angular/core';
 
 import { NavController } from 'ionic-angular';
 import { captureState } from "../../utils/common.util";
+import { AppState } from "../../models/state.model";
 
 @Component({
   selector: 'page-maps',
