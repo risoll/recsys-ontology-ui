@@ -40,15 +40,23 @@ import { AppState } from "../../models/state.model";
         </ion-row>
       </ion-grid>
     </ion-content>
-    <ion-footer style="height: 10%;">        
-      <button style="width: 48%; height: 100%;" ion-button color="light" (click)=back()>
-        <ion-icon name="arrow-back"></ion-icon>
-        &nbsp;Previous
-      </button> 
-      <button style="width: 49%; height: 100%;" ion-button color="primary" (click)=next()>
-        Next&nbsp;
-        <ion-icon name="arrow-forward"></ion-icon>
-      </button> 
+    <ion-footer style="height: 10%;">
+      <ion-grid>
+        <ion-row>
+          <ion-col col-6>        
+            <button full ion-button color="light" (click)=back()>
+              <ion-icon name="arrow-back"></ion-icon>
+              &nbsp;Previous
+            </button> 
+          </ion-col>
+          <ion-col col-6>
+            <button full ion-button color="primary" (click)=next()>
+              Next&nbsp;
+              <ion-icon name="arrow-forward"></ion-icon>
+            </button> 
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </ion-footer>
 
   `
