@@ -21280,7 +21280,7 @@ page-begin .selected {
 page-begin .card-background-page ion-card {
   position: relative;
   text-align: center;
-  opacity: 0.8;
+  opacity: 0.7;
 }
 
 page-begin .card-background-page .card-title {
@@ -21343,7 +21343,7 @@ page-recommendation .selected {
 page-recommendation .card-background-page ion-card {
   position: relative;
   text-align: center;
-  opacity: 0.8;
+  opacity: 0.7;
 }
 
 page-recommendation .card-background-page .card-title {
