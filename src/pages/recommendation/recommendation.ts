@@ -99,7 +99,7 @@ export class RecommendationPage {
           this.questions = [];
           for(let j = i; j < i + this.divider; j++){
             if(questions[j])
-              this.questions.push({name: questions[j], image: this.createImage(questions[j])})
+              this.questions.push({name: questions[j].name, image: questions[j].image})
           }
           this.colsQuestions.push({cols: this.questions})
         }
@@ -108,12 +108,6 @@ export class RecommendationPage {
       this.stopLoading();
       if(this.colsQuestions.length == 0) this.navigate();
     });
-  }
-
-  createImage(question: string){
-    let image = question.replace(" ", "").toLowerCase();
-    let url = `assets/images/class/${image}.png`
-    return url
   }
 
   navigate(){

@@ -21273,7 +21273,7 @@ sub {
 }
 
 page-begin .selected {
-  box-shadow: 0px 12px 22px 1px #555;
+  box-shadow: 0px 12px 22px 1px #020c1d;
 }
 
 page-begin .card-background-page ion-card {
@@ -21334,7 +21334,7 @@ page-begin .card-background-page .card-subtitle {
 }
 
 page-recommendation .selected {
-  box-shadow: 0px 12px 22px 1px #555;
+  box-shadow: 0px 12px 22px 1px #020c1d;
 }
 
 page-recommendation .card-background-page ion-card {

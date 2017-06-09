@@ -100,10 +100,7 @@ export class BeginPage {
   selectClass(value: any){
     let idx = this.selected.indexOf(value);
     if(idx > -1) this.selected.splice(idx, 1);
-    else this.selected.push(value);
-    // let mergedClass = appendState(this.prevSelected, this.selected);
-    // this.store.dispatch(this.recommActions.selectClass(mergedClass));
-      
+    else this.selected.push(value);  
   }
 
   back(){
@@ -121,8 +118,6 @@ export class BeginPage {
   }
 
   loadPrevQuestions(){
-    // this.prevColsQuestions = captureState(this.store).recomm.loadedClass;
-    
     console.log("before", this.prevColsQuestions);
     let idx = this.prevColsQuestions.indexOf(this.colsQuestions);
     if(idx > -1) this.prevColsQuestions.splice(idx, 1);
@@ -131,16 +126,13 @@ export class BeginPage {
     if(length <= 1) this.navigate(TabsPage);
     this.colsQuestions = this.prevColsQuestions[length - 1];
     this.selected = [];
-    // this.store.dispatch(this.recommActions.loadClass(this.prevColsQuestions));
   }
 
   removeCurrentSelection(){
-    // this.prevSelected = captureState(this.store).recomm.selectedClass;
     console.log("before selected", this.selected, this.prevSelected)
     // strange behavior, need to remove 2 idx all at once
     this.prevSelected.splice(this.prevSelected.length - 1, 2);
     console.log("after selected", this.prevSelected);
-    // this.store.dispatch(this.recommActions.selectClass(this.prevSelected));
   }
 
   loadQuestions(){
@@ -168,33 +160,24 @@ export class BeginPage {
             this.questions = [];
             for(let j = i; j < i + this.divider; j++){
               if(questions[j])
-                this.questions.push({name: questions[j], image: this.createImage(questions[j])})
+                this.questions.push({name: questions[j].name, image: questions[j].image})
             }
             this.colsQuestions.push({cols: this.questions})
           }
           i += 1;
         });
         this.stopLoading();          
-        // this.prevColsQuestions = captureState(this.store).recomm.loadedClass;
         if(this.colsQuestions.length == 0){
           this.navigate(ResultPage, {selectedClass: this.prevSelected, loadedClass: this.prevColsQuestions});
           console.log("last", this.prevColsQuestions);
           this.colsQuestions = this.prevColsQuestions[this.prevColsQuestions.length - 1];
         }else{
           this.prevColsQuestions.push(this.colsQuestions);
-          // this.store.dispatch(this.recommActions.loadClass(appendState(this.prevColsQuestions, this.colsQuestions)));
         }
       });
       this.selected = [];
       this.counter += 1;
     }
-  }
-
-  createImage(question: string){
-    let image = question.replace(" ", "").toLowerCase();
-    let url = `assets/images/class/${image}.png`
-    url = `assets/images/class/default.png`
-    return url
   }
 
   navigate(page: any, params: any = {}){
