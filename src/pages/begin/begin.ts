@@ -40,7 +40,7 @@ import { AppState } from "../../models/state.model";
         </ion-row>
       </ion-grid>
     </ion-content>
-    <ion-footer style="height: 10%;">
+    <ion-footer>
       <ion-grid>
         <ion-row>
           <ion-col col-6>        

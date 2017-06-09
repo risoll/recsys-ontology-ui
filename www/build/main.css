@@ -21274,11 +21274,13 @@ sub {
 
 page-begin .selected {
   box-shadow: 0px 12px 22px 1px #020c1d;
+  opacity: 1 !important;
 }
 
 page-begin .card-background-page ion-card {
   position: relative;
   text-align: center;
+  opacity: 0.8;
 }
 
 page-begin .card-background-page .card-title {
@@ -21335,11 +21337,13 @@ page-begin .card-background-page .card-subtitle {
 
 page-recommendation .selected {
   box-shadow: 0px 12px 22px 1px #020c1d;
+  opacity: 1 !important;
 }
 
 page-recommendation .card-background-page ion-card {
   position: relative;
   text-align: center;
+  opacity: 0.8;
 }
 
 page-recommendation .card-background-page .card-title {
