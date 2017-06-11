@@ -72,7 +72,7 @@ import { isFormFilled } from "../../utils/common.util";
         </ion-card>
     </ion-content>
     <ion-footer style="height: 10%;">        
-        <button style="height: 100%;" ion-button block (click)=navigate() >Next</button> 
+        <button style="height: 100%;" color="fire" ion-button block (click)=navigate() >Next</button> 
     </ion-footer>
 
   `
@@ -134,7 +134,7 @@ export class ResultPage {
   showAlert() {
     let alert = this.alertCtrl.create({
       title: 'Failed',
-      message: 'Please rate the recommendation first',
+      message: 'Please rate the recommendation',
       buttons: ['OK']
     });
     alert.present();

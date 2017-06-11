@@ -16,7 +16,7 @@ import { Place } from "../../models/place.model";
   selector: 'page-explanation',
   template: `
     <ion-header>
-        <ion-toolbar>
+        <ion-toolbar color="sky">
             <ion-title>
             Explanation
             </ion-title>

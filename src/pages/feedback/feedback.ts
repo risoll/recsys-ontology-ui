@@ -1,3 +1,4 @@
+import { RecommendationPage } from './../recommendation/recommendation';
 import { Store } from '@ngrx/store';
 import { Feedback } from './../../models/user.model';
 import { TabsPage } from './../tabs/tabs';
@@ -17,7 +18,7 @@ import { AppState } from "../../models/state.model";
   selector: 'page-feedback',
   template: `
     <ion-header>
-      <ion-navbar>
+      <ion-navbar color="sky">
         <button ion-button menuToggle>
           <ion-icon name="menu"></ion-icon>
         </button>
@@ -49,28 +50,28 @@ import { AppState } from "../../models/state.model";
             <ion-list>
                 <ion-item [(ngModel)]="city">
                     <ion-label color="primary" stacked>City</ion-label>
-                    <ion-input placeholder="Current city"></ion-input>
+                    <ion-input placeholder="e.g. Bandung"></ion-input>
                 </ion-item>
                 <ion-item [(ngModel)]="age">
                     <ion-label color="primary" stacked>Age</ion-label>
-                    <ion-input type="number" placeholder="Age"></ion-input>
+                    <ion-input type="number" placeholder="e.g. 17"></ion-input>
                 </ion-item>
                 <ion-item [(ngModel)]="profession">
                     <ion-label color="primary" stacked>Profession</ion-label>
-                    <ion-input placeholder="Current Employment"></ion-input>
+                    <ion-input placeholder="e.g. Software engineer"></ion-input>
                 </ion-item>
                 <ion-item [(ngModel)]="univ">
                     <ion-label color="primary" stacked>University</ion-label>
-                    <ion-input placeholder="University"></ion-input>
+                    <ion-input placeholder="e.g. Telkom University"></ion-input>
                 </ion-item>
                 <ion-item [(ngModel)]="majors">
                     <ion-label color="primary" stacked>Majors</ion-label>
-                    <ion-input placeholder="Majors"></ion-input>
+                    <ion-input placeholder="e.g. Computer Science"></ion-input>
                 </ion-item>
             </ion-list>
     </ion-content>
     <ion-footer style="height: 10%;">        
-        <button style="height: 100%;" ion-button block (click)=navigate() >Submit</button> 
+        <button style="height: 100%;" ion-button block color="fire" (click)=navigate() >Submit</button> 
     </ion-footer>
 
   `
@@ -128,7 +129,7 @@ export class FeedbackPage {
         this.userService.addFeedback(params).subscribe(feedback=>{
             this.stopLoading();
             this.showAlert("Thank You", `Thank you ${params.name} for participating this survey, have a good day!`);
-            this.navCtrl.setRoot(TabsPage);
+            this.navCtrl.setRoot(RecommendationPage);
         })
     }
     else this.showAlert();
