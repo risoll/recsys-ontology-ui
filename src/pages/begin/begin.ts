@@ -1,3 +1,5 @@
+import { RecommendationPage } from './../recommendation/recommendation';
+import { ResultSelectionPage } from './../result.selection/result.selection';
 import { TabsPage } from './../tabs/tabs';
 import { RecommActions } from './../../actions/recomm.actions';
 import { Question, ColsQuestion } from './../../models/recommendation.model';
@@ -22,8 +24,8 @@ import { AppState } from "../../models/state.model";
   selector: 'page-begin',
   template: `
     <ion-header>
-      <ion-toolbar>
-        <ion-title>For You</ion-title>
+      <ion-toolbar color="sky">
+        <ion-title>Recommender</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content *ngIf="questions" class="card-background-page">
@@ -44,13 +46,13 @@ import { AppState } from "../../models/state.model";
       <ion-grid>
         <ion-row>
           <ion-col col-6>        
-            <button full ion-button color="light" (click)=back()>
+            <button ion-button block outline color="fire" (click)=back()>
               <ion-icon name="arrow-back"></ion-icon>
               &nbsp;Previous
             </button> 
           </ion-col>
           <ion-col col-6>
-            <button full ion-button color="primary" (click)=next()>
+            <button full ion-button color="fire" (click)=next()>
               Next&nbsp;
               <ion-icon name="arrow-forward"></ion-icon>
             </button> 
@@ -91,7 +93,7 @@ export class BeginPage {
   showAlert() {
     let alert = this.alertCtrl.create({
       title: 'Failed',
-      subTitle: 'Please at least select one type',
+      message: 'Please at least select one type',
       buttons: ['OK']
     });
     alert.present();
@@ -123,7 +125,7 @@ export class BeginPage {
     if(idx > -1) this.prevColsQuestions.splice(idx, 1);
     console.log("after", this.prevColsQuestions);
     let length = this.prevColsQuestions.length;
-    if(length <= 1) this.navigate(TabsPage);
+    if(length <= 1) this.navCtrl.setRoot(RecommendationPage);
     this.colsQuestions = this.prevColsQuestions[length - 1];
     this.selected = [];
   }
@@ -167,9 +169,9 @@ export class BeginPage {
           i += 1;
         });
         this.stopLoading();          
-        if(this.colsQuestions.length == 0){
-          this.navigate(ResultPage, {selectedClass: this.prevSelected, loadedClass: this.prevColsQuestions});
-          console.log("last", this.prevColsQuestions);
+        if(this.colsQuestions.length == 0){          
+          console.log("last", this.prevSelected);
+          this.navigate(ResultSelectionPage, {selectedClass: this.prevSelected, loadedClass: this.prevColsQuestions});
           this.colsQuestions = this.prevColsQuestions[this.prevColsQuestions.length - 1];
         }else{
           this.prevColsQuestions.push(this.colsQuestions);

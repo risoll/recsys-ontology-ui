@@ -6,7 +6,7 @@ import { NavController } from 'ionic-angular';
   selector: 'page-about',
   template: `
     <ion-header>
-      <ion-navbar>
+      <ion-navbar color="sky">
         <button ion-button menuToggle>
           <ion-icon name="menu"></ion-icon>
         </button>

@@ -22,11 +22,11 @@ import { AppState } from "../../models/state.model";
   selector: 'page-recommendation',
   template: `
     <ion-header>
-      <ion-navbar>
+      <ion-navbar color="sky">
         <button ion-button menuToggle>
           <ion-icon name="menu"></ion-icon>
         </button>
-        <ion-title>For You</ion-title>
+        <ion-title>Recommender</ion-title>
       </ion-navbar>
     </ion-header>
     <ion-content *ngIf="questions" class="card-background-page">
@@ -42,11 +42,14 @@ import { AppState } from "../../models/state.model";
           </ion-col>
         </ion-row>
       </ion-grid>   
-      <p style="text-align: center" *ngIf="selected.length == 0">Select your preferred type(s) of attractions</p>
-      <p style="text-align: center" *ngIf="selected.length > 0">Your selection: {{selected}}</p>  
+      <h6 ion-text style="font-size: small;" color="ocean" class="highlight" *ngIf="selected.length == 0">Select your preferred type(s) of attractions</h6>
+      <div *ngIf="selected.length > 0">
+        <h6 ion-text color="sky" class="highlight">Your selection:</h6>
+        <p style="top: 90%;" class="highlight">{{selected}}</p>
+      </div>  
     </ion-content> 
     <ion-footer style="height: 10%;">        
-      <button style="height: 100%;" ion-button block (click)=navigate()>Next</button> 
+      <button color="fire" style="height: 100%;" ion-button block (click)=navigate()>Next</button> 
     </ion-footer>
 
   `
@@ -76,7 +79,7 @@ export class RecommendationPage {
   showAlert() {
     let alert = this.alertCtrl.create({
       title: 'Failed',
-      subTitle: 'Please at least select one type',
+      message: 'Please select at least one type',
       buttons: ['OK']
     });
     alert.present();

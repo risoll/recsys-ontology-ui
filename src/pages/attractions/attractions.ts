@@ -17,7 +17,7 @@ import { AppState } from "../../models/state.model";
   selector: 'page-attractions',
   template: `
     <ion-header>
-      <ion-navbar>
+      <ion-navbar color="sky">
         <button ion-button menuToggle>
           <ion-icon name="menu"></ion-icon>
         </button>
@@ -42,7 +42,7 @@ import { AppState } from "../../models/state.model";
           </button>
         </ion-grid>
       </ion-list>
-      <button ion-button block style="height: 10%;" (click)="loadMore()">Load More</button> 
+      <button color="fire" ion-button block style="height: 10%;" (click)="loadMore()">Load More</button> 
     </ion-content>
   `,
 })

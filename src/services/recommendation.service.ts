@@ -30,7 +30,6 @@ export class RecommendationService{
 
 
   getBulkChildren(params: string[]): Observable<Question[]>{
-    console.log("params", params);
     let url = `${API_URL}/recomm/class/bulk/children`;
     let body = JSON.stringify(params);
     let headers = new Headers({'Content-Type': 'application/json'});

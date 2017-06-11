@@ -1,6 +1,6 @@
 import { Place } from './../models/place.model';
 import {Injectable} from "@angular/core";
-import {Http} from "@angular/http";
+import { Http, RequestOptions, Headers } from "@angular/http";
 import {PhotosParam, PhotosResponse} from "../models/google.model";
 import {API_URL} from "../utils/constants";
 import {Observable} from "rxjs/Observable";
@@ -17,5 +17,15 @@ export class PlaceService{
   getPlaces(params: Pagination): Observable<Place[]>{
     let url = `${API_URL}/place/pagination?limit=${params.limit}&offset=${params.offset}`;
     return this.http.get(url).map(res => res.json())
+  }
+
+  getPlacesByCategories(params: string[]): Observable<Place[]>{
+    let url = `${API_URL}/place/bulk/categories`;
+    let body = JSON.stringify(params);
+    let headers = new Headers({'Content-Type': 'application/json'});
+    let options = new RequestOptions({headers: headers});
+    return this.http.post(url, body, options)
+      .map(res => <Place[]>res.json())
+      // .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
   }
 }

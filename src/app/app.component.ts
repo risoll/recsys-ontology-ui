@@ -1,3 +1,5 @@
+import { RecommendationPage } from './../pages/recommendation/recommendation';
+import { AttractionsPage } from './../pages/attractions/attractions';
 import { IntroPage } from './../pages/intro/intro';
 import { IpApi } from './../models/user.model';
 import { Observable } from 'rxjs/Observable';
@@ -23,7 +25,7 @@ import { AppState } from "../models/state.model";
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = TabsPage;
+  rootPage: any = RecommendationPage;
   loader: Loading;
 
   pages: Array<{title: string, component: any}>;
@@ -40,7 +42,8 @@ export class MyApp {
     this.initializeApp();
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Home', component: TabsPage },
+      { title: 'Recommender', component: RecommendationPage },
+      { title: 'Browse', component: AttractionsPage },
       { title: 'About', component: AboutPage }
       // { title: 'Advanced', component: AdvancedPage },
       // { title: 'Settings', component: SettingsPage },
@@ -68,7 +71,7 @@ export class MyApp {
       this.storage.get('introShown').then((result) => {
  
         if(result){
-          this.rootPage = TabsPage;
+          this.rootPage = RecommendationPage;
         } else {
           this.rootPage = IntroPage;
           this.storage.set('introShown', true);

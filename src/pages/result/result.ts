@@ -1,3 +1,7 @@
+import { AttractionsActions } from './../../actions/attractions.actions';
+import { AppState } from './../../models/state.model';
+import { Store } from '@ngrx/store';
+import { Place } from './../../models/place.model';
 import { PlacePage } from './../place/place';
 import { ExplanationPage } from './../explanation/explanation';
 import { FeedbackPage } from './../feedback/feedback';
@@ -17,7 +21,7 @@ import { isFormFilled } from "../../utils/common.util";
   selector: 'page-result',
   template: `
     <ion-header>
-      <ion-navbar>
+      <ion-navbar color="sky">
         <button ion-button menuToggle>
           <ion-icon name="menu"></ion-icon>
         </button>
@@ -26,14 +30,12 @@ import { isFormFilled } from "../../utils/common.util";
     </ion-header>
     <ion-content>
         <ion-card>
-        <img src="https://lh3.googleusercontent.com/p/AF1QipPrmp6TboGNpQy-PJ9aNiTjZfpwfSxFWNDACFCS=s1600-w200-h200"/>
+        <img [src]="recomm.photo"/>
         <ion-card-content>
             <ion-card-title>
-                Kolam Renang Oniba
+                {{recomm.name}}
             </ion-card-title>
-            <p>
-                Jl. Raya Majalaya - Cicalengka, Cikuya, Cicalengka, Bandung, Jawa Barat 40395, Indonesia
-            </p>
+            <p>{{recomm.formatted_address}}</p>
             <hr>
             <ion-row no-padding>
                 <ion-col text-center>
@@ -43,7 +45,7 @@ import { isFormFilled } from "../../utils/common.util";
                     </button>
                 </ion-col>
                 <ion-col text-right>
-                    <button (click)=details() ion-button clear small color="danger" icon-left>
+                    <button (click)=details(recomm) ion-button clear small color="danger" icon-left>
                     <ion-icon name='navigate'></ion-icon>
                     Details
                     </button>
@@ -82,24 +84,23 @@ export class ResultPage {
   comment: string;
   explanation: string = "This is an explanation page";
   place: string = "Place";
+  private recomm: Place;
 
   constructor(public navCtrl: NavController, 
     private userService: UserService,
+    private store: Store<AppState>,
     private navParams: NavParams,
+    private attractionsActions: AttractionsActions,
     public loadingCtrl: LoadingController,
     public alertCtrl: AlertController,
     public modalCtrl: ModalController,
     private app: App) {
-      console.log("DATA", this.navParams.get("selectedClass"), this.navParams.get("loadedClass"))
+      this.recomm = this.navParams.get("recomm");
   }
 
-  details(){
-    // this.navCtrl.push(PlacePage, {
-    //     place: this.place
-    // })
-    this.app.getRootNav().push(PlacePage, {}, {
-            animate: true, direction: 'forward'
-        });
+  details(place: Place){
+    this.store.dispatch(this.attractionsActions.selectPlace(place));
+    this.app.getRootNav().push(PlacePage);
   }
 
   explain(){
@@ -133,7 +134,7 @@ export class ResultPage {
   showAlert() {
     let alert = this.alertCtrl.create({
       title: 'Failed',
-      subTitle: 'Please rate the recommendation first',
+      message: 'Please rate the recommendation first',
       buttons: ['OK']
     });
     alert.present();

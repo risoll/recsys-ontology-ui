@@ -1,3 +1,4 @@
+import { ResultSelectionPage } from '../pages/result.selection/result.selection';
 import { IntroPage } from './../pages/intro/intro';
 import { MapsPage } from './../pages/maps/maps';
 import { DetailsPage } from './../pages/details/details';
@@ -32,5 +33,6 @@ export const APP_PAGES = [
     PlacePage,
     DetailsPage,
     MapsPage,
-    BeginPage
+    BeginPage,
+    ResultSelectionPage
 ]

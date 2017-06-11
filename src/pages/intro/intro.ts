@@ -1,3 +1,4 @@
+import { RecommendationPage } from './../recommendation/recommendation';
 import { TabsPage } from './../tabs/tabs';
 import { Component } from '@angular/core';
 
@@ -14,7 +15,7 @@ import { NavController } from 'ionic-angular';
                 <p [innerHTML]="slide.description"></p>
             </ion-slide>
             <ion-slide>
-                <img style="width: 60%" src="assets/images/intro/4.png" class="slide-image"/>
+                <img style="width: 60%" src="assets/images/intro/4.jpg" class="slide-image"/>
                 <h2 class="slide-title">Are you ready?</h2>
                 <button (click)=goToHome() ion-button large clear icon-right color="primary">
                     Continue
@@ -30,17 +31,17 @@ export class IntroPage {
     {
       title: "Hello there",
       description: "My name is <b>Rizky Solechudin</b>, a (2013) Computer Science student at Telkom University.",
-      image: "assets/images/intro/1.png",
+      image: "assets/images/intro/1.jpg",
     },
     {
       title: "Welcome to the Recommender System for Bandung's Tourist Attraction!",
       description: "This recommender system is made for <b>My Final Project</b>, for pursuing the Bachelor Degree.",
-      image: "assets/images/intro/2.png",
+      image: "assets/images/intro/2.jpg",
     },
     {
       title: "Will you help me?",
-      description: "You can help me by filling <b>a Survey</b>, by using this app, keep going on the \"Guide Me\" tab and you are good to go.",
-      image: "assets/images/intro/3.png",
+      description: "You can help me by filling <b>a Survey</b>, by using this app, keep going on the <b>Recommender Page</b>, and you are good to go.",
+      image: "assets/images/intro/3.jpg",
     }
   ];
 
@@ -49,7 +50,7 @@ export class IntroPage {
   }
 
   goToHome(){
-      this.navCtrl.setRoot(TabsPage);
+      this.navCtrl.setRoot(RecommendationPage);
   }
 
 }

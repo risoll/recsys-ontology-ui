@@ -18,7 +18,7 @@ export class UserService{
   }
 
   ipApi(): Observable<IpApi>{
-    let url = "https://ipapi.co/json/";
+    let url = "https://ipapi.co/json";
     return this.http.get(url).map(res => res.json())
   }
 

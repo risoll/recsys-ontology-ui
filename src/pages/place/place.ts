@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   template: `
     <ion-header>
-        <ion-navbar>
+        <ion-navbar color="sky">
           <button ion-button menuToggle>
             <ion-icon name="menu"></ion-icon>
           </button>

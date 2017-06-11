@@ -1,6 +1,6 @@
 page-begin {
   .selected{
-    box-shadow:0px 12px 22px 1px #020c1d;
+    border: 3px #1ba0e2 solid;
     opacity: 1 !important;
    }
   .card-background-page {
@@ -14,7 +14,7 @@ page-begin {
     .card-title {
       position: absolute;
       top: 36%;
-      font-size: 1.5em;
+      font-size: 1.0em;
       width: 100%;
       font-weight: bold;
       color: #fff;

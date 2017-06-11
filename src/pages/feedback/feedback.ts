@@ -97,10 +97,10 @@ export class FeedbackPage {
       this.rating = navParams.get("rate");
   }
 
-  showAlert(title: string = "Failed", subTitle: string = "Please fill all required field first") {
+  showAlert(title: string = "Failed", message: string = "Please fill all required field first") {
     let alert = this.alertCtrl.create({
       title: title,
-      subTitle: subTitle,
+      message: message,
       buttons: ['OK']
     });
     alert.present();
