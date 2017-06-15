@@ -74,7 +74,9 @@ export class BeginPage {
   private direction: string;
   private prevSelected: string[][];
   private selected: string[] = [];
+  private lastPage: boolean = false;
   loader: Loading;
+  consoleObject = (str, obj) => console.log(str, JSON.parse(JSON.stringify(obj)));;
 
   constructor(public navCtrl: NavController, 
   private store: Store<AppState>, 
@@ -87,6 +89,7 @@ export class BeginPage {
   public loadingCtrl: LoadingController) {
     this.prevSelected = this.navParams.get("selected");
     this.prevColsQuestions = this.navParams.get("loaded");
+    console.log("DATA", this.prevSelected, this.prevColsQuestions);
     this.loadQuestions();
   }
 
@@ -107,8 +110,10 @@ export class BeginPage {
 
   back(){
     this.direction = "back";
-    this.counter -= 1;
-    this.removeCurrentSelection();
+    if(this.lastPage)
+      this.removeLastSelection();
+    else
+      this.removeCurrentSelection();
     this.loadPrevQuestions();
     console.log("counter", this.counter);
   }
@@ -120,42 +125,58 @@ export class BeginPage {
   }
 
   loadPrevQuestions(){
-    console.log("before", this.prevColsQuestions);
+    // console.log("before", this.prevColsQuestions);
     let idx = this.prevColsQuestions.indexOf(this.colsQuestions);
     if(idx > -1) this.prevColsQuestions.splice(idx, 1);
-    console.log("after", this.prevColsQuestions);
+    // console.log("after", this.prevColsQuestions);
     let length = this.prevColsQuestions.length;
     if(length <= 1) this.navCtrl.setRoot(RecommendationPage);
     this.colsQuestions = this.prevColsQuestions[length - 1];
-    this.selected = [];
+    // this.selected = [];
+  }
+
+  removeLastSelection(){
+    this.counter -= 2;
+    this.selected = this.prevSelected[this.prevSelected.length - 1];
+    if(!this.selected) this.selected = [];
+    console.log("on last remove selected", this.selected);
+    this.consoleObject("on last remove prevSelected", this.prevSelected);
+    // strange behavior, need to remove 2 idx all at once
+    let length = this.prevSelected.length;
+    // this.prevSelected.splice(length - 2, length - 1);
+    // this.prevSelected.pop();
+    this.prevSelected.pop();
+    console.log("after last remove prevSelected", this.prevSelected);
   }
 
   removeCurrentSelection(){
-    console.log("before selected", this.selected, this.prevSelected)
+    this.counter -= 1;    
+    this.selected = this.prevSelected[this.prevSelected.length - 1];
+    if(!this.selected) this.selected = [];
+    console.log("on remove selected", this.selected);
+    this.consoleObject("on remove prevSelected", this.prevSelected);
     // strange behavior, need to remove 2 idx all at once
     this.prevSelected.splice(this.prevSelected.length - 1, 2);
-    console.log("after selected", this.prevSelected);
+    console.log("after remove prevSelected", this.prevSelected);
   }
 
   loadQuestions(){
-    if(this.selected.length > 0)
-      this.prevSelected.push(this.selected);
-    console.log("selected", this.selected);
+    console.log("on next selected", this.selected);
     let needAlert = true;
     let check = isFormFilled({node: this.selected});
-    console.log("check", check);
-    console.log("counter", this.counter);
     if(!check){
       if(this.counter == 0)
         needAlert = false;
     }else needAlert = false;
     if(needAlert) this.showAlert();
     else{
-      console.log("merged", this.prevSelected);
+      if(this.selected.length > 0)
+        this.prevSelected.push(this.selected);
+      console.log("on next prevSelected", this.prevSelected);
       this.questions = [];
       this.presentLoading();
       let i = 0;
-      this.recommendationService.getBulkChildren(this.prevSelected[this.counter]).subscribe(questions=>{
+      this.recommendationService.getBulkChildren(this.prevSelected[this.prevSelected.length - 1]).subscribe(questions=>{
         this.colsQuestions = [];
         questions.forEach(question=>{
           if(i % this.divider == 0){ 
@@ -169,21 +190,31 @@ export class BeginPage {
           i += 1;
         });
         this.stopLoading();          
-        if(this.colsQuestions.length == 0){          
-          console.log("last", this.prevSelected);
-          this.navigate(ResultSelectionPage, {selectedClass: this.prevSelected, loadedClass: this.prevColsQuestions});
-          this.colsQuestions = this.prevColsQuestions[this.prevColsQuestions.length - 1];
+        if(this.colsQuestions.length == 0){
+          console.log("last prevSelected", this.prevSelected);
+          this.lastPage = true;
+          let selectedClasses: string[] = [];
+
+          if (this.prevSelected.length > 0)
+              this.prevSelected.forEach(element => {
+                  selectedClasses = selectedClasses.concat(element);
+              });
+          this.navigate(ResultSelectionPage, {selectedClass: selectedClasses, loadedClass: this.prevColsQuestions});
+          this.colsQuestions = this.prevColsQuestions[this.prevColsQuestions.length - 1];            
+          this.prevSelected.pop();
         }else{
+          this.lastPage = false;
+          this.selected = [];
           this.prevColsQuestions.push(this.colsQuestions);
         }
       });
-      this.selected = [];
       this.counter += 1;
     }
   }
 
   navigate(page: any, params: any = {}){
-    this.app.getRootNav().push(page, params, {animate: true, direction: 'forward'});
+    // this.app.getRootNav().push(page, params, {animate: true, direction: 'forward'});
+    this.navCtrl.push(page, params);
   }
 
   stopLoading(){

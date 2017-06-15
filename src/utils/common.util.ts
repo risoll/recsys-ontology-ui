@@ -48,6 +48,20 @@ export function objStatus(obj) {
     throw new Error("Unable to copy obj! Its type isn't supported.");
 }
 
+export function removeDuplicates(originalArray, prop) {
+    var newArray = [];
+    var lookupObject  = {};
+
+    for(var i in originalArray) {
+    lookupObject[originalArray[i][prop]] = originalArray[i];
+    }
+
+    for(i in lookupObject) {
+        newArray.push(lookupObject[i]);
+    }
+    return newArray;
+ }
+
 export function isEmptyObject(obj) {
     return (Object.keys(obj).length === 0);
 }

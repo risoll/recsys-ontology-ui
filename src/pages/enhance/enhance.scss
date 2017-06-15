@@ -1,0 +1,32 @@
+page-enhance {
+  .selected{
+    border: 3px #1ba0e2 solid;
+    opacity: 1 !important;
+   }
+  .card-background-page {
+
+    ion-card {
+      position: relative;
+      text-align: center;
+      opacity: 0.7;
+    }
+
+    .card-title {
+      position: absolute;
+      top: 36%;
+      font-size: 1.0em;
+      width: 100%;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .card-subtitle {
+      font-size: 1.0em;
+      position: absolute;
+      top: 52%;
+      width: 100%;
+      color: #fff;
+    }
+
+  }
+}

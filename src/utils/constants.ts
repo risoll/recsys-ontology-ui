@@ -4,7 +4,7 @@
 export const GOOGLE_API_KEY = "AIzaSyCJynwIXL7HAnw8p6WzqRKZ4EOgRakuu_o";
 export const GOOGLE_PLACE_URL = "https://maps.googleapis.com/maps/api/place";
 
-export const APP_BASE_URL = "http://192.168.2.119";
+export const APP_BASE_URL = "http://localhost";
 export const APP_BASE_PORT = ":8100";
 export const APP_URL = `${APP_BASE_URL}${APP_BASE_PORT}`;
 

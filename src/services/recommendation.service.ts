@@ -1,4 +1,4 @@
-import { Question } from './../models/recommendation.model';
+import { Question, BacktrackClass } from './../models/recommendation.model';
 import {Injectable} from "@angular/core";
 import {Headers, Http, RequestOptions } from "@angular/http";
 import {PhotosParam, PhotosResponse} from "../models/google.model";
@@ -46,6 +46,16 @@ export class RecommendationService{
     let options = new RequestOptions({headers: headers});
     return this.http.post(url, body, options)
       .map(res => <Question[]>res.json())
+      // .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
+  traverseNode(params: string[]): Observable<BacktrackClass[]>{
+    let url = `${API_URL}/recomm/individual/traverse/bulk`;
+    let body = JSON.stringify(params);
+    let headers = new Headers({'Content-Type': 'application/json'});
+    let options = new RequestOptions({headers: headers});
+    return this.http.post(url, body, options)
+      .map(res => <BacktrackClass[]>res.json())
       // .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
   }
 

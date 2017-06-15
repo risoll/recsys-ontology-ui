@@ -15,7 +15,7 @@ import {RecommendationService} from "../../services/recommendation.service";
 import { UserActions } from "../../actions/user.actions";
 import { UserService } from "../../services/user.service";
 import { BeginPage } from "../begin/begin";
-import { isFormFilled } from "../../utils/common.util";
+import { captureState, isFormFilled } from '../../utils/common.util';
 import { AppState } from "../../models/state.model";
 
 @Component({
@@ -72,7 +72,7 @@ export class RecommendationPage {
   private app: App,
   private recommendationService: RecommendationService,
   public loadingCtrl: LoadingController) {
-
+    this.selected = captureState(this.store).recomm.selectedRootClass;
     this.loadQuestions("tempat wisata");
   }
 
@@ -109,13 +109,17 @@ export class RecommendationPage {
         i += 1;
       });
       this.stopLoading();
-      if(this.colsQuestions.length == 0) this.navigate();
+      if(this.colsQuestions.length == 0){
+        this.store.dispatch(this.recommActions.selectRootClass(this.selected));
+        this.navigate();
+      }
     });
   }
 
   navigate(){
     if(isFormFilled({selected: this.selected})){
-      this.app.getRootNav().push(BeginPage, {selected: [this.selected], loaded: [this.colsQuestions]}, {animate: true, direction: 'forward'});
+      // this.app.getRootNav().push(BeginPage, {selected: [this.selected], loaded: [this.colsQuestions]}, {animate: true, direction: 'forward'});
+      this.navCtrl.push(BeginPage, {selected: [this.selected], loaded: [this.colsQuestions]})
     }
     else this.showAlert(); 
   }

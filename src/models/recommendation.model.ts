@@ -7,3 +7,14 @@ export interface Question{
 export interface ColsQuestion{
     cols: Question[]
 }
+
+export interface BacktrackClass{
+    name: string;
+    parents: Parent[];
+}
+
+export interface Parent{
+    child: string;
+    image: string;
+    parents: string[];
+}

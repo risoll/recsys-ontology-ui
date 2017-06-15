@@ -1,3 +1,6 @@
+import { RecommActions } from '../../actions/recomm.actions';
+import { EnhancePage } from './../enhance/enhance';
+import { Alert } from 'ionic-angular/umd';
 import { ResultPage } from '../result/result';
 import { PlacePage } from './../place/place';
 import { ExplanationPage } from './../explanation/explanation';
@@ -12,7 +15,7 @@ import { PhotosParam, RadarSearchParam, RadarSearchResponse } from "../../models
 import { GoogleService } from "../../services/google.service";
 import { GOOGLE_API_KEY } from "../../utils/constants";
 import { RecommendationService } from "../../services/recommendation.service";
-import { isFormFilled } from '../../utils/common.util';
+import { captureState, isFormFilled } from '../../utils/common.util';
 import { Pagination, Place } from "../../models/place.model";
 import { Store } from "@ngrx/store";
 import { AppState } from "../../models/state.model";
@@ -46,7 +49,7 @@ import { PlaceService } from "../../services/place.service";
               </ion-col>
               <ion-col col-1 class="checkbox">
                 <ion-item>
-                  <ion-checkbox (ionChange)="check($event, place.name)" class="item-checkbox-right" color="sky" checked="false"></ion-checkbox>
+                  <ion-checkbox (ionChange)="check($event, place)" class="item-checkbox-right" color="sky" checked="false"></ion-checkbox>
                 </ion-item>
               </ion-col>
             </ion-row>
@@ -55,7 +58,7 @@ import { PlaceService } from "../../services/place.service";
       </ion-list>
     </ion-content>
     <ion-footer style="height: 10%;">        
-      <button color="fire" style="height: 100%;" ion-button block (click)=navigate()>Next</button> 
+      <button color="fire" style="height: 100%;" ion-button block (click)="navigate()">Next</button> 
     </ion-footer>
 
   `
@@ -63,7 +66,11 @@ import { PlaceService } from "../../services/place.service";
 export class ResultSelectionPage {
     private selectedClasses: string[] = [];
     private selectedPlaces: Place[] = [];
+    private storedPlaces: Place[] = [];
+    private placeNames: string[] = [];
     private selectedRecomms: string[] = [];
+    private backtrackedClasses: any;
+    private alert: any;
     places: Place[] = [];
     loader: Loading;
     limit = 15
@@ -73,42 +80,73 @@ export class ResultSelectionPage {
         private store: Store<AppState>, public loadingCtrl: LoadingController,
         public navCtrl: NavController, private placeService: PlaceService,
         private app: App, private navParams: NavParams,
-        private alertCtrl: AlertController) {
+        private recommActions: RecommActions,
+        private alertCtrl: AlertController,
+        private recommService: RecommendationService) {
         this.presentLoading();
-        this.loadMore();
-        let initClasses = this.navParams.get("selectedClass");
-        if (initClasses.length > 0)
-            initClasses.forEach(element => {
-                this.selectedClasses = this.selectedClasses.concat(element);
-            });
-        this.placeService.getPlacesByCategories(this.selectedClasses).subscribe(data => {
-            this.selectedPlaces = data;
-        })
+        // this.loadMore();
+        // let initClasses = this.navParams.get("selectedClass");
+        // if (initClasses.length > 0)
+        //     initClasses.forEach(element => {
+        //         this.selectedClasses = this.selectedClasses.concat(element);
+        //     });
+        this.selectedClasses = this.navParams.get("selectedClass");
+        this.selectedPlaces = this.navParams.get("selectedPlaces");
+        if(this.selectedClasses)
+            this.placeService.getPlacesByCategories(this.selectedClasses).subscribe(data => {
+                this.selectedPlaces = data;
+                this.stopLoading();
+            })
+        else if(this.selectedPlaces){
+            this.stopLoading();
+        }
+        else{
+            this.selectedPlaces = captureState(this.store).recomm.selectedPlaces;
+            this.stopLoading();
+        }
     }
 
-    check(data: any, value: string) {
-        if (data.checked) this.selectedRecomms.push(value);
+    check(data: any, value: Place) {
+        if (data.checked) {
+            this.selectedRecomms.push(value.name);
+            this.storedPlaces.push(value);
+        }
         else {
-            let idx = this.selectedRecomms.indexOf(value);
+            let idx = this.selectedRecomms.indexOf(value.name);
             if (idx > -1) this.selectedRecomms.splice(idx, 1);
+            let idx2 = this.storedPlaces.indexOf(value);
+            if (idx2 > -1) this.storedPlaces.splice(idx2, 1);
         }
         console.log("recomms", this.selectedRecomms);
+        console.log("stored places", this.storedPlaces);
     }
 
     navigate() {
         let check = isFormFilled({ recomms: this.selectedRecomms });
         if (check) {
-            let recomm: Place;
-            for (let i = 0; i < this.selectedPlaces.length; i++) {
-                if (this.selectedRecomms[0] == this.selectedPlaces[i].name) {
-                    recomm = this.selectedPlaces[i];
-                    break;
+            if (this.selectedRecomms.length == 1) {
+                let recomm: Place;
+                for (let i = 0; i < this.selectedPlaces.length; i++) {
+                    if (this.selectedRecomms[0] == this.selectedPlaces[i].name) {
+                        recomm = this.selectedPlaces[i];
+                        break;
+                    }
                 }
+                this.navCtrl.push(ResultPage, { recomm: recomm });
             }
-            this.navCtrl.push(ResultPage, { recomm: recomm });
+            else if (this.selectedRecomms.length > 1) {
+                this.showAlert("morethanone");
+            }
         } else {
-            this.showAlert();
+            this.showAlert("null");
         }
+    }
+
+    loadBacktrackedClasses() {
+        this.recommService.traverseNode(this.selectedRecomms).subscribe(data => {
+            this.backtrackedClasses = data;
+            console.log("backtrack", this.backtrackedClasses);
+        })
     }
 
     details(place: Place) {
@@ -133,16 +171,31 @@ export class ResultSelectionPage {
         this.offset += 15;
     }
 
-    showAlert() {
-        let alert = this.alertCtrl.create({
-            title: 'Oops',
-            message: "It looks like that you haven't selected any recommendation, wanna go back and change some preference? ",
-            buttons: [
-                {text: "No", handler: () => {} },
-                {text: "Yes", handler: () => this.navCtrl.pop()}
-            ]
-        });
-        alert.present();
+    showAlert(status: string) {
+        if (status == "null")
+            this.alert = this.alertCtrl.create({
+                title: 'Oops',
+                message: "It looks like that you haven't selected any recommendation, wanna go back and change some preference? ",
+                buttons: [
+                    { text: "No", handler: () => { } },
+                    { text: "Yes", handler: () => this.navCtrl.pop() }
+                ]
+            });
+        else if (status == "morethanone")
+            this.alert = this.alertCtrl.create({
+                title: 'Oops',
+                message: "You seem to have doubts, wanna enhance your preference?",
+                buttons: [
+                    { text: "No", handler: () => { } },
+                    {
+                        text: "Yes", handler: () => {
+                            this.store.dispatch(this.recommActions.selectPlaces(this.storedPlaces));
+                            this.navCtrl.push(EnhancePage, { recomms: this.selectedRecomms });
+                        }
+                    }
+                ]
+            });
+        this.alert.present();
     }
 
     stopLoading() {
