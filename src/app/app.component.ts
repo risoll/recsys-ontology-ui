@@ -1,8 +1,6 @@
 import { RecommendationPage } from './../pages/recommendation/recommendation';
 import { AttractionsPage } from './../pages/attractions/attractions';
 import { IntroPage } from './../pages/intro/intro';
-import { IpApi } from './../models/user.model';
-import { Observable } from 'rxjs/Observable';
 import { UserActions } from './../actions/user.actions';
 import { UserService } from './../services/user.service';
 import { AboutPage } from './../pages/about/about';
@@ -11,11 +9,6 @@ import { Nav, Platform, LoadingController, Loading } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
 import { Storage } from '@ionic/storage';
 
-import { TabsPage } from '../pages/tabs/tabs';
-
-import { AdvancedPage } from '../pages/advanced/advanced';
-import { SettingsPage } from '../pages/settings/settings';
-import { AccountPage } from '../pages/account/account';
 import { Store } from "@ngrx/store";
 import { AppState } from "../models/state.model";
 
@@ -29,11 +22,11 @@ export class MyApp {
   loader: Loading;
 
   pages: Array<{title: string, component: any}>;
-  constructor(private store: Store<AppState>, 
-  private userActions: UserActions, 
-  private userService: UserService, 
+  constructor(private store: Store<AppState>,
+  private userActions: UserActions,
+  private userService: UserService,
   public platform: Platform,
-  public loadingCtrl: LoadingController, 
+  public loadingCtrl: LoadingController,
   public storage: Storage) {
     this.presentLoading();
     this.userService.ipApi().subscribe(ipApi=>{
@@ -69,16 +62,16 @@ export class MyApp {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       this.storage.get('introShown').then((result) => {
- 
+
         if(result){
           this.rootPage = RecommendationPage;
         } else {
           this.rootPage = IntroPage;
           this.storage.set('introShown', true);
         }
- 
+
         this.loader.dismiss();
- 
+
       });
       StatusBar.styleDefault();
       Splashscreen.hide();

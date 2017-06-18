@@ -2,7 +2,6 @@
  * Created by solehuddien on 26/04/17.
  */
 export const GOOGLE_API_KEY = "AIzaSyCJynwIXL7HAnw8p6WzqRKZ4EOgRakuu_o";
-export const GOOGLE_PLACE_URL = "https://maps.googleapis.com/maps/api/place";
 
 export const APP_BASE_URL = "http://localhost";
 export const APP_BASE_PORT = ":8100";

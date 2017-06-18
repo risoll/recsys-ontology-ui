@@ -1,16 +1,5 @@
-import { Pagination } from './../../models/place.model';
-import { PlaceService } from './../../services/place.service';
-import { AttractionsActions } from './../../actions/attractions.actions';
 import { Component } from '@angular/core';
-import { Store } from '@ngrx/store';  
-
-import { NavController, LoadingController, Loading, ViewController, NavParams, Platform } from 'ionic-angular';
-import {Observable} from "rxjs/Observable";
-import {PhotosParam, PhotosResponse, RadarSearchParam, RadarSearchResponse} from "../../models/google.model";
-import {GoogleService} from "../../services/google.service";
-import {GOOGLE_API_KEY} from "../../utils/constants";
-import { AppState } from "../../services/app-state";
-import { Place } from "../../models/place.model";
+import { LoadingController, Loading, ViewController, NavParams, Platform } from 'ionic-angular';
 
 @Component({
   selector: 'page-explanation',

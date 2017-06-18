@@ -1,16 +1,10 @@
 import { RecommendationPage } from './../recommendation/recommendation';
 import { Store } from '@ngrx/store';
 import { Feedback } from './../../models/user.model';
-import { TabsPage } from './../tabs/tabs';
 import { UserService } from './../../services/user.service';
 import { Component } from '@angular/core';
 
 import { NavController, LoadingController, Loading, NavParams, AlertController } from 'ionic-angular';
-import {Observable} from "rxjs/Observable";
-import {PhotosParam, RadarSearchParam, RadarSearchResponse} from "../../models/google.model";
-import {GoogleService} from "../../services/google.service";
-import {GOOGLE_API_KEY} from "../../utils/constants";
-import {RecommendationService} from "../../services/recommendation.service";
 import { captureState, isFormFilled } from "../../utils/common.util";
 import { AppState } from "../../models/state.model";
 
@@ -89,7 +83,7 @@ export class FeedbackPage {
   ip: string;
   city: string;
 
-  constructor(public navCtrl: NavController, 
+  constructor(public navCtrl: NavController,
   private userService: UserService,
   public loadingCtrl: LoadingController,
   private navParams: NavParams,

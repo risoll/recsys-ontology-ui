@@ -1,24 +1,11 @@
-import { Place } from './../../models/place.model';
-import { RecommendationPage } from './../recommendation/recommendation';
 import { ResultSelectionPage } from './../result.selection/result.selection';
-import { TabsPage } from './../tabs/tabs';
-import { RecommActions } from './../../actions/recomm.actions';
 import { Question, ColsQuestion, BacktrackClass } from './../../models/recommendation.model';
 import { Store } from '@ngrx/store';
-import { IpApi } from './../../models/user.model';
-import { ResultPage } from './../result/result';
-import { FeedbackPage } from './../feedback/feedback';
 import { Component } from '@angular/core';
 
-import { NavController, LoadingController, Loading, App, AlertController, NavParams } from 'ionic-angular';
-import {Observable} from "rxjs/Observable";
-import {PhotosParam, RadarSearchParam, RadarSearchResponse} from "../../models/google.model";
-import {GoogleService} from "../../services/google.service";
-import {GOOGLE_API_KEY} from "../../utils/constants";
+import { NavController, LoadingController, Loading, AlertController, NavParams } from 'ionic-angular';
 import {RecommendationService} from "../../services/recommendation.service";
-import { UserActions } from "../../actions/user.actions";
-import { UserService } from "../../services/user.service";
-import { captureState, appendState, isFormFilled, removeDuplicates } from "../../utils/common.util";
+import { captureState, isFormFilled } from "../../utils/common.util";
 import { AppState } from "../../models/state.model";
 
 @Component({
@@ -69,7 +56,6 @@ import { AppState } from "../../models/state.model";
 })
 export class EnhancePage {
 
-  private ipApi$: Observable<IpApi>;
   private questions: Question[] = [];
   private colsQuestions: ColsQuestion[] = [];
   private prevColsQuestions: ColsQuestion[][] = [];
@@ -85,14 +71,11 @@ export class EnhancePage {
   private lastPage: boolean = false;
   private backtracks: BacktrackClass[];
   loader: Loading;
-  consoleObject = (str, obj) => console.log(str, JSON.parse(JSON.stringify(obj)));;
+  consoleObject = (str, obj) => console.log(str, JSON.parse(JSON.stringify(obj)));
 
-  constructor(public navCtrl: NavController, 
-  private store: Store<AppState>, 
-  private recommActions: RecommActions,
-  private userService: UserService,
+  constructor(public navCtrl: NavController,
+  private store: Store<AppState>,
   public alertCtrl: AlertController,
-  private app: App,
   private navParams: NavParams,
   private recommendationService: RecommendationService,
   public loadingCtrl: LoadingController) {
@@ -171,7 +154,7 @@ export class EnhancePage {
   selectClass(value: any){
     // let idx = this.selected.indexOf(value);
     // if(idx > -1) this.selected.splice(idx, 1);
-    // else this.selected.push(value);  
+    // else this.selected.push(value);
     if(this.selected.length > 0){
       this.selected.pop()
       this.selected.push(value)
@@ -196,7 +179,7 @@ export class EnhancePage {
     if(!check){
         this.needAlert = true;
     }else this.needAlert = false;
-    if(this.needAlert) this.showAlert(); 
+    if(this.needAlert) this.showAlert();
     else{
       let places = captureState(this.store).recomm.selectedPlaces;
       // let newPlaces: Place[] = [];
@@ -238,7 +221,7 @@ export class EnhancePage {
     console.log("on last remove selected", this.selected);
     this.consoleObject("on last remove prevSelected", this.prevSelected);
     // strange behavior, need to remove 2 idx all at once
-    let length = this.prevSelected.length;
+    // let length = this.prevSelected.length;
     // this.prevSelected.splice(length - 2, length - 1);
     // this.prevSelected.pop();
     this.prevSelected.pop();
@@ -246,7 +229,7 @@ export class EnhancePage {
   }
 
   removeCurrentSelection(){
-    this.counter -= 1;    
+    this.counter -= 1;
     this.selected = this.prevSelected[this.prevSelected.length - 1];
     if(!this.selected) this.selected = [];
     console.log("on remove selected", this.selected);
@@ -256,65 +239,21 @@ export class EnhancePage {
     console.log("after remove prevSelected", this.prevSelected);
   }
 
-  loadQuestions(){
-    console.log("on next selected", this.selected);
-    let needAlert = true;
-    let check = isFormFilled({node: this.selected});
-    if(!check){
-      if(this.counter == 0)
-        needAlert = false;
-    }else needAlert = false;
-    if(needAlert) this.showAlert();
-    else{
-      if(this.selected.length > 0)
-        this.prevSelected.push(this.selected);
-      console.log("on next prevSelected", this.prevSelected);
-      this.questions = [];
-      this.presentLoading();
-      let i = 0;
-      this.recommendationService.getBulkChildren(this.prevSelected[this.prevSelected.length - 1]).subscribe(questions=>{
-        this.colsQuestions = [];
-        questions.forEach(question=>{
-          if(i % this.divider == 0){ 
-            this.questions = [];
-            for(let j = i; j < i + this.divider; j++){
-              if(questions[j])
-                this.questions.push({name: questions[j].name, image: questions[j].image})
-            }
-            this.colsQuestions.push({cols: this.questions})
-          }
-          i += 1;
-        });
-        this.stopLoading();          
-        if(this.colsQuestions.length == 0){
-          console.log("last prevSelected", this.prevSelected);
-          this.lastPage = true;
-          this.navigate(ResultSelectionPage, {selectedClass: this.prevSelected, loadedClass: this.prevColsQuestions});
-          this.colsQuestions = this.prevColsQuestions[this.prevColsQuestions.length - 1];            
-          this.prevSelected.pop();
-        }else{
-          this.lastPage = false;
-          this.selected = [];
-          this.prevColsQuestions.push(this.colsQuestions);
-        }
-      });
-      this.counter += 1;
-    }
-  }
 
-  navigate(page: any, params: any = {}){
-    // this.app.getRootNav().push(page, params, {animate: true, direction: 'forward'});
-    this.navCtrl.push(page, params);
-  }
 
-  stopLoading(){
-    this.loader.dismiss();
-  }
-
-  presentLoading() {
-    this.loader = this.loadingCtrl.create({
-      content: "Please wait..."
-    });
-    this.loader.present();
-  }
+  // navigate(page: any, params: any = {}){
+  //   // this.app.getRootNav().push(page, params, {animate: true, direction: 'forward'});
+  //   this.navCtrl.push(page, params);
+  // }
+  //
+  // stopLoading(){
+  //   this.loader.dismiss();
+  // }
+  //
+  // presentLoading() {
+  //   this.loader = this.loadingCtrl.create({
+  //     content: "Please wait..."
+  //   });
+  //   this.loader.present();
+  // }
 }

@@ -1,7 +1,6 @@
 import { Place } from './../models/place.model';
 import { ColsQuestion } from './../models/recommendation.model';
 import { RecommActions } from './../actions/recomm.actions';
-import {ActionReducer, Action} from '@ngrx/store';  
 
 export interface RecommState{
     selectedRootClass: string[];
@@ -17,7 +16,7 @@ const initialState = <RecommState>{
     selectedPlaces: []
 }
 
-export function RecommReducer(state: RecommState = initialState, action) {  
+export function RecommReducer(state: RecommState = initialState, action) {
     switch(action.type) {
         case RecommActions.SELECT_ROOT_CLASS:
             return Object.assign({}, state, { selectedRootClass: action.payload });

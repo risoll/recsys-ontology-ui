@@ -1,5 +1,4 @@
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
 import { AppState } from "../models/state.model";
 export function isFormFilled(obj) {
     let tmpStatus = true;

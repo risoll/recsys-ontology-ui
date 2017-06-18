@@ -3,13 +3,9 @@ import { Pagination } from './../../models/place.model';
 import { PlaceService } from './../../services/place.service';
 import { AttractionsActions } from './../../actions/attractions.actions';
 import { Component } from '@angular/core';
-import { Store } from '@ngrx/store';  
+import { Store } from '@ngrx/store';
 
 import { NavController, LoadingController, Loading, App } from 'ionic-angular';
-import {Observable} from "rxjs/Observable";
-import {PhotosParam, PhotosResponse, RadarSearchParam, RadarSearchResponse} from "../../models/google.model";
-import {GoogleService} from "../../services/google.service";
-import {GOOGLE_API_KEY} from "../../utils/constants";
 import { Place } from "../../models/place.model";
 import { AppState } from "../../models/state.model";
 
@@ -52,8 +48,8 @@ export class AttractionsPage {
   limit = 15
   offset = 0;
 
-  constructor(private attractionsActions: AttractionsActions, 
-  private store: Store<AppState>, public loadingCtrl: LoadingController, 
+  constructor(private attractionsActions: AttractionsActions,
+  private store: Store<AppState>, public loadingCtrl: LoadingController,
   public navCtrl: NavController, private placeService: PlaceService,
   private app: App) {
     this.presentLoading();

@@ -1,7 +1,6 @@
 import { Place } from './../models/place.model';
 import {Injectable} from "@angular/core";
 import { Http, RequestOptions, Headers } from "@angular/http";
-import {PhotosParam, PhotosResponse} from "../models/google.model";
 import {API_URL} from "../utils/constants";
 import {Observable} from "rxjs/Observable";
 import 'rxjs/add/operator/map'

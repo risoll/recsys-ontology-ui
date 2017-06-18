@@ -5,16 +5,9 @@ import { Place } from './../../models/place.model';
 import { PlacePage } from './../place/place';
 import { ExplanationPage } from './../explanation/explanation';
 import { FeedbackPage } from './../feedback/feedback';
-import { TabsPage } from './../tabs/tabs';
-import { UserService } from './../../services/user.service';
 import { Component } from '@angular/core';
 
 import { NavController, LoadingController, Loading, AlertController, ModalController, App, NavParams } from 'ionic-angular';
-import {Observable} from "rxjs/Observable";
-import {PhotosParam, RadarSearchParam, RadarSearchResponse} from "../../models/google.model";
-import {GoogleService} from "../../services/google.service";
-import {GOOGLE_API_KEY} from "../../utils/constants";
-import {RecommendationService} from "../../services/recommendation.service";
 import { isFormFilled } from "../../utils/common.util";
 
 @Component({
@@ -86,8 +79,7 @@ export class ResultPage {
   place: string = "Place";
   private recomm: Place;
 
-  constructor(public navCtrl: NavController, 
-    private userService: UserService,
+  constructor(public navCtrl: NavController,
     private store: Store<AppState>,
     private navParams: NavParams,
     private attractionsActions: AttractionsActions,
@@ -128,7 +120,7 @@ export class ResultPage {
         this.navCtrl.push(FeedbackPage, {
             rate: this.rate
         })
-    else this.showAlert(); 
+    else this.showAlert();
   }
 
   showAlert() {

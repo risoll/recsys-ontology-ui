@@ -1,5 +1,4 @@
 import { Place } from './../models/place.model';
-import {ActionReducer, Action} from '@ngrx/store';  
 import {AttractionsActions} from '../actions/attractions.actions';
 
 export interface AttractionsState {
@@ -30,13 +29,13 @@ const initialState = <AttractionsState>{
     }
 }
 
-export function AttractionsReducer(state: AttractionsState = initialState, action) {  
+export function AttractionsReducer(state: AttractionsState = initialState, action) {
     switch(action.type) {
         case AttractionsActions.SET_ATTRACTIONS_LOAD_STATUS:
             return Object.assign({}, state, { attractionsLoadStatus: action.payload });
         case AttractionsActions.SELECT_PLACE:
             return Object.assign({}, state, { selectedPlace: action.payload });
-        
+
         default:
             return state;
     };

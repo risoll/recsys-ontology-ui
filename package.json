@@ -1,7 +1,7 @@
 {
-  "name": "ionic-hello-world",
-  "author": "Ionic Framework",
-  "homepage": "http://ionicframework.com/",
+  "name": "jalan-jalan",
+  "author": "Rizky Solechudin",
+  "homepage": "https://www.linkedin.com/in/rizkysolechudin/",
   "private": true,
   "scripts": {
     "clean": "ionic-app-scripts clean",
@@ -45,5 +45,5 @@
     "cordova-plugin-splashscreen"
   ],
   "cordovaPlatforms": [],
-  "description": "SidemenuTabs: An Ionic project"
+  "description": "Jalan-Jalan: An Ionic project for Recsys Ontology"
 }

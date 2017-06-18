@@ -1,16 +1,14 @@
-# Ionic 2 Side Menu + Tabs
+## Jalan-Jalan
+A frontend project for recsys-ontology,
+ontology-based recommender system.
 
-## What is here?
+### Features
+- State management with Ngrx inspired by Redux
+- Handling http request with Rxjs Observable
 
-[Ionic 2 Final](http://blog.ionic.io/announcing-ionic-2-0-0-final/) is here, and this project has been updated to reflect that. See the [related blog post on Khophi's Dev](https://blog.khophi.co/ionic-2-side-menu-tabs/) for more details
-
-Screenshot:
-[![ionic 2 sidemenu tabs][2]][2]
-[2]: http://i.stack.imgur.com/JfbVb.png
-
-Test it out locally
+### Getting Started
 - Clone this repo
 - `npm install`
-- `ionic serve -l`
+- `ionic serve`
 
-Get ionized!
+For further discussion you can contact me at <a href="mailto:rizky.solechudin@gmail.com">rizky.solechudin@gmail.com</a>

@@ -1,19 +1,11 @@
 import { RecommActions } from './../../actions/recomm.actions';
 import { Question, ColsQuestion } from './../../models/recommendation.model';
 import { Store } from '@ngrx/store';
-import { IpApi } from './../../models/user.model';
-import { ResultPage } from './../result/result';
-import { FeedbackPage } from './../feedback/feedback';
 import { Component } from '@angular/core';
 
-import { NavController, LoadingController, Loading, App, AlertController } from 'ionic-angular';
-import {Observable} from "rxjs/Observable";
-import {PhotosParam, RadarSearchParam, RadarSearchResponse} from "../../models/google.model";
-import {GoogleService} from "../../services/google.service";
-import {GOOGLE_API_KEY} from "../../utils/constants";
+import { NavController, LoadingController, Loading, AlertController } from 'ionic-angular';
 import {RecommendationService} from "../../services/recommendation.service";
-import { UserActions } from "../../actions/user.actions";
-import { UserService } from "../../services/user.service";
+
 import { BeginPage } from "../begin/begin";
 import { captureState, isFormFilled } from '../../utils/common.util';
 import { AppState } from "../../models/state.model";
@@ -55,21 +47,16 @@ import { AppState } from "../../models/state.model";
   `
 })
 export class RecommendationPage {
-
-  private ipApi$: Observable<IpApi>;
   private questions: Question[] = [];
   private colsQuestions: ColsQuestion[] = [];
   private divider = 2;
   loader: Loading;
   selected: string[] = [];
 
-  constructor(public navCtrl: NavController, 
-  private store: Store<AppState>, 
-  private userActions: UserActions, 
+  constructor(public navCtrl: NavController,
+  private store: Store<AppState>,
   private recommActions: RecommActions,
-  private userService: UserService,
   public alertCtrl: AlertController,
-  private app: App,
   private recommendationService: RecommendationService,
   public loadingCtrl: LoadingController) {
     this.selected = captureState(this.store).recomm.selectedRootClass;
@@ -98,7 +85,7 @@ export class RecommendationPage {
     this.recommendationService.getChildren(node).subscribe(questions=>{
       this.colsQuestions = [];
       questions.forEach(question=>{
-        if(i % this.divider == 0){ 
+        if(i % this.divider == 0){
           this.questions = [];
           for(let j = i; j < i + this.divider; j++){
             if(questions[j])
@@ -121,7 +108,7 @@ export class RecommendationPage {
       // this.app.getRootNav().push(BeginPage, {selected: [this.selected], loaded: [this.colsQuestions]}, {animate: true, direction: 'forward'});
       this.navCtrl.push(BeginPage, {selected: [this.selected], loaded: [this.colsQuestions]})
     }
-    else this.showAlert(); 
+    else this.showAlert();
   }
 
 

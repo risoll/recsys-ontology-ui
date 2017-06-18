@@ -1,24 +1,11 @@
 import { RecommendationPage } from './../recommendation/recommendation';
 import { ResultSelectionPage } from './../result.selection/result.selection';
-import { TabsPage } from './../tabs/tabs';
-import { RecommActions } from './../../actions/recomm.actions';
 import { Question, ColsQuestion } from './../../models/recommendation.model';
-import { Store } from '@ngrx/store';
-import { IpApi } from './../../models/user.model';
-import { ResultPage } from './../result/result';
-import { FeedbackPage } from './../feedback/feedback';
 import { Component } from '@angular/core';
 
-import { NavController, LoadingController, Loading, App, AlertController, NavParams } from 'ionic-angular';
-import {Observable} from "rxjs/Observable";
-import {PhotosParam, RadarSearchParam, RadarSearchResponse} from "../../models/google.model";
-import {GoogleService} from "../../services/google.service";
-import {GOOGLE_API_KEY} from "../../utils/constants";
+import { NavController, LoadingController, Loading, AlertController, NavParams } from 'ionic-angular';
 import {RecommendationService} from "../../services/recommendation.service";
-import { UserActions } from "../../actions/user.actions";
-import { UserService } from "../../services/user.service";
-import { captureState, appendState, isFormFilled } from "../../utils/common.util";
-import { AppState } from "../../models/state.model";
+import { isFormFilled } from "../../utils/common.util";
 
 @Component({
   selector: 'page-begin',
@@ -65,7 +52,6 @@ import { AppState } from "../../models/state.model";
 })
 export class BeginPage {
 
-  private ipApi$: Observable<IpApi>;
   private questions: Question[] = [];
   private colsQuestions: ColsQuestion[] = [];
   private prevColsQuestions: ColsQuestion[][];
@@ -76,14 +62,10 @@ export class BeginPage {
   private selected: string[] = [];
   private lastPage: boolean = false;
   loader: Loading;
-  consoleObject = (str, obj) => console.log(str, JSON.parse(JSON.stringify(obj)));;
+  consoleObject = (str, obj) => console.log(str, JSON.parse(JSON.stringify(obj)));
 
-  constructor(public navCtrl: NavController, 
-  private store: Store<AppState>, 
-  private recommActions: RecommActions,
-  private userService: UserService,
+  constructor(public navCtrl: NavController,
   public alertCtrl: AlertController,
-  private app: App,
   private navParams: NavParams,
   private recommendationService: RecommendationService,
   public loadingCtrl: LoadingController) {
@@ -105,7 +87,7 @@ export class BeginPage {
   selectClass(value: any){
     let idx = this.selected.indexOf(value);
     if(idx > -1) this.selected.splice(idx, 1);
-    else this.selected.push(value);  
+    else this.selected.push(value);
   }
 
   back(){
@@ -120,7 +102,7 @@ export class BeginPage {
 
   next(){
     this.direction = "next";
-    this.loadQuestions(); 
+    this.loadQuestions();
     console.log("counter", this.counter);
   }
 
@@ -142,7 +124,7 @@ export class BeginPage {
     console.log("on last remove selected", this.selected);
     this.consoleObject("on last remove prevSelected", this.prevSelected);
     // strange behavior, need to remove 2 idx all at once
-    let length = this.prevSelected.length;
+    // let length = this.prevSelected.length;
     // this.prevSelected.splice(length - 2, length - 1);
     // this.prevSelected.pop();
     this.prevSelected.pop();
@@ -150,7 +132,7 @@ export class BeginPage {
   }
 
   removeCurrentSelection(){
-    this.counter -= 1;    
+    this.counter -= 1;
     this.selected = this.prevSelected[this.prevSelected.length - 1];
     if(!this.selected) this.selected = [];
     console.log("on remove selected", this.selected);
@@ -179,7 +161,7 @@ export class BeginPage {
       this.recommendationService.getBulkChildren(this.prevSelected[this.prevSelected.length - 1]).subscribe(questions=>{
         this.colsQuestions = [];
         questions.forEach(question=>{
-          if(i % this.divider == 0){ 
+          if(i % this.divider == 0){
             this.questions = [];
             for(let j = i; j < i + this.divider; j++){
               if(questions[j])
@@ -189,7 +171,7 @@ export class BeginPage {
           }
           i += 1;
         });
-        this.stopLoading();          
+        this.stopLoading();
         if(this.colsQuestions.length == 0){
           console.log("last prevSelected", this.prevSelected);
           this.lastPage = true;
@@ -200,7 +182,7 @@ export class BeginPage {
                   selectedClasses = selectedClasses.concat(element);
               });
           this.navigate(ResultSelectionPage, {selectedClass: selectedClasses, loadedClass: this.prevColsQuestions});
-          this.colsQuestions = this.prevColsQuestions[this.prevColsQuestions.length - 1];            
+          this.colsQuestions = this.prevColsQuestions[this.prevColsQuestions.length - 1];
           this.prevSelected.pop();
         }else{
           this.lastPage = false;

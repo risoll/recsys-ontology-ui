@@ -1,7 +1,6 @@
 import { Question, BacktrackClass } from './../models/recommendation.model';
 import {Injectable} from "@angular/core";
 import {Headers, Http, RequestOptions } from "@angular/http";
-import {PhotosParam, PhotosResponse} from "../models/google.model";
 import {API_URL} from "../utils/constants";
 import {Observable} from "rxjs/Observable";
 import 'rxjs/add/operator/map'

@@ -1,19 +1,10 @@
 import { RecommActions } from '../../actions/recomm.actions';
 import { EnhancePage } from './../enhance/enhance';
-import { Alert } from 'ionic-angular/umd';
 import { ResultPage } from '../result/result';
 import { PlacePage } from './../place/place';
-import { ExplanationPage } from './../explanation/explanation';
-import { FeedbackPage } from './../feedback/feedback';
-import { TabsPage } from './../tabs/tabs';
-import { UserService } from './../../services/user.service';
 import { Component } from '@angular/core';
 
-import { NavController, LoadingController, Loading, AlertController, ModalController, App, NavParams } from 'ionic-angular';
-import { Observable } from "rxjs/Observable";
-import { PhotosParam, RadarSearchParam, RadarSearchResponse } from "../../models/google.model";
-import { GoogleService } from "../../services/google.service";
-import { GOOGLE_API_KEY } from "../../utils/constants";
+import { NavController, LoadingController, Loading, AlertController, App, NavParams } from 'ionic-angular';
 import { RecommendationService } from "../../services/recommendation.service";
 import { captureState, isFormFilled } from '../../utils/common.util';
 import { Pagination, Place } from "../../models/place.model";
@@ -67,7 +58,6 @@ export class ResultSelectionPage {
     private selectedClasses: string[] = [];
     private selectedPlaces: Place[] = [];
     private storedPlaces: Place[] = [];
-    private placeNames: string[] = [];
     private selectedRecomms: string[] = [];
     private backtrackedClasses: any;
     private alert: any;
