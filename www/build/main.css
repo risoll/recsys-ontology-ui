@@ -28999,38 +28999,37 @@ page-enhance .card-background-page .card-subtitle {
   color: #fff;
 }
 
-.tutorial-page .toolbar-background {
+page-intro .toolbar-background {
   background: #fff;
   border-color: transparent;
 }
 
-.tutorial-page .slide-zoom {
-  height: 100%;
-  width: 60%;
+page-intro .slide-zoom {
+  width: auto;
 }
 
-.tutorial-page .slide-title {
+page-intro .slide-title {
   margin-top: 2.8rem;
 }
 
-.tutorial-page .slide-image {
+page-intro .slide-image {
   max-height: 50%;
   width: 60%;
   margin: 18px 0;
 }
 
-.tutorial-page b {
+page-intro b {
   font-weight: 500;
 }
 
-.tutorial-page p {
+page-intro p {
   padding: 0 40px;
   font-size: 14px;
   line-height: 1.5;
   color: #60646B;
 }
 
-.tutorial-page p b {
+page-intro p b {
   color: #000000;
 }
 

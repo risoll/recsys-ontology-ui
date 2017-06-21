@@ -14,7 +14,7 @@ import { NavController } from 'ionic-angular';
                 <p [innerHTML]="slide.description"></p>
             </ion-slide>
             <ion-slide>
-                <img style="width: 60%" src="assets/images/intro/4.jpg" class="slide-image"/>
+                <img src="assets/images/intro/4.jpg" class="slide-image"/>
                 <h2 class="slide-title">Are you ready?</h2>
                 <button (click)=goToHome() ion-button large clear icon-right color="primary">
                     Continue

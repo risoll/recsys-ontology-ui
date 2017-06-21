@@ -28,7 +28,7 @@ export class MyApp {
   public platform: Platform,
   public loadingCtrl: LoadingController,
   public storage: Storage) {
-    this.presentLoading();
+    // this.presentLoading();
     this.userService.ipApi().subscribe(ipApi=>{
       this.store.dispatch(this.userActions.setIpApi(ipApi));
     });
@@ -70,7 +70,7 @@ export class MyApp {
           this.storage.set('introShown', true);
         }
 
-        this.loader.dismiss();
+        // this.loader.dismiss();
 
       });
       StatusBar.styleDefault();
