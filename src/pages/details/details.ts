@@ -2,11 +2,12 @@ import { Schedule } from './../../models/place.model';
 import { Store } from '@ngrx/store';
 import {Component} from '@angular/core';
 
-import { NavController } from 'ionic-angular';
+import { NavController, IonicPage } from 'ionic-angular';
 import { Place } from "../../models/place.model";
 import { captureState } from "../../utils/common.util";
 import { AppState } from "../../models/state.model";
 
+@IonicPage()
 @Component({
   selector: 'page-details',
   template: `

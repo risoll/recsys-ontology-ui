@@ -5,10 +5,11 @@ import { AttractionsActions } from './../../actions/attractions.actions';
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 
-import { NavController, LoadingController, Loading, App } from 'ionic-angular';
+import { NavController, LoadingController, Loading, App, IonicPage } from 'ionic-angular';
 import { Place } from "../../models/place.model";
 import { AppState } from "../../models/state.model";
 
+@IonicPage()
 @Component({
   selector: 'page-attractions',
   template: `
@@ -21,8 +22,8 @@ import { AppState } from "../../models/state.model";
       </ion-navbar>
     </ion-header>
     <ion-content>
-      <ion-list>
-        <ion-grid>
+      <ion-grid fixed>
+        <ion-list>
           <button (click)="details(place)" ion-item *ngFor="let place of places">
             <ion-row>
               <ion-col col-3>
@@ -36,8 +37,8 @@ import { AppState } from "../../models/state.model";
               </ion-col>
             </ion-row>
           </button>
-        </ion-grid>
-      </ion-list>
+        </ion-list>
+      </ion-grid>
       <button color="fire" ion-button block style="height: 10%;" (click)="loadMore()">Load More</button> 
     </ion-content>
   `,

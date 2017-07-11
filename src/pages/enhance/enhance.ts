@@ -3,11 +3,12 @@ import { Question, ColsQuestion, BacktrackClass } from './../../models/recommend
 import { Store } from '@ngrx/store';
 import { Component } from '@angular/core';
 
-import { NavController, LoadingController, Loading, AlertController, NavParams } from 'ionic-angular';
+import { NavController, LoadingController, Loading, AlertController, NavParams, IonicPage } from 'ionic-angular';
 import {RecommendationService} from "../../services/recommendation.service";
 import { captureState, isFormFilled } from "../../utils/common.util";
 import { AppState } from "../../models/state.model";
 
+@IonicPage()
 @Component({
   selector: 'page-enhance',
   template: `

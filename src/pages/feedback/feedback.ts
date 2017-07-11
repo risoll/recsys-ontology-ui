@@ -4,10 +4,11 @@ import { Feedback } from './../../models/user.model';
 import { UserService } from './../../services/user.service';
 import { Component } from '@angular/core';
 
-import { NavController, LoadingController, Loading, NavParams, AlertController } from 'ionic-angular';
+import { NavController, LoadingController, Loading, NavParams, AlertController, IonicPage } from 'ionic-angular';
 import { captureState, isFormFilled } from "../../utils/common.util";
 import { AppState } from "../../models/state.model";
 
+@IonicPage()
 @Component({
   selector: 'page-feedback',
   template: `

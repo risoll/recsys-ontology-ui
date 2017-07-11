@@ -32,13 +32,13 @@ import { isFormFilled } from "../../utils/common.util";
             <hr>
             <ion-row no-padding>
                 <ion-col text-center>
-                    <button (click)=explain() ion-button clear small color="danger" icon-left>
+                    <button (click)=explain() ion-button clear small color="danger" icon-start>
                     <ion-icon name='help'></ion-icon>
                     Why this
                     </button>
                 </ion-col>
                 <ion-col text-right>
-                    <button (click)=details(recomm) ion-button clear small color="danger" icon-left>
+                    <button (click)=details(recomm) ion-button clear small color="danger" icon-start>
                     <ion-icon name='navigate'></ion-icon>
                     Details
                     </button>

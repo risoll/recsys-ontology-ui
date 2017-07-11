@@ -1,8 +1,9 @@
 import { RecommendationPage } from './../recommendation/recommendation';
 import { Component } from '@angular/core';
 
-import { NavController } from 'ionic-angular';
+import { NavController, IonicPage } from 'ionic-angular';
 
+@IonicPage()
 @Component({
   selector: 'page-intro',
   template: `
@@ -16,7 +17,7 @@ import { NavController } from 'ionic-angular';
             <ion-slide>
                 <img src="assets/images/intro/4.jpg" class="slide-image"/>
                 <h2 class="slide-title">Are you ready?</h2>
-                <button (click)=goToHome() ion-button large clear icon-right color="primary">
+                <button (click)=goToHome() ion-button large clear icon-end color="primary">
                     Continue
                     <ion-icon name="arrow-forward"></ion-icon>
                 </button>

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { LoadingController, Loading, ViewController, NavParams, Platform } from 'ionic-angular';
+import { LoadingController, Loading, ViewController, NavParams, Platform, IonicPage } from 'ionic-angular';
 
+@IonicPage()
 @Component({
   selector: 'page-explanation',
   template: `

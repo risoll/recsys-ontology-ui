@@ -2,10 +2,11 @@ import { Store} from '@ngrx/store';
 import { Place } from './../../models/place.model';
 import { Component } from '@angular/core';
 
-import { NavController } from 'ionic-angular';
+import { NavController, IonicPage } from 'ionic-angular';
 import { captureState } from "../../utils/common.util";
 import { AppState } from "../../models/state.model";
 
+@IonicPage()
 @Component({
   selector: 'page-maps',
   template: `
