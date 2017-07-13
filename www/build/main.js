@@ -578,7 +578,6 @@ var MyApp = (function () {
                     _this.rootPage = 'IntroPage';
                     _this.storage.set('introShown', true);
                 }
-                // this.loader.dismiss();
             });
             _this.statusBar.styleDefault();
             _this.splashScreen.hide();

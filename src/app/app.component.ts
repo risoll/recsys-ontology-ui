@@ -80,16 +80,12 @@ export class MyApp {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       this.storage.get('introShown').then((result) => {
-
         if(result){
           this.rootPage = 'RecommendationPage';
         } else {
           this.rootPage = 'IntroPage';
           this.storage.set('introShown', true);
         }
-
-        // this.loader.dismiss();
-
       });
       this.statusBar.styleDefault();
       this.splashScreen.hide();
