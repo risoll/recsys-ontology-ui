@@ -46,6 +46,9 @@ var RecommendationPage = (function () {
     RecommendationPage.prototype.findIndex = function (name) {
         return this.questionsValue.findIndex(function (obj) { return obj.name == name; });
     };
+    RecommendationPage.prototype.filterZero = function (questionsValue) {
+        return questionsValue.filter(function (q) { return q.pref > 0; });
+    };
     RecommendationPage.prototype.changeValue = function (name, value) {
         var realValue = value.value / 100;
         var idx = this.findIndex(name);
@@ -95,14 +98,15 @@ var RecommendationPage = (function () {
     };
     RecommendationPage.prototype.navigate = function () {
         var passed = false;
-        if (__WEBPACK_IMPORTED_MODULE_6__utils_common_util__["b" /* isFormFilled */]({ selected: this.questionsValue })) {
+        var questionsValue = this.filterZero(this.questionsValue);
+        if (__WEBPACK_IMPORTED_MODULE_6__utils_common_util__["b" /* isFormFilled */]({ selected: questionsValue })) {
             var value_1 = 0;
-            this.questionsValue.forEach(function (node) {
+            questionsValue.forEach(function (node) {
                 value_1 += node.pref;
             });
             if (value_1 > 0) {
                 passed = true;
-                this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_5__begin_begin__["a" /* BeginPage */], { selected: this.questionsValue });
+                this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_5__begin_begin__["a" /* BeginPage */], { selected: questionsValue });
             }
         }
         if (!passed)
@@ -123,7 +127,7 @@ RecommendationPage = __decorate([
     __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["f" /* IonicPage */](),
     __WEBPACK_IMPORTED_MODULE_2__angular_core__["Component"]({
         selector: 'page-recommendation',
-        template: "\n    <ion-header>\n      <ion-navbar color=\"sky\">\n        <button ion-button menuToggle>\n          <ion-icon name=\"menu\"></ion-icon>\n        </button>\n        <ion-title>Recommender</ion-title>\n      </ion-navbar>\n    </ion-header>\n    <ion-content *ngIf=\"questions\" class=\"card-background-page\">\n      <h6 ion-text style=\"font-size: small;\" color=\"ocean\" class=\"highlight\">Set your preference value for each category</h6>\n      <ion-grid>\n        <ion-row *ngFor=\"let cols of colsQuestions\">\n          <ion-col col-6 *ngFor=\"let col of cols.cols\">\n            <ion-card>\n              <img style=\"width: 100%;\" [src]=\"col.image\">\n              <div class=\"card-title\">{{col.name}}</div>\n              <div class=\"card-subtitle\" *ngIf=\"findIndex(col.name) != -1\">{{questionsValue[findIndex(col.name)].pref * 100}}</div>\n              <ion-range \n                step=\"10\" \n                style=\"top: 30% !important\" \n                class=\"card-title\" \n                (ionChange)=\"changeValue(col.name, $event)\" \n                color=\"danger\" \n                pin=\"true\">\n              </ion-range>\n            </ion-card>\n          </ion-col>\n        </ion-row>\n      </ion-grid>   \n    </ion-content> \n    <ion-footer style=\"height: 10%;\">        \n      <button color=\"fire\" style=\"height: 100%;\" ion-button block (click)=\"navigate()\">Next</button> \n    </ion-footer>\n\n  "
+        template: "\n    <ion-header>\n      <ion-navbar color=\"sky\">\n        <button ion-button menuToggle>\n          <ion-icon name=\"menu\"></ion-icon>\n        </button>\n        <ion-title>Recommender</ion-title>\n      </ion-navbar>\n    </ion-header>\n    <ion-content *ngIf=\"questions\" class=\"card-background-page\">\n      <h6 ion-text style=\"font-size: small;\" color=\"ocean\" class=\"highlight\">Set your preference value for each category</h6>\n      <ion-grid>\n        <ion-row *ngFor=\"let cols of colsQuestions\">\n          <ion-col col-6 *ngFor=\"let col of cols.cols\">\n            <ion-card>\n              <img style=\"width: 100%;\" [src]=\"col.image\">\n              <div class=\"card-title\">{{col.name}}</div>\n              <div class=\"card-subtitle\" *ngIf=\"findIndex(col.name) != -1 && questionsValue[findIndex(col.name)].pref > 0\">{{questionsValue[findIndex(col.name)].pref * 100}}</div>\n              <ion-range \n                step=\"10\" \n                style=\"top: 30% !important\" \n                class=\"card-title\" \n                (ionChange)=\"changeValue(col.name, $event)\" \n                color=\"danger\" \n                pin=\"true\">\n              </ion-range>\n            </ion-card>\n          </ion-col>\n        </ion-row>\n      </ion-grid>   \n    </ion-content> \n    <ion-footer style=\"height: 10%;\">        \n      <button color=\"fire\" style=\"height: 100%;\" ion-button block (click)=\"navigate()\">Next</button> \n    </ion-footer>\n\n  "
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["k" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["k" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__ngrx_store__["a" /* Store */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__ngrx_store__["a" /* Store */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__actions_recomm_actions__["a" /* RecommActions */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__actions_recomm_actions__["a" /* RecommActions */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["a" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["a" /* AlertController */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_4__services_recommendation_service__["a" /* RecommendationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__services_recommendation_service__["a" /* RecommendationService */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["h" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["h" /* LoadingController */]) === "function" && _f || Object])
 ], RecommendationPage);

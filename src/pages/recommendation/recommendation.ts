@@ -7,7 +7,7 @@ import { NavController, LoadingController, Loading, AlertController, IonicPage }
 import {RecommendationService} from "../../services/recommendation.service";
 
 import { BeginPage } from "../begin/begin";
-import { captureState, isFormFilled } from '../../utils/common.util';
+import { isFormFilled } from '../../utils/common.util';
 import { AppState } from "../../models/state.model";
 
 @IonicPage()
@@ -30,7 +30,7 @@ import { AppState } from "../../models/state.model";
             <ion-card>
               <img style="width: 100%;" [src]="col.image">
               <div class="card-title">{{col.name}}</div>
-              <div class="card-subtitle" *ngIf="findIndex(col.name) != -1">{{questionsValue[findIndex(col.name)].pref * 100}}</div>
+              <div class="card-subtitle" *ngIf="findIndex(col.name) != -1 && questionsValue[findIndex(col.name)].pref > 0">{{questionsValue[findIndex(col.name)].pref * 100}}</div>
               <ion-range 
                 step="10" 
                 style="top: 30% !important" 
@@ -70,6 +70,10 @@ export class RecommendationPage {
 
   findIndex(name: string): number{
     return this.questionsValue.findIndex(obj => obj.name == name);
+  }
+
+  filterZero(questionsValue: NodeValues[]): NodeValues[]{
+    return questionsValue.filter(q => q.pref > 0);
   }
 
   changeValue(name: string, value: any){
@@ -123,14 +127,15 @@ export class RecommendationPage {
 
   navigate(){
     let passed = false;
-    if(isFormFilled({selected: this.questionsValue})){
+    let questionsValue = this.filterZero(this.questionsValue);
+    if(isFormFilled({selected: questionsValue})){
       let value = 0;
-      this.questionsValue.forEach(node=>{
+      questionsValue.forEach(node=>{
         value += node.pref
       })
       if(value > 0){
         passed = true;
-        this.navCtrl.push(BeginPage, {selected: this.questionsValue})
+        this.navCtrl.push(BeginPage, {selected: questionsValue})
       }
     }
     if(!passed) this.showAlert();
