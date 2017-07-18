@@ -22,6 +22,12 @@ var RecommActions = RecommActions_1 = (function () {
             payload: node
         };
     };
+    RecommActions.prototype.setUpdatedClass = function (nodes) {
+        return {
+            type: RecommActions_1.SET_UPDATED_CLASS,
+            payload: nodes
+        };
+    };
     RecommActions.prototype.selectClass = function (node) {
         return {
             type: RecommActions_1.SELECT_CLASS,
@@ -43,6 +49,7 @@ var RecommActions = RecommActions_1 = (function () {
     return RecommActions;
 }());
 RecommActions.SELECT_ROOT_CLASS = '[Recomm] Select Root Class';
+RecommActions.SET_UPDATED_CLASS = '[Recomm] Set Updated Class';
 RecommActions.SELECT_CLASS = '[Recomm] Select Class';
 RecommActions.LOAD_CLASS = '[Recomm] Load Class';
 RecommActions.SELECT_PLACES = '[Recomm] Select Places';
@@ -298,6 +305,15 @@ var RecommendationService = (function () {
             .map(function (res) { return res.json(); });
         // .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
     };
+    RecommendationService.prototype.downPropagation = function (params) {
+        var url = __WEBPACK_IMPORTED_MODULE_2__utils_constants__["a" /* API_URL */] + "/recomm/propagation/downward";
+        var body = JSON.stringify(params);
+        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Headers */]({ 'Content-Type': 'application/json' });
+        var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* RequestOptions */]({ headers: headers });
+        return this.http.post(url, body, options)
+            .map(function (res) { return res.json(); });
+        // .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+    };
     RecommendationService.prototype.parseNode = function (node) {
         return node.replace(" ", "%20");
     };
@@ -460,6 +476,7 @@ function UserReducer(state, action) {
 var recomm_reducer_initialState = {
     selectedRootClass: [],
     selectedClass: [[]],
+    updatedClass: [],
     loadedClass: [[]],
     selectedPlaces: []
 };
@@ -470,6 +487,8 @@ function RecommReducer(state, action) {
             return Object.assign({}, state, { selectedRootClass: action.payload });
         case __WEBPACK_IMPORTED_MODULE_0__actions_recomm_actions__["a" /* RecommActions */].SELECT_CLASS:
             return Object.assign({}, state, { selectedClass: action.payload });
+        case __WEBPACK_IMPORTED_MODULE_0__actions_recomm_actions__["a" /* RecommActions */].SET_UPDATED_CLASS:
+            return Object.assign({}, state, { updatedClass: action.payload });
         case __WEBPACK_IMPORTED_MODULE_0__actions_recomm_actions__["a" /* RecommActions */].LOAD_CLASS:
             return Object.assign({}, state, { loadedClass: action.payload });
         case __WEBPACK_IMPORTED_MODULE_0__actions_recomm_actions__["a" /* RecommActions */].SELECT_PLACES:

@@ -38,15 +38,26 @@ var RecommendationPage = (function () {
         this.loadingCtrl = loadingCtrl;
         this.questions = [];
         this.colsQuestions = [];
-        this.questionsValue = {};
+        this.questionsValue = [];
         this.divider = 2;
         this.selected = [];
         this.loadQuestions("tempat wisata");
     }
-    RecommendationPage.prototype.updateValue = function (name, value) {
-        this.questionsValue[name] = {};
-        this.questionsValue[name].pref = value.value / 100;
-        this.questionsValue[name].conf = 1;
+    RecommendationPage.prototype.findIndex = function (name) {
+        return this.questionsValue.findIndex(function (obj) { return obj.name == name; });
+    };
+    RecommendationPage.prototype.changeValue = function (name, value) {
+        var realValue = value.value / 100;
+        var idx = this.findIndex(name);
+        if (idx != -1)
+            this.questionsValue[idx].pref = realValue;
+        else {
+            this.questionsValue.push({
+                name: name,
+                pref: realValue,
+                conf: 1
+            });
+        }
     };
     RecommendationPage.prototype.showAlert = function () {
         var alert = this.alertCtrl.create({
@@ -83,22 +94,13 @@ var RecommendationPage = (function () {
         });
     };
     RecommendationPage.prototype.navigate = function () {
-        var _this = this;
         var passed = false;
         if (__WEBPACK_IMPORTED_MODULE_6__utils_common_util__["b" /* isFormFilled */]({ selected: this.questionsValue })) {
-            // this.app.getRootNav().push(BeginPage, {selected: [this.selected], loaded: [this.colsQuestions]}, {animate: true, direction: 'forward'});
-            var value = 0;
-            for (var key in this.questionsValue) {
-                value = value + this.questionsValue[key].pref;
-            }
-            this.selected.forEach(function (selected) {
-                if (!_this.questionsValue[selected]) {
-                    _this.questionsValue[selected] = {};
-                    _this.questionsValue[selected].pref = 0;
-                    _this.questionsValue[selected].conf = 1;
-                }
+            var value_1 = 0;
+            this.questionsValue.forEach(function (node) {
+                value_1 += node.pref;
             });
-            if (value > 0) {
+            if (value_1 > 0) {
                 passed = true;
                 this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_5__begin_begin__["a" /* BeginPage */], { selected: this.questionsValue });
             }
@@ -121,16 +123,12 @@ RecommendationPage = __decorate([
     __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["f" /* IonicPage */](),
     __WEBPACK_IMPORTED_MODULE_2__angular_core__["Component"]({
         selector: 'page-recommendation',
-        template: "\n    <ion-header>\n      <ion-navbar color=\"sky\">\n        <button ion-button menuToggle>\n          <ion-icon name=\"menu\"></ion-icon>\n        </button>\n        <ion-title>Recommender</ion-title>\n      </ion-navbar>\n    </ion-header>\n    <ion-content *ngIf=\"questions\" class=\"card-background-page\">\n      <ion-grid>\n        <ion-row *ngFor=\"let cols of colsQuestions\">\n          <ion-col col-6 *ngFor=\"let col of cols.cols\">\n            <ion-card>\n              <img style=\"width: 100%;\" [src]=\"col.image\">\n              <div class=\"card-title\">{{col.name}}</div>\n              <div class=\"card-subtitle\" *ngIf=\"questionsValue[col.name] && questionsValue[col.name].pref > 0\">{{questionsValue[col.name].pref * 100}}</div>\n              <ion-range \n                step=\"10\" \n                style=\"top: 30% !important\" \n                class=\"card-title\" \n                (ionChange)=\"updateValue(col.name, $event)\" \n                color=\"danger\" \n                pin=\"true\">\n              </ion-range>\n            </ion-card>\n          </ion-col>\n        </ion-row>\n      </ion-grid>   \n      <h6 ion-text style=\"font-size: small;\" color=\"ocean\" class=\"highlight\">Set your preference value for each category</h6>\n    </ion-content> \n    <ion-footer style=\"height: 10%;\">        \n      <button color=\"fire\" style=\"height: 100%;\" ion-button block (click)=\"navigate()\">Next</button> \n    </ion-footer>\n\n  "
+        template: "\n    <ion-header>\n      <ion-navbar color=\"sky\">\n        <button ion-button menuToggle>\n          <ion-icon name=\"menu\"></ion-icon>\n        </button>\n        <ion-title>Recommender</ion-title>\n      </ion-navbar>\n    </ion-header>\n    <ion-content *ngIf=\"questions\" class=\"card-background-page\">\n      <h6 ion-text style=\"font-size: small;\" color=\"ocean\" class=\"highlight\">Set your preference value for each category</h6>\n      <ion-grid>\n        <ion-row *ngFor=\"let cols of colsQuestions\">\n          <ion-col col-6 *ngFor=\"let col of cols.cols\">\n            <ion-card>\n              <img style=\"width: 100%;\" [src]=\"col.image\">\n              <div class=\"card-title\">{{col.name}}</div>\n              <div class=\"card-subtitle\" *ngIf=\"findIndex(col.name) != -1\">{{questionsValue[findIndex(col.name)].pref * 100}}</div>\n              <ion-range \n                step=\"10\" \n                style=\"top: 30% !important\" \n                class=\"card-title\" \n                (ionChange)=\"changeValue(col.name, $event)\" \n                color=\"danger\" \n                pin=\"true\">\n              </ion-range>\n            </ion-card>\n          </ion-col>\n        </ion-row>\n      </ion-grid>   \n    </ion-content> \n    <ion-footer style=\"height: 10%;\">        \n      <button color=\"fire\" style=\"height: 100%;\" ion-button block (click)=\"navigate()\">Next</button> \n    </ion-footer>\n\n  "
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["k" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_1__ngrx_store__["a" /* Store */],
-        __WEBPACK_IMPORTED_MODULE_0__actions_recomm_actions__["a" /* RecommActions */],
-        __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["a" /* AlertController */],
-        __WEBPACK_IMPORTED_MODULE_4__services_recommendation_service__["a" /* RecommendationService */],
-        __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["h" /* LoadingController */]])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["k" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["k" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__ngrx_store__["a" /* Store */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__ngrx_store__["a" /* Store */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__actions_recomm_actions__["a" /* RecommActions */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__actions_recomm_actions__["a" /* RecommActions */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["a" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["a" /* AlertController */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_4__services_recommendation_service__["a" /* RecommendationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__services_recommendation_service__["a" /* RecommendationService */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["h" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["h" /* LoadingController */]) === "function" && _f || Object])
 ], RecommendationPage);
 
+var _a, _b, _c, _d, _e, _f;
 //# sourceMappingURL=recommendation.js.map
 
 /***/ }),
@@ -311,6 +309,8 @@ function appendState(state, data) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_recommendation_service__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ngrx_store__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__actions_recomm_actions__ = __webpack_require__(22);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -323,9 +323,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
 var BeginPage = (function () {
-    function BeginPage(navCtrl, alertCtrl, navParams, recommendationService, loadingCtrl) {
+    function BeginPage(navCtrl, store, recommActions, alertCtrl, navParams, recommendationService, loadingCtrl) {
         this.navCtrl = navCtrl;
+        this.store = store;
+        this.recommActions = recommActions;
         this.alertCtrl = alertCtrl;
         this.navParams = navParams;
         this.recommendationService = recommendationService;
@@ -334,13 +338,57 @@ var BeginPage = (function () {
         this.colsQuestions = [];
         this.divider = 2;
         this.counter = 0;
-        this.questionsValue = {};
+        this.questionsValue = [];
         this.selected = [];
         this.lastPage = false;
         this.consoleObject = function (str, obj) { return console.log(str, JSON.parse(JSON.stringify(obj))); };
         this.questionsValue = this.navParams.get("selected");
         console.log("DATA", this.questionsValue);
+        this.loadQuestions();
     }
+    BeginPage.prototype.findIndex = function (name) {
+        return this.questionsValue.findIndex(function (obj) { return obj.name == name; });
+    };
+    BeginPage.prototype.changeValue = function (name, value) {
+        var realValue = value.value / 100;
+        var idx = this.findIndex(name);
+        if (idx != -1)
+            this.questionsValue[idx].pref = realValue;
+        else {
+            this.questionsValue.push({
+                name: name,
+                pref: realValue,
+                conf: 1
+            });
+        }
+    };
+    BeginPage.prototype.loadQuestions = function () {
+        var _this = this;
+        this.questions = [];
+        this.presentLoading();
+        var i = 0;
+        this.recommendationService.downPropagation(this.questionsValue).subscribe(function (questions) {
+            _this.colsQuestions = [];
+            var askedNodes = questions.askedNodes;
+            askedNodes.forEach(function (question) {
+                _this.selected.push(question.name);
+                if (i % _this.divider == 0) {
+                    _this.questions = [];
+                    for (var j = i; j < i + _this.divider; j++) {
+                        if (askedNodes[j])
+                            _this.questions.push({ name: askedNodes[j].name, image: askedNodes[j].image });
+                    }
+                    _this.colsQuestions.push({ cols: _this.questions });
+                }
+                i += 1;
+            });
+            _this.stopLoading();
+            if (_this.colsQuestions.length == 0) {
+                _this.store.dispatch(_this.recommActions.setUpdatedClass(_this.questionsValue));
+                // this.navigate();
+            }
+        });
+    };
     BeginPage.prototype.showAlert = function () {
         var alert = this.alertCtrl.create({
             title: 'Failed',
@@ -349,10 +397,7 @@ var BeginPage = (function () {
         });
         alert.present();
     };
-    BeginPage.prototype.navigate = function (page, params) {
-        if (params === void 0) { params = {}; }
-        // this.app.getRootNav().push(page, params, {animate: true, direction: 'forward'});
-        this.navCtrl.push(page, params);
+    BeginPage.prototype.navigate = function () {
     };
     BeginPage.prototype.stopLoading = function () {
         this.loader.dismiss();
@@ -369,15 +414,12 @@ BeginPage = __decorate([
     __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* IonicPage */](),
     __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"]({
         selector: 'page-begin',
-        template: "\n    <ion-header>\n      <ion-navbar color=\"sky\">\n        <ion-title>Recommender</ion-title>\n      </ion-navbar>\n    </ion-header>\n    <ion-content *ngIf=\"questions\" class=\"card-background-page\">\n     \n    </ion-content>\n\n  "
+        template: "\n    <ion-header>\n      <ion-navbar color=\"sky\">\n        <ion-title>Recommender</ion-title>\n      </ion-navbar>\n    </ion-header>\n    <ion-content *ngIf=\"questions\" class=\"card-background-page\">\n      <h6 ion-text style=\"font-size: small;\" color=\"ocean\" class=\"highlight\">Update your preference</h6>\n      <ion-grid>\n        <ion-row *ngFor=\"let cols of colsQuestions\">\n          <ion-col col-6 *ngFor=\"let col of cols.cols\">\n            <ion-card>\n              <img style=\"width: 100%;\" [src]=\"col.image\">\n              <div class=\"card-title\">{{col.name}}</div>\n              <div class=\"card-subtitle\" *ngIf=\"findIndex(col.name) != -1\">{{questionsValue[findIndex(col.name)].pref * 100}}</div>\n              <ion-range \n                step=\"10\" \n                style=\"top: 30% !important\" \n                class=\"card-title\" \n                (ionChange)=\"changeValue(col.name, $event)\" \n                color=\"danger\" \n                pin=\"true\">\n              </ion-range>\n            </ion-card>\n          </ion-col>\n        </ion-row>\n      </ion-grid>   \n    </ion-content> \n    <ion-footer style=\"height: 10%;\">        \n      <button color=\"fire\" style=\"height: 100%;\" ion-button block (click)=\"navigate()\">Next</button> \n    </ion-footer>\n\n  "
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* NavParams */],
-        __WEBPACK_IMPORTED_MODULE_2__services_recommendation_service__["a" /* RecommendationService */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* LoadingController */]])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__ngrx_store__["a" /* Store */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__ngrx_store__["a" /* Store */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_4__actions_recomm_actions__["a" /* RecommActions */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__actions_recomm_actions__["a" /* RecommActions */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* NavParams */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_2__services_recommendation_service__["a" /* RecommendationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_recommendation_service__["a" /* RecommendationService */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* LoadingController */]) === "function" && _g || Object])
 ], BeginPage);
 
+var _a, _b, _c, _d, _e, _f, _g;
 //# sourceMappingURL=begin.js.map
 
 /***/ })

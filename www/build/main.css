@@ -32711,10 +32711,13 @@ page-begin .selected {
   opacity: 1 !important;
 }
 
+page-begin .highlight {
+  text-align: center;
+}
+
 page-begin .card-background-page ion-card {
   position: relative;
   text-align: center;
-  opacity: 0.7;
 }
 
 page-begin .card-background-page .card-title {
@@ -32728,6 +32731,7 @@ page-begin .card-background-page .card-title {
 
 page-begin .card-background-page .card-subtitle {
   font-size: 1.0em;
+  font-weight: bolder;
   position: absolute;
   top: 52%;
   width: 100%;

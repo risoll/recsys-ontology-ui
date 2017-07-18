@@ -1,10 +1,11 @@
 import { Place } from './../models/place.model';
-import { ColsQuestion } from './../models/recommendation.model';
+import { ColsQuestion, NodeValues } from './../models/recommendation.model';
 import { RecommActions } from './../actions/recomm.actions';
 
 export interface RecommState{
     selectedRootClass: string[];
     selectedClass: string[][];
+    updatedClass: NodeValues[];
     loadedClass: ColsQuestion[][];
     selectedPlaces: Place[];
 }
@@ -12,6 +13,7 @@ export interface RecommState{
 const initialState = <RecommState>{
     selectedRootClass: [],
     selectedClass: [[]],
+    updatedClass: [],
     loadedClass: [[]],
     selectedPlaces: []
 }
@@ -22,6 +24,8 @@ export function RecommReducer(state: RecommState = initialState, action) {
             return Object.assign({}, state, { selectedRootClass: action.payload });
         case RecommActions.SELECT_CLASS:
             return Object.assign({}, state, { selectedClass: action.payload });
+        case RecommActions.SET_UPDATED_CLASS:
+            return Object.assign({}, state, { updatedClass: action.payload });
         case RecommActions.LOAD_CLASS:
             return Object.assign({}, state, { loadedClass: action.payload });
         case RecommActions.SELECT_PLACES:

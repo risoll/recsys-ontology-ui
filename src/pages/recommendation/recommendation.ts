@@ -23,18 +23,19 @@ import { AppState } from "../../models/state.model";
       </ion-navbar>
     </ion-header>
     <ion-content *ngIf="questions" class="card-background-page">
+      <h6 ion-text style="font-size: small;" color="ocean" class="highlight">Set your preference value for each category</h6>
       <ion-grid>
         <ion-row *ngFor="let cols of colsQuestions">
           <ion-col col-6 *ngFor="let col of cols.cols">
             <ion-card>
               <img style="width: 100%;" [src]="col.image">
               <div class="card-title">{{col.name}}</div>
-              <div class="card-subtitle" *ngIf="questionsValue[col.name] && questionsValue[col.name].pref > 0">{{questionsValue[col.name].pref * 100}}</div>
+              <div class="card-subtitle" *ngIf="findIndex(col.name) != -1">{{questionsValue[findIndex(col.name)].pref * 100}}</div>
               <ion-range 
                 step="10" 
                 style="top: 30% !important" 
                 class="card-title" 
-                (ionChange)="updateValue(col.name, $event)" 
+                (ionChange)="changeValue(col.name, $event)" 
                 color="danger" 
                 pin="true">
               </ion-range>
@@ -42,7 +43,6 @@ import { AppState } from "../../models/state.model";
           </ion-col>
         </ion-row>
       </ion-grid>   
-      <h6 ion-text style="font-size: small;" color="ocean" class="highlight">Set your preference value for each category</h6>
     </ion-content> 
     <ion-footer style="height: 10%;">        
       <button color="fire" style="height: 100%;" ion-button block (click)="navigate()">Next</button> 
@@ -53,7 +53,7 @@ import { AppState } from "../../models/state.model";
 export class RecommendationPage {
   private questions: Question[] = [];
   private colsQuestions: ColsQuestion[] = [];
-  private questionsValue: NodeValues = {};
+  private questionsValue: NodeValues[] = [];
 
   private divider = 2;
   loader: Loading;
@@ -68,11 +68,22 @@ export class RecommendationPage {
     this.loadQuestions("tempat wisata");
   }
 
-  updateValue(name: string, value: any){
-    this.questionsValue[name] = {};
-    this.questionsValue[name].pref = value.value/100;
-    this.questionsValue[name].conf = 1;
+  findIndex(name: string): number{
+    return this.questionsValue.findIndex(obj => obj.name == name);
+  }
 
+  changeValue(name: string, value: any){
+    let realValue = value.value/100;
+    let idx = this.findIndex(name);
+    if(idx != -1)
+      this.questionsValue[idx].pref = realValue;
+    else {
+      this.questionsValue.push({
+        name: name,
+        pref: realValue,
+        conf: 1
+      })
+    }
   }
 
   showAlert() {
@@ -113,17 +124,9 @@ export class RecommendationPage {
   navigate(){
     let passed = false;
     if(isFormFilled({selected: this.questionsValue})){
-      // this.app.getRootNav().push(BeginPage, {selected: [this.selected], loaded: [this.colsQuestions]}, {animate: true, direction: 'forward'});
       let value = 0;
-      for(let key in this.questionsValue){
-        value = value + this.questionsValue[key].pref;
-      }
-      this.selected.forEach(selected=>{
-        if(!this.questionsValue[selected]){
-          this.questionsValue[selected] = {};
-          this.questionsValue[selected].pref = 0;
-          this.questionsValue[selected].conf = 1;
-        }
+      this.questionsValue.forEach(node=>{
+        value += node.pref
       })
       if(value > 0){
         passed = true;

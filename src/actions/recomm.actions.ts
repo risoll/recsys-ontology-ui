@@ -1,6 +1,7 @@
 import { Place } from './../models/place.model';
 import { ColsQuestion } from './../models/recommendation.model';
 import {Injectable} from '@angular/core';
+import { NodeValues } from '../models/recommendation.model';
 
 
 @Injectable()
@@ -10,6 +11,14 @@ export class RecommActions {
         return{
             type: RecommActions.SELECT_ROOT_CLASS,
             payload: node
+        }
+    }
+
+    static SET_UPDATED_CLASS = '[Recomm] Set Updated Class';
+    setUpdatedClass(nodes: NodeValues[]){
+        return{
+            type: RecommActions.SET_UPDATED_CLASS,
+            payload: nodes
         }
     }
 
