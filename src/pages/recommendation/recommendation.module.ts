@@ -4,7 +4,9 @@ import { RecommendationPage } from './recommendation';
 
 @NgModule({
   declarations: [RecommendationPage],
-  imports: [IonicPageModule.forChild(RecommendationPage)],
+  imports: [
+    IonicPageModule.forChild(RecommendationPage)
+  ],
   entryComponents: [RecommendationPage]
 })
 export class RecommendationPageModule { }

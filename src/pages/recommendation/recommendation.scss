@@ -12,6 +12,14 @@ page-recommendation {
       // position: absolute;
    }
 
+   .showed{
+     background-color: #f97b0c
+   }
+
+   .hide{
+     background-color: white
+   }
+
   .card-background-page {
 
     ion-card {
@@ -22,7 +30,7 @@ page-recommendation {
 
     .card-title {
       position: absolute;
-      top: 36%;
+      top: 23%;
       font-size: 1.0em;
       width: 100%;
       font-weight: bold;
@@ -33,7 +41,7 @@ page-recommendation {
       font-size: 1.0em;
       font-weight: bolder;
       position: absolute;
-      top: 52%;
+      top: 60%;
       width: 100%;
       color: #fff;
     }

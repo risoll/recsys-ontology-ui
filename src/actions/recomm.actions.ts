@@ -45,4 +45,12 @@ export class RecommActions {
             payload: node
         }
     }
+
+    static SET_DISTANCE = '[Recomm] Set Distance';
+    setDistance(distance: number){
+        return{
+            type: RecommActions.SET_DISTANCE,
+            payload: distance
+        }
+    }
 }

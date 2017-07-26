@@ -1,14 +1,396 @@
-webpackJsonp([0,1,7],{
+webpackJsonp([0,1,9],{
 
 /***/ 100:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
+var core_1 = __webpack_require__(0);
+var Observable_1 = __webpack_require__(1);
+var maps_api_loader_1 = __webpack_require__(103);
+/**
+ * Wrapper class that handles the communication with the Google Maps Javascript
+ * API v3
+ */
+var GoogleMapsAPIWrapper = (function () {
+    function GoogleMapsAPIWrapper(_loader, _zone) {
+        var _this = this;
+        this._loader = _loader;
+        this._zone = _zone;
+        this._map =
+            new Promise(function (resolve) { _this._mapResolver = resolve; });
+    }
+    GoogleMapsAPIWrapper.prototype.createMap = function (el, mapOptions) {
+        var _this = this;
+        return this._loader.load().then(function () {
+            var map = new google.maps.Map(el, mapOptions);
+            _this._mapResolver(map);
+            return;
+        });
+    };
+    GoogleMapsAPIWrapper.prototype.setMapOptions = function (options) {
+        this._map.then(function (m) { m.setOptions(options); });
+    };
+    /**
+     * Creates a google map marker with the map context
+     */
+    GoogleMapsAPIWrapper.prototype.createMarker = function (options) {
+        if (options === void 0) { options = {}; }
+        return this._map.then(function (map) {
+            options.map = map;
+            return new google.maps.Marker(options);
+        });
+    };
+    GoogleMapsAPIWrapper.prototype.createInfoWindow = function (options) {
+        return this._map.then(function () { return new google.maps.InfoWindow(options); });
+    };
+    /**
+     * Creates a google.map.Circle for the current map.
+     */
+    GoogleMapsAPIWrapper.prototype.createCircle = function (options) {
+        return this._map.then(function (map) {
+            options.map = map;
+            return new google.maps.Circle(options);
+        });
+    };
+    GoogleMapsAPIWrapper.prototype.createPolyline = function (options) {
+        return this.getNativeMap().then(function (map) {
+            var line = new google.maps.Polyline(options);
+            line.setMap(map);
+            return line;
+        });
+    };
+    GoogleMapsAPIWrapper.prototype.createPolygon = function (options) {
+        return this.getNativeMap().then(function (map) {
+            var polygon = new google.maps.Polygon(options);
+            polygon.setMap(map);
+            return polygon;
+        });
+    };
+    /**
+     * Determines if given coordinates are insite a Polygon path.
+     */
+    GoogleMapsAPIWrapper.prototype.containsLocation = function (latLng, polygon) {
+        return google.maps.geometry.poly.containsLocation(latLng, polygon);
+    };
+    GoogleMapsAPIWrapper.prototype.subscribeToMapEvent = function (eventName) {
+        var _this = this;
+        return Observable_1.Observable.create(function (observer) {
+            _this._map.then(function (m) {
+                m.addListener(eventName, function (arg) { _this._zone.run(function () { return observer.next(arg); }); });
+            });
+        });
+    };
+    GoogleMapsAPIWrapper.prototype.setCenter = function (latLng) {
+        return this._map.then(function (map) { return map.setCenter(latLng); });
+    };
+    GoogleMapsAPIWrapper.prototype.getZoom = function () { return this._map.then(function (map) { return map.getZoom(); }); };
+    GoogleMapsAPIWrapper.prototype.getBounds = function () {
+        return this._map.then(function (map) { return map.getBounds(); });
+    };
+    GoogleMapsAPIWrapper.prototype.setZoom = function (zoom) {
+        return this._map.then(function (map) { return map.setZoom(zoom); });
+    };
+    GoogleMapsAPIWrapper.prototype.getCenter = function () {
+        return this._map.then(function (map) { return map.getCenter(); });
+    };
+    GoogleMapsAPIWrapper.prototype.panTo = function (latLng) {
+        return this._map.then(function (map) { return map.panTo(latLng); });
+    };
+    GoogleMapsAPIWrapper.prototype.fitBounds = function (latLng) {
+        return this._map.then(function (map) { return map.fitBounds(latLng); });
+    };
+    GoogleMapsAPIWrapper.prototype.panToBounds = function (latLng) {
+        return this._map.then(function (map) { return map.panToBounds(latLng); });
+    };
+    /**
+     * Returns the native Google Maps Map instance. Be careful when using this instance directly.
+     */
+    GoogleMapsAPIWrapper.prototype.getNativeMap = function () { return this._map; };
+    /**
+     * Triggers the given event name on the map instance.
+     */
+    GoogleMapsAPIWrapper.prototype.triggerMapEvent = function (eventName) {
+        return this._map.then(function (m) { return google.maps.event.trigger(m, eventName); });
+    };
+    GoogleMapsAPIWrapper.decorators = [
+        { type: core_1.Injectable },
+    ];
+    /** @nocollapse */
+    GoogleMapsAPIWrapper.ctorParameters = function () { return [
+        { type: maps_api_loader_1.MapsAPILoader, },
+        { type: core_1.NgZone, },
+    ]; };
+    return GoogleMapsAPIWrapper;
+}());
+exports.GoogleMapsAPIWrapper = GoogleMapsAPIWrapper;
+//# sourceMappingURL=google-maps-api-wrapper.js.map
+
+/***/ }),
+
+/***/ 101:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PlacePage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var PlacePage = (function () {
+    function PlacePage() {
+        this.type = "details";
+    }
+    return PlacePage;
+}());
+PlacePage = __decorate([
+    __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* IonicPage */](),
+    __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"]({
+        template: "\n    <ion-header>\n        <ion-navbar color=\"sky\">\n          <button ion-button menuToggle>\n            <ion-icon name=\"menu\"></ion-icon>\n          </button>\n          <ion-title>Tempat Wisata</ion-title>\n        </ion-navbar>\n        <ion-toolbar no-border-top>\n          <ion-segment [(ngModel)]=\"type\">\n            <ion-segment-button value=\"details\">\n              Rincian\n            </ion-segment-button>\n            <ion-segment-button value=\"maps\">\n              Peta\n            </ion-segment-button>\n          </ion-segment>\n      </ion-toolbar>\n    </ion-header>\n    <ion-content>\n      <div [ngSwitch]=\"type\">\n        <page-details *ngSwitchCase=\"'details'\"></page-details>\n        <page-maps *ngSwitchCase=\"'maps'\"></page-maps>\n      </div>\n    </ion-content>\n  "
+    }),
+    __metadata("design:paramtypes", [])
+], PlacePage);
+
+//# sourceMappingURL=place.js.map
+
+/***/ }),
+
+/***/ 103:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var core_1 = __webpack_require__(0);
+var MapsAPILoader = (function () {
+    function MapsAPILoader() {
+    }
+    MapsAPILoader.decorators = [
+        { type: core_1.Injectable },
+    ];
+    /** @nocollapse */
+    MapsAPILoader.ctorParameters = function () { return []; };
+    return MapsAPILoader;
+}());
+exports.MapsAPILoader = MapsAPILoader;
+//# sourceMappingURL=maps-api-loader.js.map
+
+/***/ }),
+
+/***/ 104:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var core_1 = __webpack_require__(0);
+var Observable_1 = __webpack_require__(1);
+var google_maps_api_wrapper_1 = __webpack_require__(100);
+var MarkerManager = (function () {
+    function MarkerManager(_mapsWrapper, _zone) {
+        this._mapsWrapper = _mapsWrapper;
+        this._zone = _zone;
+        this._markers = new Map();
+    }
+    MarkerManager.prototype.deleteMarker = function (marker) {
+        var _this = this;
+        var m = this._markers.get(marker);
+        if (m == null) {
+            // marker already deleted
+            return Promise.resolve();
+        }
+        return m.then(function (m) {
+            return _this._zone.run(function () {
+                m.setMap(null);
+                _this._markers.delete(marker);
+            });
+        });
+    };
+    MarkerManager.prototype.updateMarkerPosition = function (marker) {
+        return this._markers.get(marker).then(function (m) { return m.setPosition({ lat: marker.latitude, lng: marker.longitude }); });
+    };
+    MarkerManager.prototype.updateTitle = function (marker) {
+        return this._markers.get(marker).then(function (m) { return m.setTitle(marker.title); });
+    };
+    MarkerManager.prototype.updateLabel = function (marker) {
+        return this._markers.get(marker).then(function (m) { m.setLabel(marker.label); });
+    };
+    MarkerManager.prototype.updateDraggable = function (marker) {
+        return this._markers.get(marker).then(function (m) { return m.setDraggable(marker.draggable); });
+    };
+    MarkerManager.prototype.updateIcon = function (marker) {
+        return this._markers.get(marker).then(function (m) { return m.setIcon(marker.iconUrl); });
+    };
+    MarkerManager.prototype.updateOpacity = function (marker) {
+        return this._markers.get(marker).then(function (m) { return m.setOpacity(marker.opacity); });
+    };
+    MarkerManager.prototype.updateVisible = function (marker) {
+        return this._markers.get(marker).then(function (m) { return m.setVisible(marker.visible); });
+    };
+    MarkerManager.prototype.updateZIndex = function (marker) {
+        return this._markers.get(marker).then(function (m) { return m.setZIndex(marker.zIndex); });
+    };
+    MarkerManager.prototype.addMarker = function (marker) {
+        var markerPromise = this._mapsWrapper.createMarker({
+            position: { lat: marker.latitude, lng: marker.longitude },
+            label: marker.label,
+            draggable: marker.draggable,
+            icon: marker.iconUrl,
+            opacity: marker.opacity,
+            visible: marker.visible,
+            zIndex: marker.zIndex,
+            title: marker.title
+        });
+        this._markers.set(marker, markerPromise);
+    };
+    MarkerManager.prototype.getNativeMarker = function (marker) {
+        return this._markers.get(marker);
+    };
+    MarkerManager.prototype.createEventObservable = function (eventName, marker) {
+        var _this = this;
+        return Observable_1.Observable.create(function (observer) {
+            _this._markers.get(marker).then(function (m) {
+                m.addListener(eventName, function (e) { return _this._zone.run(function () { return observer.next(e); }); });
+            });
+        });
+    };
+    MarkerManager.decorators = [
+        { type: core_1.Injectable },
+    ];
+    /** @nocollapse */
+    MarkerManager.ctorParameters = function () { return [
+        { type: google_maps_api_wrapper_1.GoogleMapsAPIWrapper, },
+        { type: core_1.NgZone, },
+    ]; };
+    return MarkerManager;
+}());
+exports.MarkerManager = MarkerManager;
+//# sourceMappingURL=marker-manager.js.map
+
+/***/ }),
+
+/***/ 105:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var core_1 = __webpack_require__(0);
+var Observable_1 = __webpack_require__(1);
+var google_maps_api_wrapper_1 = __webpack_require__(100);
+var CircleManager = (function () {
+    function CircleManager(_apiWrapper, _zone) {
+        this._apiWrapper = _apiWrapper;
+        this._zone = _zone;
+        this._circles = new Map();
+    }
+    CircleManager.prototype.addCircle = function (circle) {
+        this._circles.set(circle, this._apiWrapper.createCircle({
+            center: { lat: circle.latitude, lng: circle.longitude },
+            clickable: circle.clickable,
+            draggable: circle.draggable,
+            editable: circle.editable,
+            fillColor: circle.fillColor,
+            fillOpacity: circle.fillOpacity,
+            radius: circle.radius,
+            strokeColor: circle.strokeColor,
+            strokeOpacity: circle.strokeOpacity,
+            strokePosition: circle.strokePosition,
+            strokeWeight: circle.strokeWeight,
+            visible: circle.visible,
+            zIndex: circle.zIndex
+        }));
+    };
+    ;
+    /**
+     * Removes the given circle from the map.
+     */
+    CircleManager.prototype.removeCircle = function (circle) {
+        var _this = this;
+        return this._circles.get(circle).then(function (c) {
+            c.setMap(null);
+            _this._circles.delete(circle);
+        });
+    };
+    CircleManager.prototype.setOptions = function (circle, options) {
+        return this._circles.get(circle).then(function (c) { return c.setOptions(options); });
+    };
+    ;
+    CircleManager.prototype.getBounds = function (circle) {
+        return this._circles.get(circle).then(function (c) { return c.getBounds(); });
+    };
+    ;
+    CircleManager.prototype.getCenter = function (circle) {
+        return this._circles.get(circle).then(function (c) { return c.getCenter(); });
+    };
+    ;
+    CircleManager.prototype.getRadius = function (circle) {
+        return this._circles.get(circle).then(function (c) { return c.getRadius(); });
+    };
+    CircleManager.prototype.setCenter = function (circle) {
+        return this._circles.get(circle).then(function (c) { return c.setCenter({ lat: circle.latitude, lng: circle.longitude }); });
+    };
+    ;
+    CircleManager.prototype.setEditable = function (circle) {
+        return this._circles.get(circle).then(function (c) { return c.setEditable(circle.editable); });
+    };
+    ;
+    CircleManager.prototype.setDraggable = function (circle) {
+        return this._circles.get(circle).then(function (c) { return c.setDraggable(circle.draggable); });
+    };
+    ;
+    CircleManager.prototype.setVisible = function (circle) {
+        return this._circles.get(circle).then(function (c) { return c.setVisible(circle.visible); });
+    };
+    ;
+    CircleManager.prototype.setRadius = function (circle) {
+        return this._circles.get(circle).then(function (c) { return c.setRadius(circle.radius); });
+    };
+    ;
+    CircleManager.prototype.createEventObservable = function (eventName, circle) {
+        var _this = this;
+        return Observable_1.Observable.create(function (observer) {
+            var listener = null;
+            _this._circles.get(circle).then(function (c) {
+                listener = c.addListener(eventName, function (e) { return _this._zone.run(function () { return observer.next(e); }); });
+            });
+            return function () {
+                if (listener !== null) {
+                    listener.remove();
+                }
+            };
+        });
+    };
+    CircleManager.decorators = [
+        { type: core_1.Injectable },
+    ];
+    /** @nocollapse */
+    CircleManager.ctorParameters = function () { return [
+        { type: google_maps_api_wrapper_1.GoogleMapsAPIWrapper, },
+        { type: core_1.NgZone, },
+    ]; };
+    return CircleManager;
+}());
+exports.CircleManager = CircleManager;
+//# sourceMappingURL=circle-manager.js.map
+
+/***/ }),
+
+/***/ 106:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 var Observable_1 = __webpack_require__(1);
 var core_1 = __webpack_require__(0);
-var google_maps_api_wrapper_1 = __webpack_require__(95);
-var marker_manager_1 = __webpack_require__(97);
+var google_maps_api_wrapper_1 = __webpack_require__(100);
+var marker_manager_1 = __webpack_require__(104);
 var InfoWindowManager = (function () {
     function InfoWindowManager(_mapsWrapper, _zone, _markerManager) {
         this._mapsWrapper = _mapsWrapper;
@@ -96,14 +478,14 @@ exports.InfoWindowManager = InfoWindowManager;
 
 /***/ }),
 
-/***/ 101:
+/***/ 107:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 var core_1 = __webpack_require__(0);
 var Observable_1 = __webpack_require__(1);
-var google_maps_api_wrapper_1 = __webpack_require__(95);
+var google_maps_api_wrapper_1 = __webpack_require__(100);
 var PolygonManager = (function () {
     function PolygonManager(_mapsWrapper, _zone) {
         this._mapsWrapper = _mapsWrapper;
@@ -174,14 +556,14 @@ exports.PolygonManager = PolygonManager;
 
 /***/ }),
 
-/***/ 102:
+/***/ 108:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 var core_1 = __webpack_require__(0);
 var Observable_1 = __webpack_require__(1);
-var google_maps_api_wrapper_1 = __webpack_require__(95);
+var google_maps_api_wrapper_1 = __webpack_require__(100);
 var PolylineManager = (function () {
     function PolylineManager(_mapsWrapper, _zone) {
         this._mapsWrapper = _mapsWrapper;
@@ -258,14 +640,14 @@ exports.PolylineManager = PolylineManager;
 
 /***/ }),
 
-/***/ 103:
+/***/ 109:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 var core_1 = __webpack_require__(0);
 var Observable_1 = __webpack_require__(1);
-var google_maps_api_wrapper_1 = __webpack_require__(95);
+var google_maps_api_wrapper_1 = __webpack_require__(100);
 /**
  * Manages all KML Layers for a Google Map instance.
  */
@@ -328,13 +710,13 @@ exports.KmlLayerManager = KmlLayerManager;
 
 /***/ }),
 
-/***/ 104:
+/***/ 110:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 var core_1 = __webpack_require__(0);
-var info_window_manager_1 = __webpack_require__(100);
+var info_window_manager_1 = __webpack_require__(106);
 var infoWindowId = 0;
 /**
  * SebmGoogleMapInfoWindow renders a info window inside a {@link SebmGoogleMapMarker} or standalone.
@@ -458,7 +840,7 @@ exports.SebmGoogleMapInfoWindow = SebmGoogleMapInfoWindow;
 
 /***/ }),
 
-/***/ 105:
+/***/ 111:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -501,7 +883,7 @@ exports.SebmGoogleMapPolylinePoint = SebmGoogleMapPolylinePoint;
 
 /***/ }),
 
-/***/ 106:
+/***/ 112:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -512,8 +894,8 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var core_1 = __webpack_require__(0);
-var browser_globals_1 = __webpack_require__(115);
-var maps_api_loader_1 = __webpack_require__(96);
+var browser_globals_1 = __webpack_require__(121);
+var maps_api_loader_1 = __webpack_require__(103);
 (function (GoogleMapsScriptProtocol) {
     GoogleMapsScriptProtocol[GoogleMapsScriptProtocol["HTTP"] = 1] = "HTTP";
     GoogleMapsScriptProtocol[GoogleMapsScriptProtocol["HTTPS"] = 2] = "HTTPS";
@@ -611,55 +993,19 @@ exports.LazyMapsAPILoader = LazyMapsAPILoader;
 
 /***/ }),
 
-/***/ 108:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PlacePage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(20);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-var PlacePage = (function () {
-    function PlacePage() {
-        this.type = "details";
-    }
-    return PlacePage;
-}());
-PlacePage = __decorate([
-    __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* IonicPage */](),
-    __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"]({
-        template: "\n    <ion-header>\n        <ion-navbar color=\"sky\">\n          <button ion-button menuToggle>\n            <ion-icon name=\"menu\"></ion-icon>\n          </button>\n          <ion-title>Place</ion-title>\n        </ion-navbar>\n        <ion-toolbar no-border-top>\n          <ion-segment [(ngModel)]=\"type\">\n            <ion-segment-button value=\"details\">\n              Details\n            </ion-segment-button>\n            <ion-segment-button value=\"maps\">\n              Maps\n            </ion-segment-button>\n          </ion-segment>\n      </ion-toolbar>\n    </ion-header>\n    <ion-content>\n      <div [ngSwitch]=\"type\">\n        <page-details *ngSwitchCase=\"'details'\"></page-details>\n        <page-maps *ngSwitchCase=\"'maps'\"></page-maps>\n      </div>\n    </ion-content>\n  "
-    }),
-    __metadata("design:paramtypes", [])
-], PlacePage);
-
-//# sourceMappingURL=place.js.map
-
-/***/ }),
-
-/***/ 109:
+/***/ 115:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 var core_1 = __webpack_require__(0);
-var google_maps_api_wrapper_1 = __webpack_require__(95);
-var circle_manager_1 = __webpack_require__(99);
-var info_window_manager_1 = __webpack_require__(100);
-var marker_manager_1 = __webpack_require__(97);
-var polygon_manager_1 = __webpack_require__(101);
-var polyline_manager_1 = __webpack_require__(102);
-var kml_layer_manager_1 = __webpack_require__(103);
+var google_maps_api_wrapper_1 = __webpack_require__(100);
+var circle_manager_1 = __webpack_require__(105);
+var info_window_manager_1 = __webpack_require__(106);
+var marker_manager_1 = __webpack_require__(104);
+var polygon_manager_1 = __webpack_require__(107);
+var polyline_manager_1 = __webpack_require__(108);
+var kml_layer_manager_1 = __webpack_require__(109);
 /**
  * SebMGoogleMap renders a Google Map.
  * **Important note**: To be able see a map in the browser, you have to define a height for the CSS
@@ -969,13 +1315,13 @@ exports.SebmGoogleMap = SebmGoogleMap;
 
 /***/ }),
 
-/***/ 110:
+/***/ 116:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 var core_1 = __webpack_require__(0);
-var circle_manager_1 = __webpack_require__(99);
+var circle_manager_1 = __webpack_require__(105);
 var SebmGoogleMapCircle = (function () {
     function SebmGoogleMapCircle(_manager) {
         this._manager = _manager;
@@ -1173,13 +1519,13 @@ exports.SebmGoogleMapCircle = SebmGoogleMapCircle;
 
 /***/ }),
 
-/***/ 111:
+/***/ 117:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 var core_1 = __webpack_require__(0);
-var kml_layer_manager_1 = __webpack_require__(103);
+var kml_layer_manager_1 = __webpack_require__(109);
 var layerId = 0;
 var SebmGoogleMapKmlLayer = (function () {
     function SebmGoogleMapKmlLayer(_manager) {
@@ -1295,14 +1641,14 @@ exports.SebmGoogleMapKmlLayer = SebmGoogleMapKmlLayer;
 
 /***/ }),
 
-/***/ 112:
+/***/ 118:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 var core_1 = __webpack_require__(0);
-var marker_manager_1 = __webpack_require__(97);
-var google_map_info_window_1 = __webpack_require__(104);
+var marker_manager_1 = __webpack_require__(104);
+var google_map_info_window_1 = __webpack_require__(110);
 var markerId = 0;
 /**
  * SebmGoogleMapMarker renders a map marker inside a {@link SebmGoogleMap}.
@@ -1476,13 +1822,13 @@ exports.SebmGoogleMapMarker = SebmGoogleMapMarker;
 
 /***/ }),
 
-/***/ 113:
+/***/ 119:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 var core_1 = __webpack_require__(0);
-var polygon_manager_1 = __webpack_require__(101);
+var polygon_manager_1 = __webpack_require__(107);
 /**
  * SebmGoogleMapPolygon renders a polygon on a {@link SebmGoogleMap}
  *
@@ -1710,14 +2056,14 @@ exports.SebmGoogleMapPolygon = SebmGoogleMapPolygon;
 
 /***/ }),
 
-/***/ 114:
+/***/ 120:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 var core_1 = __webpack_require__(0);
-var polyline_manager_1 = __webpack_require__(102);
-var google_map_polyline_point_1 = __webpack_require__(105);
+var polyline_manager_1 = __webpack_require__(108);
+var google_map_polyline_point_1 = __webpack_require__(111);
 var polylineId = 0;
 /**
  * SebmGoogleMapPolyline renders a polyline on a {@link SebmGoogleMap}
@@ -1922,7 +2268,7 @@ exports.SebmGoogleMapPolyline = SebmGoogleMapPolyline;
 
 /***/ }),
 
-/***/ 115:
+/***/ 121:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1946,7 +2292,7 @@ exports.BROWSER_GLOBALS_PROVIDERS = [WindowRef, DocumentRef];
 
 /***/ }),
 
-/***/ 116:
+/***/ 123:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1955,75 +2301,75 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 // main modules
-__export(__webpack_require__(117));
-__export(__webpack_require__(118));
+__export(__webpack_require__(124));
+__export(__webpack_require__(125));
 // Google Maps types
 // core module
 // we explicitly export the module here to prevent this Ionic 2 bug:
 // http://stevemichelotti.com/integrate-angular-2-google-maps-into-ionic-2/
-var core_module_1 = __webpack_require__(120);
+var core_module_1 = __webpack_require__(127);
 exports.AgmCoreModule = core_module_1.AgmCoreModule;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
 
-/***/ 117:
+/***/ 124:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var google_map_1 = __webpack_require__(109);
+var google_map_1 = __webpack_require__(115);
 exports.SebmGoogleMap = google_map_1.SebmGoogleMap;
-var google_map_circle_1 = __webpack_require__(110);
+var google_map_circle_1 = __webpack_require__(116);
 exports.SebmGoogleMapCircle = google_map_circle_1.SebmGoogleMapCircle;
-var google_map_info_window_1 = __webpack_require__(104);
+var google_map_info_window_1 = __webpack_require__(110);
 exports.SebmGoogleMapInfoWindow = google_map_info_window_1.SebmGoogleMapInfoWindow;
-var google_map_kml_layer_1 = __webpack_require__(111);
+var google_map_kml_layer_1 = __webpack_require__(117);
 exports.SebmGoogleMapKmlLayer = google_map_kml_layer_1.SebmGoogleMapKmlLayer;
-var google_map_marker_1 = __webpack_require__(112);
+var google_map_marker_1 = __webpack_require__(118);
 exports.SebmGoogleMapMarker = google_map_marker_1.SebmGoogleMapMarker;
-var google_map_polygon_1 = __webpack_require__(113);
+var google_map_polygon_1 = __webpack_require__(119);
 exports.SebmGoogleMapPolygon = google_map_polygon_1.SebmGoogleMapPolygon;
-var google_map_polyline_1 = __webpack_require__(114);
+var google_map_polyline_1 = __webpack_require__(120);
 exports.SebmGoogleMapPolyline = google_map_polyline_1.SebmGoogleMapPolyline;
-var google_map_polyline_point_1 = __webpack_require__(105);
+var google_map_polyline_point_1 = __webpack_require__(111);
 exports.SebmGoogleMapPolylinePoint = google_map_polyline_point_1.SebmGoogleMapPolylinePoint;
 //# sourceMappingURL=directives.js.map
 
 /***/ }),
 
-/***/ 118:
+/***/ 125:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var google_maps_api_wrapper_1 = __webpack_require__(95);
+var google_maps_api_wrapper_1 = __webpack_require__(100);
 exports.GoogleMapsAPIWrapper = google_maps_api_wrapper_1.GoogleMapsAPIWrapper;
-var circle_manager_1 = __webpack_require__(99);
+var circle_manager_1 = __webpack_require__(105);
 exports.CircleManager = circle_manager_1.CircleManager;
-var info_window_manager_1 = __webpack_require__(100);
+var info_window_manager_1 = __webpack_require__(106);
 exports.InfoWindowManager = info_window_manager_1.InfoWindowManager;
-var marker_manager_1 = __webpack_require__(97);
+var marker_manager_1 = __webpack_require__(104);
 exports.MarkerManager = marker_manager_1.MarkerManager;
-var polygon_manager_1 = __webpack_require__(101);
+var polygon_manager_1 = __webpack_require__(107);
 exports.PolygonManager = polygon_manager_1.PolygonManager;
-var polyline_manager_1 = __webpack_require__(102);
+var polyline_manager_1 = __webpack_require__(108);
 exports.PolylineManager = polyline_manager_1.PolylineManager;
-var kml_layer_manager_1 = __webpack_require__(103);
+var kml_layer_manager_1 = __webpack_require__(109);
 exports.KmlLayerManager = kml_layer_manager_1.KmlLayerManager;
-var lazy_maps_api_loader_1 = __webpack_require__(106);
+var lazy_maps_api_loader_1 = __webpack_require__(112);
 exports.GoogleMapsScriptProtocol = lazy_maps_api_loader_1.GoogleMapsScriptProtocol;
 exports.LAZY_MAPS_API_CONFIG = lazy_maps_api_loader_1.LAZY_MAPS_API_CONFIG;
 exports.LazyMapsAPILoader = lazy_maps_api_loader_1.LazyMapsAPILoader;
-var maps_api_loader_1 = __webpack_require__(96);
+var maps_api_loader_1 = __webpack_require__(103);
 exports.MapsAPILoader = maps_api_loader_1.MapsAPILoader;
-var noop_maps_api_loader_1 = __webpack_require__(119);
+var noop_maps_api_loader_1 = __webpack_require__(126);
 exports.NoOpMapsAPILoader = noop_maps_api_loader_1.NoOpMapsAPILoader;
 //# sourceMappingURL=services.js.map
 
 /***/ }),
 
-/***/ 119:
+/***/ 126:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2050,24 +2396,24 @@ exports.NoOpMapsAPILoader = NoOpMapsAPILoader;
 
 /***/ }),
 
-/***/ 120:
+/***/ 127:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 var core_1 = __webpack_require__(0);
-var google_map_kml_layer_1 = __webpack_require__(111);
-var google_map_1 = __webpack_require__(109);
-var google_map_circle_1 = __webpack_require__(110);
-var google_map_info_window_1 = __webpack_require__(104);
-var google_map_marker_1 = __webpack_require__(112);
-var google_map_polygon_1 = __webpack_require__(113);
-var google_map_polyline_1 = __webpack_require__(114);
-var google_map_polyline_point_1 = __webpack_require__(105);
-var lazy_maps_api_loader_1 = __webpack_require__(106);
-var lazy_maps_api_loader_2 = __webpack_require__(106);
-var maps_api_loader_1 = __webpack_require__(96);
-var browser_globals_1 = __webpack_require__(115);
+var google_map_kml_layer_1 = __webpack_require__(117);
+var google_map_1 = __webpack_require__(115);
+var google_map_circle_1 = __webpack_require__(116);
+var google_map_info_window_1 = __webpack_require__(110);
+var google_map_marker_1 = __webpack_require__(118);
+var google_map_polygon_1 = __webpack_require__(119);
+var google_map_polyline_1 = __webpack_require__(120);
+var google_map_polyline_point_1 = __webpack_require__(111);
+var lazy_maps_api_loader_1 = __webpack_require__(112);
+var lazy_maps_api_loader_2 = __webpack_require__(112);
+var maps_api_loader_1 = __webpack_require__(103);
+var browser_globals_1 = __webpack_require__(121);
 /**
  * @internal
  */
@@ -2110,17 +2456,109 @@ exports.AgmCoreModule = AgmCoreModule;
 
 /***/ }),
 
-/***/ 83:
+/***/ 86:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+
+// CONCATENATED MODULE: ./src/pages/details/details.ts
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ngrx_store__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_common_util__ = __webpack_require__(99);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var DetailsPage = (function () {
+    function DetailsPage(store, navCtrl) {
+        this.store = store;
+        this.navCtrl = navCtrl;
+        this.place = __WEBPACK_IMPORTED_MODULE_3__utils_common_util__["a" /* captureState */](this.store).attractions.selectedPlace;
+        this.schedules = [
+            // {name: "Monday", schedule: this.place.monday},
+            // {name: "Tuesday", schedule: this.place.tuesday},
+            // {name: "Wednesday", schedule: this.place.wednesday},
+            // {name: "Thursday", schedule: this.place.thursday},
+            // {name: "Friday", schedule: this.place.friday},
+            // {name: "Saturday", schedule: this.place.saturday},
+            // {name: "Sunday", schedule: this.place.sunday},
+            { name: "Senin", schedule: this.place.monday },
+            { name: "Selasa", schedule: this.place.tuesday },
+            { name: "Rabu", schedule: this.place.wednesday },
+            { name: "Kamis", schedule: this.place.thursday },
+            { name: "Jumat", schedule: this.place.friday },
+            { name: "Sabtu", schedule: this.place.saturday },
+            { name: "Minggu", schedule: this.place.sunday },
+        ];
+    }
+    return DetailsPage;
+}());
+DetailsPage = __decorate([
+    __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["f" /* IonicPage */](),
+    __WEBPACK_IMPORTED_MODULE_1__angular_core__["Component"]({
+        selector: 'page-details',
+        template: "\n    <img style=\"width: 100%\" [src]=\"place.photo\"/>\n    <ion-card-content>\n        <ion-card-title>\n            {{place.name}}\n        </ion-card-title>\n        <h6 ion-text color=\"primary\" style=\"font-size: small\">Alamat</h6>\n\n        <p>\n            {{place.formatted_address}}\n        </p>\n        <h6 ion-text color=\"primary\" style=\"font-size: small\">Telepon</h6>\n\n        <p>\n            {{place.phone}}\n        </p>\n        <hr>\n        <h6 ion-text color=\"primary\">Jam Buka dan Jam Tutup</h6>\n        <table>\n            <tr *ngFor=\"let schedule of schedules\">\n                <td>{{schedule.name}}</td>\n                <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>\n                <td>{{schedule.schedule}}</td>\n            </tr>\n        </table>\n\n        \n    </ion-card-content>\n    \n  "
+    }),
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__ngrx_store__["a" /* Store */],
+        __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["k" /* NavController */]])
+], DetailsPage);
+
+//# sourceMappingURL=details.js.map
+// CONCATENATED MODULE: ./src/pages/details/details.module.ts
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DetailsPageModule", function() { return DetailsPageModule; });
+/* harmony import */ var details_module___WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
+/* harmony import */ var details_module___WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(9);
+var details_module___decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+var DetailsPageModule = (function () {
+    function DetailsPageModule() {
+    }
+    return DetailsPageModule;
+}());
+DetailsPageModule = details_module___decorate([
+    details_module___WEBPACK_IMPORTED_MODULE_1__angular_core__["NgModule"]({
+        declarations: [DetailsPage],
+        imports: [details_module___WEBPACK_IMPORTED_MODULE_2_ionic_angular__["g" /* IonicPageModule */].forChild(DetailsPage)],
+        entryComponents: [DetailsPage],
+        exports: [
+            DetailsPage
+        ]
+    })
+], DetailsPageModule);
+
+//# sourceMappingURL=details.module.js.map
+
+/***/ }),
+
+/***/ 87:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 // CONCATENATED MODULE: ./src/pages/maps/maps.ts
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ngrx_store__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ngrx_store__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_common_util__ = __webpack_require__(94);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_common_util__ = __webpack_require__(99);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2157,11 +2595,11 @@ MapsPage = __decorate([
 //# sourceMappingURL=maps.js.map
 // CONCATENATED MODULE: ./src/pages/maps/maps.module.ts
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MapsPageModule", function() { return MapsPageModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_constants__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angular2_google_maps_core__ = __webpack_require__(116);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_constants__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angular2_google_maps_core__ = __webpack_require__(123);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angular2_google_maps_core___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_angular2_google_maps_core__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ionic_angular__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ionic_angular__ = __webpack_require__(9);
 var maps_module___decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2198,102 +2636,17 @@ MapsPageModule = maps_module___decorate([
 
 /***/ }),
 
-/***/ 84:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-
-// CONCATENATED MODULE: ./src/pages/details/details.ts
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ngrx_store__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_common_util__ = __webpack_require__(94);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-var DetailsPage = (function () {
-    function DetailsPage(store, navCtrl) {
-        this.store = store;
-        this.navCtrl = navCtrl;
-        this.place = __WEBPACK_IMPORTED_MODULE_3__utils_common_util__["a" /* captureState */](this.store).attractions.selectedPlace;
-        this.schedules = [
-            { name: "Monday", schedule: this.place.monday },
-            { name: "Tuesday", schedule: this.place.tuesday },
-            { name: "Wednesday", schedule: this.place.wednesday },
-            { name: "Thursday", schedule: this.place.thursday },
-            { name: "Friday", schedule: this.place.friday },
-            { name: "Saturday", schedule: this.place.saturday },
-            { name: "Sunday", schedule: this.place.sunday },
-        ];
-    }
-    return DetailsPage;
-}());
-DetailsPage = __decorate([
-    __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["f" /* IonicPage */](),
-    __WEBPACK_IMPORTED_MODULE_1__angular_core__["Component"]({
-        selector: 'page-details',
-        template: "\n    <img style=\"width: 100%\" [src]=\"place.photo\"/>\n    <ion-card-content>\n        <ion-card-title>\n            {{place.name}}\n        </ion-card-title>\n        <h6 ion-text color=\"primary\" style=\"font-size: small\">Address</h6>\n\n        <p>\n            {{place.formatted_address}}\n        </p>\n        <h6 ion-text color=\"primary\" style=\"font-size: small\">Phone</h6>\n\n        <p>\n            {{place.phone}}\n        </p>\n        <hr>\n        <h6 ion-text color=\"primary\">Open and Close Hours</h6>\n        <table>\n            <tr *ngFor=\"let schedule of schedules\">\n                <td>{{schedule.name}}</td>\n                <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>\n                <td>{{schedule.schedule}}</td>\n            </tr>\n        </table>\n\n        \n    </ion-card-content>\n    \n  "
-    }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__ngrx_store__["a" /* Store */],
-        __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["k" /* NavController */]])
-], DetailsPage);
-
-//# sourceMappingURL=details.js.map
-// CONCATENATED MODULE: ./src/pages/details/details.module.ts
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DetailsPageModule", function() { return DetailsPageModule; });
-/* harmony import */ var details_module___WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
-/* harmony import */ var details_module___WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(20);
-var details_module___decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-
-
-var DetailsPageModule = (function () {
-    function DetailsPageModule() {
-    }
-    return DetailsPageModule;
-}());
-DetailsPageModule = details_module___decorate([
-    details_module___WEBPACK_IMPORTED_MODULE_1__angular_core__["NgModule"]({
-        declarations: [DetailsPage],
-        imports: [details_module___WEBPACK_IMPORTED_MODULE_2_ionic_angular__["g" /* IonicPageModule */].forChild(DetailsPage)],
-        entryComponents: [DetailsPage],
-        exports: [
-            DetailsPage
-        ]
-    })
-], DetailsPageModule);
-
-//# sourceMappingURL=details.module.js.map
-
-/***/ }),
-
-/***/ 85:
+/***/ 88:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PlacePageModule", function() { return PlacePageModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__details_details_module__ = __webpack_require__(84);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__maps_maps_module__ = __webpack_require__(83);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__place__ = __webpack_require__(108);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__details_details_module__ = __webpack_require__(86);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__maps_maps_module__ = __webpack_require__(87);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__place__ = __webpack_require__(101);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ionic_angular__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ionic_angular__ = __webpack_require__(9);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2330,16 +2683,18 @@ PlacePageModule = __decorate([
 
 /***/ }),
 
-/***/ 94:
+/***/ 99:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["b"] = isFormFilled;
+/* harmony export (immutable) */ __webpack_exports__["d"] = isFormFilled;
 /* unused harmony export objStatus */
 /* unused harmony export removeDuplicates */
 /* unused harmony export isEmptyObject */
 /* harmony export (immutable) */ __webpack_exports__["a"] = captureState;
 /* unused harmony export appendState */
+/* harmony export (immutable) */ __webpack_exports__["c"] = findIndex;
+/* harmony export (immutable) */ __webpack_exports__["b"] = filterZero;
 function isFormFilled(obj) {
     var tmpStatus = true;
     if (obj instanceof Object) {
@@ -2406,353 +2761,13 @@ function appendState(state, data) {
     tmp.push(data);
     return tmp;
 }
+function findIndex(array, colName, value) {
+    return array.findIndex(function (obj) { return obj[colName] == value; });
+}
+function filterZero(array, colName) {
+    return array.filter(function (a) { return a[colName] > 0; });
+}
 //# sourceMappingURL=common.util.js.map
-
-/***/ }),
-
-/***/ 95:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var core_1 = __webpack_require__(0);
-var Observable_1 = __webpack_require__(1);
-var maps_api_loader_1 = __webpack_require__(96);
-/**
- * Wrapper class that handles the communication with the Google Maps Javascript
- * API v3
- */
-var GoogleMapsAPIWrapper = (function () {
-    function GoogleMapsAPIWrapper(_loader, _zone) {
-        var _this = this;
-        this._loader = _loader;
-        this._zone = _zone;
-        this._map =
-            new Promise(function (resolve) { _this._mapResolver = resolve; });
-    }
-    GoogleMapsAPIWrapper.prototype.createMap = function (el, mapOptions) {
-        var _this = this;
-        return this._loader.load().then(function () {
-            var map = new google.maps.Map(el, mapOptions);
-            _this._mapResolver(map);
-            return;
-        });
-    };
-    GoogleMapsAPIWrapper.prototype.setMapOptions = function (options) {
-        this._map.then(function (m) { m.setOptions(options); });
-    };
-    /**
-     * Creates a google map marker with the map context
-     */
-    GoogleMapsAPIWrapper.prototype.createMarker = function (options) {
-        if (options === void 0) { options = {}; }
-        return this._map.then(function (map) {
-            options.map = map;
-            return new google.maps.Marker(options);
-        });
-    };
-    GoogleMapsAPIWrapper.prototype.createInfoWindow = function (options) {
-        return this._map.then(function () { return new google.maps.InfoWindow(options); });
-    };
-    /**
-     * Creates a google.map.Circle for the current map.
-     */
-    GoogleMapsAPIWrapper.prototype.createCircle = function (options) {
-        return this._map.then(function (map) {
-            options.map = map;
-            return new google.maps.Circle(options);
-        });
-    };
-    GoogleMapsAPIWrapper.prototype.createPolyline = function (options) {
-        return this.getNativeMap().then(function (map) {
-            var line = new google.maps.Polyline(options);
-            line.setMap(map);
-            return line;
-        });
-    };
-    GoogleMapsAPIWrapper.prototype.createPolygon = function (options) {
-        return this.getNativeMap().then(function (map) {
-            var polygon = new google.maps.Polygon(options);
-            polygon.setMap(map);
-            return polygon;
-        });
-    };
-    /**
-     * Determines if given coordinates are insite a Polygon path.
-     */
-    GoogleMapsAPIWrapper.prototype.containsLocation = function (latLng, polygon) {
-        return google.maps.geometry.poly.containsLocation(latLng, polygon);
-    };
-    GoogleMapsAPIWrapper.prototype.subscribeToMapEvent = function (eventName) {
-        var _this = this;
-        return Observable_1.Observable.create(function (observer) {
-            _this._map.then(function (m) {
-                m.addListener(eventName, function (arg) { _this._zone.run(function () { return observer.next(arg); }); });
-            });
-        });
-    };
-    GoogleMapsAPIWrapper.prototype.setCenter = function (latLng) {
-        return this._map.then(function (map) { return map.setCenter(latLng); });
-    };
-    GoogleMapsAPIWrapper.prototype.getZoom = function () { return this._map.then(function (map) { return map.getZoom(); }); };
-    GoogleMapsAPIWrapper.prototype.getBounds = function () {
-        return this._map.then(function (map) { return map.getBounds(); });
-    };
-    GoogleMapsAPIWrapper.prototype.setZoom = function (zoom) {
-        return this._map.then(function (map) { return map.setZoom(zoom); });
-    };
-    GoogleMapsAPIWrapper.prototype.getCenter = function () {
-        return this._map.then(function (map) { return map.getCenter(); });
-    };
-    GoogleMapsAPIWrapper.prototype.panTo = function (latLng) {
-        return this._map.then(function (map) { return map.panTo(latLng); });
-    };
-    GoogleMapsAPIWrapper.prototype.fitBounds = function (latLng) {
-        return this._map.then(function (map) { return map.fitBounds(latLng); });
-    };
-    GoogleMapsAPIWrapper.prototype.panToBounds = function (latLng) {
-        return this._map.then(function (map) { return map.panToBounds(latLng); });
-    };
-    /**
-     * Returns the native Google Maps Map instance. Be careful when using this instance directly.
-     */
-    GoogleMapsAPIWrapper.prototype.getNativeMap = function () { return this._map; };
-    /**
-     * Triggers the given event name on the map instance.
-     */
-    GoogleMapsAPIWrapper.prototype.triggerMapEvent = function (eventName) {
-        return this._map.then(function (m) { return google.maps.event.trigger(m, eventName); });
-    };
-    GoogleMapsAPIWrapper.decorators = [
-        { type: core_1.Injectable },
-    ];
-    /** @nocollapse */
-    GoogleMapsAPIWrapper.ctorParameters = function () { return [
-        { type: maps_api_loader_1.MapsAPILoader, },
-        { type: core_1.NgZone, },
-    ]; };
-    return GoogleMapsAPIWrapper;
-}());
-exports.GoogleMapsAPIWrapper = GoogleMapsAPIWrapper;
-//# sourceMappingURL=google-maps-api-wrapper.js.map
-
-/***/ }),
-
-/***/ 96:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var core_1 = __webpack_require__(0);
-var MapsAPILoader = (function () {
-    function MapsAPILoader() {
-    }
-    MapsAPILoader.decorators = [
-        { type: core_1.Injectable },
-    ];
-    /** @nocollapse */
-    MapsAPILoader.ctorParameters = function () { return []; };
-    return MapsAPILoader;
-}());
-exports.MapsAPILoader = MapsAPILoader;
-//# sourceMappingURL=maps-api-loader.js.map
-
-/***/ }),
-
-/***/ 97:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var core_1 = __webpack_require__(0);
-var Observable_1 = __webpack_require__(1);
-var google_maps_api_wrapper_1 = __webpack_require__(95);
-var MarkerManager = (function () {
-    function MarkerManager(_mapsWrapper, _zone) {
-        this._mapsWrapper = _mapsWrapper;
-        this._zone = _zone;
-        this._markers = new Map();
-    }
-    MarkerManager.prototype.deleteMarker = function (marker) {
-        var _this = this;
-        var m = this._markers.get(marker);
-        if (m == null) {
-            // marker already deleted
-            return Promise.resolve();
-        }
-        return m.then(function (m) {
-            return _this._zone.run(function () {
-                m.setMap(null);
-                _this._markers.delete(marker);
-            });
-        });
-    };
-    MarkerManager.prototype.updateMarkerPosition = function (marker) {
-        return this._markers.get(marker).then(function (m) { return m.setPosition({ lat: marker.latitude, lng: marker.longitude }); });
-    };
-    MarkerManager.prototype.updateTitle = function (marker) {
-        return this._markers.get(marker).then(function (m) { return m.setTitle(marker.title); });
-    };
-    MarkerManager.prototype.updateLabel = function (marker) {
-        return this._markers.get(marker).then(function (m) { m.setLabel(marker.label); });
-    };
-    MarkerManager.prototype.updateDraggable = function (marker) {
-        return this._markers.get(marker).then(function (m) { return m.setDraggable(marker.draggable); });
-    };
-    MarkerManager.prototype.updateIcon = function (marker) {
-        return this._markers.get(marker).then(function (m) { return m.setIcon(marker.iconUrl); });
-    };
-    MarkerManager.prototype.updateOpacity = function (marker) {
-        return this._markers.get(marker).then(function (m) { return m.setOpacity(marker.opacity); });
-    };
-    MarkerManager.prototype.updateVisible = function (marker) {
-        return this._markers.get(marker).then(function (m) { return m.setVisible(marker.visible); });
-    };
-    MarkerManager.prototype.updateZIndex = function (marker) {
-        return this._markers.get(marker).then(function (m) { return m.setZIndex(marker.zIndex); });
-    };
-    MarkerManager.prototype.addMarker = function (marker) {
-        var markerPromise = this._mapsWrapper.createMarker({
-            position: { lat: marker.latitude, lng: marker.longitude },
-            label: marker.label,
-            draggable: marker.draggable,
-            icon: marker.iconUrl,
-            opacity: marker.opacity,
-            visible: marker.visible,
-            zIndex: marker.zIndex,
-            title: marker.title
-        });
-        this._markers.set(marker, markerPromise);
-    };
-    MarkerManager.prototype.getNativeMarker = function (marker) {
-        return this._markers.get(marker);
-    };
-    MarkerManager.prototype.createEventObservable = function (eventName, marker) {
-        var _this = this;
-        return Observable_1.Observable.create(function (observer) {
-            _this._markers.get(marker).then(function (m) {
-                m.addListener(eventName, function (e) { return _this._zone.run(function () { return observer.next(e); }); });
-            });
-        });
-    };
-    MarkerManager.decorators = [
-        { type: core_1.Injectable },
-    ];
-    /** @nocollapse */
-    MarkerManager.ctorParameters = function () { return [
-        { type: google_maps_api_wrapper_1.GoogleMapsAPIWrapper, },
-        { type: core_1.NgZone, },
-    ]; };
-    return MarkerManager;
-}());
-exports.MarkerManager = MarkerManager;
-//# sourceMappingURL=marker-manager.js.map
-
-/***/ }),
-
-/***/ 99:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var core_1 = __webpack_require__(0);
-var Observable_1 = __webpack_require__(1);
-var google_maps_api_wrapper_1 = __webpack_require__(95);
-var CircleManager = (function () {
-    function CircleManager(_apiWrapper, _zone) {
-        this._apiWrapper = _apiWrapper;
-        this._zone = _zone;
-        this._circles = new Map();
-    }
-    CircleManager.prototype.addCircle = function (circle) {
-        this._circles.set(circle, this._apiWrapper.createCircle({
-            center: { lat: circle.latitude, lng: circle.longitude },
-            clickable: circle.clickable,
-            draggable: circle.draggable,
-            editable: circle.editable,
-            fillColor: circle.fillColor,
-            fillOpacity: circle.fillOpacity,
-            radius: circle.radius,
-            strokeColor: circle.strokeColor,
-            strokeOpacity: circle.strokeOpacity,
-            strokePosition: circle.strokePosition,
-            strokeWeight: circle.strokeWeight,
-            visible: circle.visible,
-            zIndex: circle.zIndex
-        }));
-    };
-    ;
-    /**
-     * Removes the given circle from the map.
-     */
-    CircleManager.prototype.removeCircle = function (circle) {
-        var _this = this;
-        return this._circles.get(circle).then(function (c) {
-            c.setMap(null);
-            _this._circles.delete(circle);
-        });
-    };
-    CircleManager.prototype.setOptions = function (circle, options) {
-        return this._circles.get(circle).then(function (c) { return c.setOptions(options); });
-    };
-    ;
-    CircleManager.prototype.getBounds = function (circle) {
-        return this._circles.get(circle).then(function (c) { return c.getBounds(); });
-    };
-    ;
-    CircleManager.prototype.getCenter = function (circle) {
-        return this._circles.get(circle).then(function (c) { return c.getCenter(); });
-    };
-    ;
-    CircleManager.prototype.getRadius = function (circle) {
-        return this._circles.get(circle).then(function (c) { return c.getRadius(); });
-    };
-    CircleManager.prototype.setCenter = function (circle) {
-        return this._circles.get(circle).then(function (c) { return c.setCenter({ lat: circle.latitude, lng: circle.longitude }); });
-    };
-    ;
-    CircleManager.prototype.setEditable = function (circle) {
-        return this._circles.get(circle).then(function (c) { return c.setEditable(circle.editable); });
-    };
-    ;
-    CircleManager.prototype.setDraggable = function (circle) {
-        return this._circles.get(circle).then(function (c) { return c.setDraggable(circle.draggable); });
-    };
-    ;
-    CircleManager.prototype.setVisible = function (circle) {
-        return this._circles.get(circle).then(function (c) { return c.setVisible(circle.visible); });
-    };
-    ;
-    CircleManager.prototype.setRadius = function (circle) {
-        return this._circles.get(circle).then(function (c) { return c.setRadius(circle.radius); });
-    };
-    ;
-    CircleManager.prototype.createEventObservable = function (eventName, circle) {
-        var _this = this;
-        return Observable_1.Observable.create(function (observer) {
-            var listener = null;
-            _this._circles.get(circle).then(function (c) {
-                listener = c.addListener(eventName, function (e) { return _this._zone.run(function () { return observer.next(e); }); });
-            });
-            return function () {
-                if (listener !== null) {
-                    listener.remove();
-                }
-            };
-        });
-    };
-    CircleManager.decorators = [
-        { type: core_1.Injectable },
-    ];
-    /** @nocollapse */
-    CircleManager.ctorParameters = function () { return [
-        { type: google_maps_api_wrapper_1.GoogleMapsAPIWrapper, },
-        { type: core_1.NgZone, },
-    ]; };
-    return CircleManager;
-}());
-exports.CircleManager = CircleManager;
-//# sourceMappingURL=circle-manager.js.map
 
 /***/ })
 

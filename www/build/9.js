@@ -1,54 +1,16 @@
 webpackJsonp([9],{
 
-/***/ 108:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PlacePage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(20);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-var PlacePage = (function () {
-    function PlacePage() {
-        this.type = "details";
-    }
-    return PlacePage;
-}());
-PlacePage = __decorate([
-    __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* IonicPage */](),
-    __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"]({
-        template: "\n    <ion-header>\n        <ion-navbar color=\"sky\">\n          <button ion-button menuToggle>\n            <ion-icon name=\"menu\"></ion-icon>\n          </button>\n          <ion-title>Place</ion-title>\n        </ion-navbar>\n        <ion-toolbar no-border-top>\n          <ion-segment [(ngModel)]=\"type\">\n            <ion-segment-button value=\"details\">\n              Details\n            </ion-segment-button>\n            <ion-segment-button value=\"maps\">\n              Maps\n            </ion-segment-button>\n          </ion-segment>\n      </ion-toolbar>\n    </ion-header>\n    <ion-content>\n      <div [ngSwitch]=\"type\">\n        <page-details *ngSwitchCase=\"'details'\"></page-details>\n        <page-maps *ngSwitchCase=\"'maps'\"></page-maps>\n      </div>\n    </ion-content>\n  "
-    }),
-    __metadata("design:paramtypes", [])
-], PlacePage);
-
-//# sourceMappingURL=place.js.map
-
-/***/ }),
-
-/***/ 92:
+/***/ 86:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
-// CONCATENATED MODULE: ./src/pages/attractions/attractions.ts
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__place_place__ = __webpack_require__(108);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_place_service__ = __webpack_require__(40);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__actions_attractions_actions__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ngrx_store__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_ionic_angular__ = __webpack_require__(20);
+// CONCATENATED MODULE: ./src/pages/details/details.ts
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ngrx_store__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_common_util__ = __webpack_require__(99);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -62,71 +24,46 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-
-
-var AttractionsPage = (function () {
-    function AttractionsPage(attractionsActions, store, loadingCtrl, navCtrl, placeService, app) {
-        this.attractionsActions = attractionsActions;
+var DetailsPage = (function () {
+    function DetailsPage(store, navCtrl) {
         this.store = store;
-        this.loadingCtrl = loadingCtrl;
         this.navCtrl = navCtrl;
-        this.placeService = placeService;
-        this.app = app;
-        this.places = [];
-        this.limit = 15;
-        this.offset = 0;
-        this.presentLoading();
-        this.loadMore();
+        this.place = __WEBPACK_IMPORTED_MODULE_3__utils_common_util__["a" /* captureState */](this.store).attractions.selectedPlace;
+        this.schedules = [
+            // {name: "Monday", schedule: this.place.monday},
+            // {name: "Tuesday", schedule: this.place.tuesday},
+            // {name: "Wednesday", schedule: this.place.wednesday},
+            // {name: "Thursday", schedule: this.place.thursday},
+            // {name: "Friday", schedule: this.place.friday},
+            // {name: "Saturday", schedule: this.place.saturday},
+            // {name: "Sunday", schedule: this.place.sunday},
+            { name: "Senin", schedule: this.place.monday },
+            { name: "Selasa", schedule: this.place.tuesday },
+            { name: "Rabu", schedule: this.place.wednesday },
+            { name: "Kamis", schedule: this.place.thursday },
+            { name: "Jumat", schedule: this.place.friday },
+            { name: "Sabtu", schedule: this.place.saturday },
+            { name: "Minggu", schedule: this.place.sunday },
+        ];
     }
-    AttractionsPage.prototype.details = function (place) {
-        this.store.dispatch(this.attractionsActions.selectPlace(place));
-        this.app.getRootNav().push(__WEBPACK_IMPORTED_MODULE_0__place_place__["a" /* PlacePage */]);
-    };
-    AttractionsPage.prototype.getPlaces = function (pagination) {
-        var _this = this;
-        this.placeService.getPlaces(pagination).subscribe(function (places) {
-            _this.places = _this.places.concat(places);
-            _this.store.dispatch(_this.attractionsActions.setAttractionsLoadStatus("loaded"));
-            _this.stopLoading();
-        });
-    };
-    AttractionsPage.prototype.loadMore = function () {
-        var pagination = {
-            limit: 15,
-            offset: this.offset
-        };
-        this.getPlaces(pagination);
-        this.offset += 15;
-    };
-    AttractionsPage.prototype.stopLoading = function () {
-        this.loader.dismiss();
-    };
-    AttractionsPage.prototype.presentLoading = function () {
-        this.loader = this.loadingCtrl.create({
-            content: "Please wait..."
-        });
-        this.loader.present();
-    };
-    return AttractionsPage;
+    return DetailsPage;
 }());
-AttractionsPage = __decorate([
-    __WEBPACK_IMPORTED_MODULE_5_ionic_angular__["f" /* IonicPage */](),
-    __WEBPACK_IMPORTED_MODULE_3__angular_core__["Component"]({
-        selector: 'page-attractions',
-        template: "\n    <ion-header>\n      <ion-navbar color=\"sky\">\n        <button ion-button menuToggle>\n          <ion-icon name=\"menu\"></ion-icon>\n        </button>\n        <ion-title>Browse</ion-title>\n      </ion-navbar>\n    </ion-header>\n    <ion-content>\n      <ion-grid fixed>\n        <ion-list>\n          <button (click)=\"details(place)\" ion-item *ngFor=\"let place of places\">\n            <ion-row>\n              <ion-col col-3>\n                  <ion-avatar item-start>\n                    <img [src]=\"place.photo\">\n                  </ion-avatar>\n              </ion-col>\n              <ion-col col-9>\n                  <h2>{{place.name}}</h2>\n                  <p>{{place.formatted_address}}</p>\n              </ion-col>\n            </ion-row>\n          </button>\n        </ion-list>\n      </ion-grid>\n      <button color=\"fire\" ion-button block style=\"height: 10%;\" (click)=\"loadMore()\">Load More</button> \n    </ion-content>\n  ",
+DetailsPage = __decorate([
+    __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["f" /* IonicPage */](),
+    __WEBPACK_IMPORTED_MODULE_1__angular_core__["Component"]({
+        selector: 'page-details',
+        template: "\n    <img style=\"width: 100%\" [src]=\"place.photo\"/>\n    <ion-card-content>\n        <ion-card-title>\n            {{place.name}}\n        </ion-card-title>\n        <h6 ion-text color=\"primary\" style=\"font-size: small\">Alamat</h6>\n\n        <p>\n            {{place.formatted_address}}\n        </p>\n        <h6 ion-text color=\"primary\" style=\"font-size: small\">Telepon</h6>\n\n        <p>\n            {{place.phone}}\n        </p>\n        <hr>\n        <h6 ion-text color=\"primary\">Jam Buka dan Jam Tutup</h6>\n        <table>\n            <tr *ngFor=\"let schedule of schedules\">\n                <td>{{schedule.name}}</td>\n                <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>\n                <td>{{schedule.schedule}}</td>\n            </tr>\n        </table>\n\n        \n    </ion-card-content>\n    \n  "
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__actions_attractions_actions__["a" /* AttractionsActions */],
-        __WEBPACK_IMPORTED_MODULE_4__ngrx_store__["a" /* Store */], __WEBPACK_IMPORTED_MODULE_5_ionic_angular__["h" /* LoadingController */],
-        __WEBPACK_IMPORTED_MODULE_5_ionic_angular__["k" /* NavController */], __WEBPACK_IMPORTED_MODULE_1__services_place_service__["a" /* PlaceService */],
-        __WEBPACK_IMPORTED_MODULE_5_ionic_angular__["b" /* App */]])
-], AttractionsPage);
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__ngrx_store__["a" /* Store */],
+        __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["k" /* NavController */]])
+], DetailsPage);
 
-//# sourceMappingURL=attractions.js.map
-// CONCATENATED MODULE: ./src/pages/attractions/attractions.module.ts
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AttractionsPageModule", function() { return AttractionsPageModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(20);
-var attractions_module___decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+//# sourceMappingURL=details.js.map
+// CONCATENATED MODULE: ./src/pages/details/details.module.ts
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DetailsPageModule", function() { return DetailsPageModule; });
+/* harmony import */ var details_module___WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
+/* harmony import */ var details_module___WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(9);
+var details_module___decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -135,20 +72,111 @@ var attractions_module___decorate = (this && this.__decorate) || function (decor
 
 
 
-var AttractionsPageModule = (function () {
-    function AttractionsPageModule() {
+var DetailsPageModule = (function () {
+    function DetailsPageModule() {
     }
-    return AttractionsPageModule;
+    return DetailsPageModule;
 }());
-AttractionsPageModule = attractions_module___decorate([
-    __WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"]({
-        declarations: [AttractionsPage],
-        imports: [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* IonicPageModule */].forChild(AttractionsPage)],
-        entryComponents: [AttractionsPage]
+DetailsPageModule = details_module___decorate([
+    details_module___WEBPACK_IMPORTED_MODULE_1__angular_core__["NgModule"]({
+        declarations: [DetailsPage],
+        imports: [details_module___WEBPACK_IMPORTED_MODULE_2_ionic_angular__["g" /* IonicPageModule */].forChild(DetailsPage)],
+        entryComponents: [DetailsPage],
+        exports: [
+            DetailsPage
+        ]
     })
-], AttractionsPageModule);
+], DetailsPageModule);
 
-//# sourceMappingURL=attractions.module.js.map
+//# sourceMappingURL=details.module.js.map
+
+/***/ }),
+
+/***/ 99:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["d"] = isFormFilled;
+/* unused harmony export objStatus */
+/* unused harmony export removeDuplicates */
+/* unused harmony export isEmptyObject */
+/* harmony export (immutable) */ __webpack_exports__["a"] = captureState;
+/* unused harmony export appendState */
+/* harmony export (immutable) */ __webpack_exports__["c"] = findIndex;
+/* harmony export (immutable) */ __webpack_exports__["b"] = filterZero;
+function isFormFilled(obj) {
+    var tmpStatus = true;
+    if (obj instanceof Object) {
+        for (var attr in obj) {
+            tmpStatus = objStatus(obj[attr]);
+            if (!tmpStatus)
+                return false;
+        }
+    }
+    return true;
+}
+function objStatus(obj) {
+    // Handle the 3 simple types, and null or undefined
+    if (obj === undefined) {
+        return false;
+    }
+    if (obj.toString() === "NaN")
+        return false;
+    if (null == obj || "object" != typeof obj) {
+        if (typeof obj == "string") {
+            if (obj.length == 0)
+                return false;
+        }
+        return true;
+    }
+    if (obj instanceof String) {
+        return (obj.length > 0);
+    }
+    if (obj instanceof Number) {
+        return true;
+    }
+    // Handle Array
+    if (obj instanceof Array) {
+        return (obj.length > 0);
+    }
+    // Handle Object
+    if (obj instanceof Object) {
+        return (isEmptyObject(obj) == false);
+    }
+    throw new Error("Unable to copy obj! Its type isn't supported.");
+}
+function removeDuplicates(originalArray, prop) {
+    var newArray = [];
+    var lookupObject = {};
+    for (var i in originalArray) {
+        lookupObject[originalArray[i][prop]] = originalArray[i];
+    }
+    for (i in lookupObject) {
+        newArray.push(lookupObject[i]);
+    }
+    return newArray;
+}
+function isEmptyObject(obj) {
+    return (Object.keys(obj).length === 0);
+}
+function captureState(state$) {
+    var state;
+    var subs = state$.select(function (state) { return state; }).subscribe(function (x) { return state = x; });
+    subs.unsubscribe();
+    return state;
+}
+function appendState(state, data) {
+    var tmp = state.slice();
+    tmp.push(data);
+    return tmp;
+}
+function findIndex(array, colName, value) {
+    return array.findIndex(function (obj) { return obj[colName] == value; });
+}
+function filterZero(array, colName) {
+    return array.filter(function (a) { return a[colName] > 0; });
+}
+//# sourceMappingURL=common.util.js.map
 
 /***/ })
 

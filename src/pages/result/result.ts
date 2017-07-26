@@ -7,9 +7,10 @@ import { ExplanationPage } from './../explanation/explanation';
 import { FeedbackPage } from './../feedback/feedback';
 import { Component } from '@angular/core';
 
-import { NavController, LoadingController, Loading, AlertController, ModalController, App, NavParams } from 'ionic-angular';
+import { NavController, LoadingController, Loading, AlertController, ModalController, App, NavParams, IonicPage } from 'ionic-angular';
 import { isFormFilled } from "../../utils/common.util";
 
+@IonicPage()
 @Component({
   selector: 'page-result',
   template: `
@@ -18,7 +19,7 @@ import { isFormFilled } from "../../utils/common.util";
         <button ion-button menuToggle>
           <ion-icon name="menu"></ion-icon>
         </button>
-        <ion-title>Result</ion-title>
+        <ion-title>Rekomendasi Terpilih</ion-title>
       </ion-navbar>
     </ion-header>
     <ion-content>
@@ -31,14 +32,8 @@ import { isFormFilled } from "../../utils/common.util";
             <p>{{recomm.formatted_address}}</p>
             <hr>
             <ion-row no-padding>
-                <ion-col text-center>
-                    <button (click)=explain() ion-button clear small color="danger" icon-start>
-                    <ion-icon name='help'></ion-icon>
-                    Why this
-                    </button>
-                </ion-col>
                 <ion-col text-right>
-                    <button (click)=details(recomm) ion-button clear small color="danger" icon-start>
+                    <button (click)=details(recomm) ion-button small color="danger" icon-start>
                     <ion-icon name='navigate'></ion-icon>
                     Details
                     </button>
@@ -48,7 +43,8 @@ import { isFormFilled } from "../../utils/common.util";
     </ion-card>
         <ion-card style="text-align: center">
             <ion-card-header>
-                How was the recommendation?
+                Berikan penilaian anda terhadap <br> 
+                rekomendasi yang dihasilkan
             </ion-card-header>
             <ion-card-content>
                 <rating [(ngModel)]="rate" 
@@ -65,7 +61,7 @@ import { isFormFilled } from "../../utils/common.util";
         </ion-card>
     </ion-content>
     <ion-footer style="height: 10%;">        
-        <button style="height: 100%;" color="fire" ion-button block (click)=navigate() >Next</button> 
+        <button style="height: 100%;" color="fire" ion-button block (click)="navigate()">Lanjut</button> 
     </ion-footer>
 
   `
@@ -107,11 +103,11 @@ export class ResultPage {
   }
 
   starToText(value: number){
-    if(value == 1) this.comment = "Sorry :(";
-    else if(value == 2) this.comment = "I am not sure";
-    else if(value == 3) this.comment = "Not bad";
-    else if(value == 4) this.comment = "I think it's great";
-    else this.comment = "Awesome!";
+    if(value == 1) this.comment = "Sangat Buruk";
+    else if(value == 2) this.comment = "Buruk";
+    else if(value == 3) this.comment = "Cukup";
+    else if(value == 4) this.comment = "Baik";
+    else this.comment = "Sangat Baik";
   }
 
   navigate(){

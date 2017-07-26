@@ -37,25 +37,25 @@ export class MyApp {
   rootPage: any = 'RecommendationPage';
   loader: Loading;
 
-  pages: Array<{title: string, component: any}>;
+  pages: Array<{ title: string, component: any }>;
   constructor(private store: Store<AppState>,
-  private userActions: UserActions,
-  private userService: UserService,
-  public platform: Platform,
-  public loadingCtrl: LoadingController,
-  public storage: Storage,
-  private splashScreen: SplashScreen,
-  private statusBar: StatusBar) {
+    private userActions: UserActions,
+    private userService: UserService,
+    public platform: Platform,
+    public loadingCtrl: LoadingController,
+    public storage: Storage,
+    private splashScreen: SplashScreen,
+    private statusBar: StatusBar) {
     // this.presentLoading();
-    this.userService.ipApi().subscribe(ipApi=>{
+    this.userService.ipApi().subscribe(ipApi => {
       this.store.dispatch(this.userActions.setIpApi(ipApi));
     });
     this.initializeApp();
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Recommender', component: 'RecommendationPage' },
-      { title: 'Browse', component: 'AttractionsPage' },
-      { title: 'About', component: 'AboutPage' }
+      { title: 'Rekomendasi', component: 'RecommendationPage' },
+      { title: 'Jelajah', component: 'AttractionsPage' },
+      { title: 'Tentang', component: 'AboutPage' }
       // { title: 'Advanced', component: AdvancedPage },
       // { title: 'Settings', component: SettingsPage },
       // { title: 'Account', component: AccountPage }
@@ -68,11 +68,33 @@ export class MyApp {
     this.nav.setRoot(page.component);
   }
 
-   presentLoading() {
+  presentLoading() {
     this.loader = this.loadingCtrl.create({
       content: "Loading..."
     });
     this.loader.present();
+  }
+
+  ngOnInit() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(position => {
+        console.log("POSITION", position.coords);
+        this.store.dispatch(this.userActions.setLocation({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        }))
+      }),
+      error=>{
+        console.log("ERROR");
+      },
+      {
+          maximumAge:0,
+          timeout:5000
+      }
+    }else{
+      console.log("FAILED");
+    }
+    
   }
 
   initializeApp() {
@@ -80,7 +102,7 @@ export class MyApp {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       this.storage.get('introShown').then((result) => {
-        if(result){
+        if (result) {
           this.rootPage = 'RecommendationPage';
         } else {
           this.rootPage = 'IntroPage';

@@ -1,10 +1,11 @@
-import { Question, BacktrackClass, DownPropagationResponse } from './../models/recommendation.model';
+import { Question, BacktrackClass, DownPropagationResponse, NodeValues } from './../models/recommendation.model';
 import {Injectable} from "@angular/core";
 import {Headers, Http, RequestOptions } from "@angular/http";
 import {API_URL} from "../utils/constants";
 import {Observable} from "rxjs/Observable";
 import 'rxjs/add/operator/map'
-import { NodeValues } from '../models/recommendation.model';
+import {UpPropagationParams } from '../models/recommendation.model';
+import { Place } from '../models/place.model';
 /**
  * Created by solehuddien on 26/04/17.
  */
@@ -68,6 +69,17 @@ export class RecommendationService{
       .map(res => <DownPropagationResponse>res.json())
       // .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
   }
+
+  upPropagation(params: UpPropagationParams): Observable<Place[]>{
+    let url = `${API_URL}/recomm/propagation/upward`;
+    let body = JSON.stringify(params);
+    let headers = new Headers({'Content-Type': 'application/json'});
+    let options = new RequestOptions({headers: headers});
+    return this.http.post(url, body, options)
+      .map(res => <Place[]>res.json())
+      // .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
 
   parseNode(node: string): string{
     return node.replace(" ", "%20");

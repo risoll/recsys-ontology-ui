@@ -1,50 +1,12 @@
 webpackJsonp([8],{
 
-/***/ 87:
+/***/ 113:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BeginPageModule", function() { return BeginPageModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ExplanationPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__begin__ = __webpack_require__(98);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-
-
-var BeginPageModule = (function () {
-    function BeginPageModule() {
-    }
-    return BeginPageModule;
-}());
-BeginPageModule = __decorate([
-    __WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"]({
-        declarations: [__WEBPACK_IMPORTED_MODULE_2__begin__["a" /* BeginPage */]],
-        imports: [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__begin__["a" /* BeginPage */])],
-        entryComponents: [__WEBPACK_IMPORTED_MODULE_2__begin__["a" /* BeginPage */]]
-    })
-], BeginPageModule);
-
-//# sourceMappingURL=begin.module.js.map
-
-/***/ }),
-
-/***/ 98:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BeginPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_recommendation_service__ = __webpack_require__(39);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ngrx_store__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__actions_recomm_actions__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -56,105 +18,76 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
-
-
-
-var BeginPage = (function () {
-    function BeginPage(navCtrl, store, recommActions, alertCtrl, navParams, recommendationService, loadingCtrl) {
-        this.navCtrl = navCtrl;
-        this.store = store;
-        this.recommActions = recommActions;
-        this.alertCtrl = alertCtrl;
-        this.navParams = navParams;
-        this.recommendationService = recommendationService;
+var ExplanationPage = (function () {
+    function ExplanationPage(platform, params, viewCtrl, loadingCtrl) {
+        this.platform = platform;
+        this.params = params;
+        this.viewCtrl = viewCtrl;
         this.loadingCtrl = loadingCtrl;
-        this.questions = [];
-        this.colsQuestions = [];
-        this.divider = 2;
-        this.counter = 0;
-        this.questionsValue = [];
-        this.selected = [];
-        this.lastPage = false;
-        this.consoleObject = function (str, obj) { return console.log(str, JSON.parse(JSON.stringify(obj))); };
-        this.questionsValue = this.navParams.get("selected");
-        console.log("DATA", this.questionsValue);
-        this.loadQuestions();
+        this.explanation = params.get("explanation");
     }
-    BeginPage.prototype.findIndex = function (name) {
-        return this.questionsValue.findIndex(function (obj) { return obj.name == name; });
-    };
-    BeginPage.prototype.changeValue = function (name, value) {
-        var realValue = value.value / 100;
-        var idx = this.findIndex(name);
-        if (idx != -1)
-            this.questionsValue[idx].pref = realValue;
-        else {
-            this.questionsValue.push({
-                name: name,
-                pref: realValue,
-                conf: 1
-            });
-        }
-    };
-    BeginPage.prototype.loadQuestions = function () {
-        var _this = this;
-        this.questions = [];
-        this.presentLoading();
-        var i = 0;
-        this.recommendationService.downPropagation(this.questionsValue).subscribe(function (questions) {
-            _this.colsQuestions = [];
-            var askedNodes = questions.askedNodes;
-            askedNodes.forEach(function (question) {
-                _this.selected.push(question.name);
-                if (i % _this.divider == 0) {
-                    _this.questions = [];
-                    for (var j = i; j < i + _this.divider; j++) {
-                        if (askedNodes[j])
-                            _this.questions.push({ name: askedNodes[j].name, image: askedNodes[j].image });
-                    }
-                    _this.colsQuestions.push({ cols: _this.questions });
-                }
-                i += 1;
-            });
-            _this.stopLoading();
-            if (_this.colsQuestions.length == 0) {
-                _this.store.dispatch(_this.recommActions.setUpdatedClass(_this.questionsValue));
-                // this.navigate();
-            }
-        });
-    };
-    BeginPage.prototype.showAlert = function () {
-        var alert = this.alertCtrl.create({
-            title: 'Failed',
-            message: 'Please at least select one type',
-            buttons: ['OK']
-        });
-        alert.present();
-    };
-    BeginPage.prototype.navigate = function () {
-    };
-    BeginPage.prototype.stopLoading = function () {
+    ExplanationPage.prototype.stopLoading = function () {
         this.loader.dismiss();
     };
-    BeginPage.prototype.presentLoading = function () {
+    ExplanationPage.prototype.presentLoading = function () {
         this.loader = this.loadingCtrl.create({
             content: "Please wait..."
         });
         this.loader.present();
     };
-    return BeginPage;
+    ExplanationPage.prototype.dismiss = function () {
+        this.viewCtrl.dismiss();
+    };
+    return ExplanationPage;
 }());
-BeginPage = __decorate([
+ExplanationPage = __decorate([
     __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* IonicPage */](),
     __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"]({
-        selector: 'page-begin',
-        template: "\n    <ion-header>\n      <ion-navbar color=\"sky\">\n        <ion-title>Recommender</ion-title>\n      </ion-navbar>\n    </ion-header>\n    <ion-content *ngIf=\"questions\" class=\"card-background-page\">\n      <h6 ion-text style=\"font-size: small;\" color=\"ocean\" class=\"highlight\">Update your preference</h6>\n      <ion-grid>\n        <ion-row *ngFor=\"let cols of colsQuestions\">\n          <ion-col col-6 *ngFor=\"let col of cols.cols\">\n            <ion-card>\n              <img style=\"width: 100%;\" [src]=\"col.image\">\n              <div class=\"card-title\">{{col.name}}</div>\n              <div class=\"card-subtitle\" *ngIf=\"findIndex(col.name) != -1\">{{questionsValue[findIndex(col.name)].pref * 100}}</div>\n              <ion-range \n                step=\"10\" \n                style=\"top: 30% !important\" \n                class=\"card-title\" \n                (ionChange)=\"changeValue(col.name, $event)\" \n                color=\"danger\" \n                pin=\"true\">\n              </ion-range>\n            </ion-card>\n          </ion-col>\n        </ion-row>\n      </ion-grid>   \n    </ion-content> \n    <ion-footer style=\"height: 10%;\">        \n      <button color=\"fire\" style=\"height: 100%;\" ion-button block (click)=\"navigate()\">Next</button> \n    </ion-footer>\n\n  "
+        selector: 'page-explanation',
+        template: "\n    <ion-header>\n        <ion-toolbar color=\"sky\">\n            <ion-title>\n            Explanation\n            </ion-title>\n            <ion-buttons start>\n            <button ion-button (click)=\"dismiss()\">\n                <span ion-text color=\"primary\" showWhen=\"ios\">Cancel</span>\n                <ion-icon name=\"md-close\" showWhen=\"android, windows\"></ion-icon>\n            </button>\n            </ion-buttons>\n        </ion-toolbar>\n    </ion-header>\n    <ion-content>\n        <p style=\"padding: 4%;\">\n        {{explanation}}\n        </p>\n    </ion-content>\n  ",
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__ngrx_store__["a" /* Store */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__ngrx_store__["a" /* Store */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_4__actions_recomm_actions__["a" /* RecommActions */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__actions_recomm_actions__["a" /* RecommActions */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* NavParams */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_2__services_recommendation_service__["a" /* RecommendationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_recommendation_service__["a" /* RecommendationService */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* LoadingController */]) === "function" && _g || Object])
-], BeginPage);
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* Platform */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* NavParams */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["n" /* ViewController */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* LoadingController */]])
+], ExplanationPage);
 
-var _a, _b, _c, _d, _e, _f, _g;
-//# sourceMappingURL=begin.js.map
+//# sourceMappingURL=explanation.js.map
+
+/***/ }),
+
+/***/ 89:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ExplanationPageModule", function() { return ExplanationPageModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__explanation__ = __webpack_require__(113);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(9);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+var ExplanationPageModule = (function () {
+    function ExplanationPageModule() {
+    }
+    return ExplanationPageModule;
+}());
+ExplanationPageModule = __decorate([
+    __WEBPACK_IMPORTED_MODULE_1__angular_core__["NgModule"]({
+        declarations: [__WEBPACK_IMPORTED_MODULE_0__explanation__["a" /* ExplanationPage */]],
+        imports: [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["g" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_0__explanation__["a" /* ExplanationPage */])],
+        entryComponents: [__WEBPACK_IMPORTED_MODULE_0__explanation__["a" /* ExplanationPage */]]
+    })
+], ExplanationPageModule);
+
+//# sourceMappingURL=explanation.module.js.map
 
 /***/ })
 

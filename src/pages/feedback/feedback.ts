@@ -7,6 +7,8 @@ import { Component } from '@angular/core';
 import { NavController, LoadingController, Loading, NavParams, AlertController, IonicPage } from 'ionic-angular';
 import { captureState, isFormFilled } from "../../utils/common.util";
 import { AppState } from "../../models/state.model";
+import { AlertService } from '../../services/alert.service';
+import { LoadingService } from '../../services/loading.service';
 
 @IonicPage()
 @Component({
@@ -23,50 +25,50 @@ import { AppState } from "../../models/state.model";
     <ion-content>
             <ion-list>
                 <ion-item [(ngModel)]="name">
-                    <ion-label color="primary" stacked>Name</ion-label>
-                    <ion-input placeholder="Full name"></ion-input>
+                    <ion-label color="primary" stacked>Nama</ion-label>
+                    <ion-input placeholder="Nama Lengkap"></ion-input>
                 </ion-item>
             </ion-list>
             <ion-card>
                 <ion-list radio-group [(ngModel)]="gender">
                     <ion-list-header>
-                        Gender
+                        Jenis Kelamin
                     </ion-list-header>
                     <ion-item>
-                        <ion-label>Male</ion-label>
+                        <ion-label>Laki-laki</ion-label>
                         <ion-radio value="male"></ion-radio>
                     </ion-item>
                     <ion-item>
-                        <ion-label>Female</ion-label>
+                        <ion-label>Perempuan</ion-label>
                         <ion-radio value="female"></ion-radio>
                     </ion-item>
                 </ion-list>
             </ion-card>
             <ion-list>
                 <ion-item [(ngModel)]="city">
-                    <ion-label color="primary" stacked>City</ion-label>
-                    <ion-input placeholder="e.g. Bandung"></ion-input>
+                    <ion-label color="primary" stacked>Kota Domisili</ion-label>
+                    <ion-input placeholder="contoh: Bandung"></ion-input>
                 </ion-item>
                 <ion-item [(ngModel)]="age">
-                    <ion-label color="primary" stacked>Age</ion-label>
-                    <ion-input type="number" placeholder="e.g. 17"></ion-input>
+                    <ion-label color="primary" stacked>Umur</ion-label>
+                    <ion-input type="number" placeholder="contoh: 17"></ion-input>
                 </ion-item>
                 <ion-item [(ngModel)]="profession">
-                    <ion-label color="primary" stacked>Profession</ion-label>
-                    <ion-input placeholder="e.g. Software engineer"></ion-input>
+                    <ion-label color="primary" stacked>Profesi</ion-label>
+                    <ion-input placeholder="contoh: Mahasiswa"></ion-input>
                 </ion-item>
                 <ion-item [(ngModel)]="univ">
-                    <ion-label color="primary" stacked>University</ion-label>
-                    <ion-input placeholder="e.g. Telkom University"></ion-input>
+                    <ion-label color="primary" stacked>Universitas</ion-label>
+                    <ion-input placeholder="contoh: Telkom University"></ion-input>
                 </ion-item>
                 <ion-item [(ngModel)]="majors">
-                    <ion-label color="primary" stacked>Majors</ion-label>
-                    <ion-input placeholder="e.g. Computer Science"></ion-input>
+                    <ion-label color="primary" stacked>Fakultas</ion-label>
+                    <ion-input placeholder="contoh: Teknik Informatika"></ion-input>
                 </ion-item>
             </ion-list>
     </ion-content>
     <ion-footer style="height: 10%;">        
-        <button style="height: 100%;" ion-button block color="fire" (click)=navigate() >Submit</button> 
+        <button style="height: 100%;" ion-button block color="fire" (click)="navigate()">Submit</button> 
     </ion-footer>
 
   `
@@ -86,21 +88,13 @@ export class FeedbackPage {
 
   constructor(public navCtrl: NavController,
   private userService: UserService,
-  public loadingCtrl: LoadingController,
   private navParams: NavParams,
-  public alertCtrl: AlertController,
+  public alertService: AlertService,
+  public loadingService: LoadingService,
   private store: Store<AppState>) {
       this.rating = navParams.get("rate");
   }
 
-  showAlert(title: string = "Failed", message: string = "Please fill all required field first") {
-    let alert = this.alertCtrl.create({
-      title: title,
-      message: message,
-      buttons: ['OK']
-    });
-    alert.present();
-  }
 
   navigate(){
     this.ip = captureState(this.store).user.ipApi.ip;
@@ -120,25 +114,13 @@ export class FeedbackPage {
         rating: this.rating
     };
     if(isFormFilled(params)){
-        this.presentLoading();
+        this.loadingService.presentLoading();
         this.userService.addFeedback(params).subscribe(feedback=>{
-            this.stopLoading();
-            this.showAlert("Thank You", `Thank you ${params.name} for participating this survey, have a good day!`);
+            this.loadingService.stopLoading();
+            this.alertService.presentAlert("Terimakasih", `${params.name}, saya sangat berterimakasih karena anda sudah berpartisipasi dalam survey tugas akhir ini`);
             this.navCtrl.setRoot(RecommendationPage);
         })
     }
-    else this.showAlert();
-  }
-
-
-  stopLoading(){
-    this.loader.dismiss();
-  }
-
-  presentLoading() {
-    this.loader = this.loadingCtrl.create({
-      content: "Please wait..."
-    });
-    this.loader.present();
+    else this.alertService.presentAlert("", "Mohon isi data dengan lengkap terlebih dahulu");
   }
 }

@@ -78,3 +78,11 @@ export function appendState(state: any, data: any): any{
     return tmp;
 }
 
+export function findIndex(array: any, colName: string, value: string): number{
+  return array.findIndex(obj => obj[colName] == value);
+}
+
+export function filterZero(array: any, colName: string): any{
+  return array.filter(a => a[colName] > 0);
+}
+

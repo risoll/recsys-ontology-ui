@@ -1,4 +1,11 @@
+export interface DistanceMatrix{
+  text: string;
+  value: number;
+}
+
 export interface Place{
+    duration: DistanceMatrix,
+    distance: DistanceMatrix,
     place_id: string, 
     name: string, 
     formatted_address: string,

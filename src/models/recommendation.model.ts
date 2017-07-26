@@ -1,8 +1,12 @@
+import { Location } from './user.model';
 import { Question, NodeValues } from './recommendation.model';
 export interface Question {
 	name: string;
 	image: string;
 	value?: number;
+	description?: string;
+	root?: string;
+	showDesc?: boolean;
 }
 
 export interface ColsQuestion {
@@ -14,16 +18,32 @@ export interface Values {
 	conf: number;
 }
 
+export interface DistanceMatrix{
+	text: string;
+	value: number;
+}
+
 export interface NodeValues {
 	name: string,
+	distance?: DistanceMatrix,
+	duration?: DistanceMatrix,
+	activation?: number,
 	pref: number,
 	conf: number,
+	image?: string,
 	parents?: NodeValues[]
 }
 
 export interface DownPropagationResponse{
 	data: NodeValues[],
 	askedNodes: Question[]
+}
+
+export interface UpPropagationParams{
+	old: NodeValues[],
+	assigned: NodeValues[],
+	userLocation: Location,
+	distance: number
 }
 
 export interface BacktrackClass {

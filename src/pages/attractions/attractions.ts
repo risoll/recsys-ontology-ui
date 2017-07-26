@@ -1,3 +1,4 @@
+import { LoadingService } from './../../services/loading.service';
 import { PlacePage } from './../place/place';
 import { Pagination } from './../../models/place.model';
 import { PlaceService } from './../../services/place.service';
@@ -18,28 +19,20 @@ import { AppState } from "../../models/state.model";
         <button ion-button menuToggle>
           <ion-icon name="menu"></ion-icon>
         </button>
-        <ion-title>Browse</ion-title>
+        <ion-title>Jelajah</ion-title>
       </ion-navbar>
     </ion-header>
     <ion-content>
-      <ion-grid fixed>
-        <ion-list>
-          <button (click)="details(place)" ion-item *ngFor="let place of places">
-            <ion-row>
-              <ion-col col-3>
-                  <ion-avatar item-start>
-                    <img [src]="place.photo">
-                  </ion-avatar>
-              </ion-col>
-              <ion-col col-9>
-                  <h2>{{place.name}}</h2>
-                  <p>{{place.formatted_address}}</p>
-              </ion-col>
-            </ion-row>
-          </button>
-        </ion-list>
-      </ion-grid>
-      <button color="fire" ion-button block style="height: 10%;" (click)="loadMore()">Load More</button> 
+      <ion-list>
+				<ion-item (click)="details(place)" *ngFor="let place of places">
+					<ion-avatar item-start>
+						<img [src]="place.photo">
+					</ion-avatar>
+					<h2>{{place.name}}</h2>
+					<p>{{place.formatted_address}}</p>
+				</ion-item>
+      </ion-list>
+      <button color="fire" ion-button block style="height: 10%;" (click)="loadMore()">Tampilkan lebih banyak</button> 
     </ion-content>
   `,
 })
@@ -50,10 +43,10 @@ export class AttractionsPage {
   offset = 0;
 
   constructor(private attractionsActions: AttractionsActions,
-  private store: Store<AppState>, public loadingCtrl: LoadingController,
+  private store: Store<AppState>, public loadingService: LoadingService,
   public navCtrl: NavController, private placeService: PlaceService,
   private app: App) {
-    this.presentLoading();
+    this.loadingService.presentLoading();
     this.loadMore();
   }
 
@@ -66,7 +59,7 @@ export class AttractionsPage {
     this.placeService.getPlaces(pagination).subscribe(places=>{
       this.places = this.places.concat(places);
       this.store.dispatch(this.attractionsActions.setAttractionsLoadStatus("loaded"));
-      this.stopLoading();
+      this.loadingService.stopLoading();
     })
   }
 
@@ -79,15 +72,5 @@ export class AttractionsPage {
     this.offset += 15;
   }
 
-  stopLoading(){
-    this.loader.dismiss();
-  }
-
-  presentLoading() {
-    this.loader = this.loadingCtrl.create({
-      content: "Please wait..."
-    });
-    this.loader.present();
-  }
 
 }

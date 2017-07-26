@@ -8,6 +8,7 @@ export interface RecommState{
     updatedClass: NodeValues[];
     loadedClass: ColsQuestion[][];
     selectedPlaces: Place[];
+    distance: number;
 }
 
 const initialState = <RecommState>{
@@ -15,7 +16,8 @@ const initialState = <RecommState>{
     selectedClass: [[]],
     updatedClass: [],
     loadedClass: [[]],
-    selectedPlaces: []
+    selectedPlaces: [],
+    distance: 5
 }
 
 export function RecommReducer(state: RecommState = initialState, action) {
@@ -30,6 +32,8 @@ export function RecommReducer(state: RecommState = initialState, action) {
             return Object.assign({}, state, { loadedClass: action.payload });
         case RecommActions.SELECT_PLACES:
             return Object.assign({}, state, { selectedPlaces: action.payload });
+        case RecommActions.SET_DISTANCE:
+            return Object.assign({}, state, { distance: action.payload });
         default:
             return state;
     };

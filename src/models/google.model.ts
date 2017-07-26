@@ -40,6 +40,6 @@ export interface Geometry{
 }
 
 export interface Location{
-  lat: string;
-  lng: string;
+  lat: number;
+  lng: number;
 }

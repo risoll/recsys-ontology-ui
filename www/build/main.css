@@ -32722,7 +32722,7 @@ page-begin .card-background-page ion-card {
 
 page-begin .card-background-page .card-title {
   position: absolute;
-  top: 36%;
+  top: 23%;
   font-size: 1.0em;
   width: 100%;
   font-weight: bold;
@@ -32733,7 +32733,7 @@ page-begin .card-background-page .card-subtitle {
   font-size: 1.0em;
   font-weight: bolder;
   position: absolute;
-  top: 52%;
+  top: 60%;
   width: 100%;
   color: #fff;
 }
@@ -32809,6 +32809,14 @@ page-recommendation .highlight {
   text-align: center;
 }
 
+page-recommendation .showed {
+  background-color: #f97b0c;
+}
+
+page-recommendation .hide {
+  background-color: white;
+}
+
 page-recommendation .card-background-page ion-card {
   position: relative;
   text-align: center;
@@ -32816,7 +32824,7 @@ page-recommendation .card-background-page ion-card {
 
 page-recommendation .card-background-page .card-title {
   position: absolute;
-  top: 36%;
+  top: 23%;
   font-size: 1.0em;
   width: 100%;
   font-weight: bold;
@@ -32827,7 +32835,7 @@ page-recommendation .card-background-page .card-subtitle {
   font-size: 1.0em;
   font-weight: bolder;
   position: absolute;
-  top: 52%;
+  top: 60%;
   width: 100%;
   color: #fff;
 }
@@ -32846,10 +32854,14 @@ page-result ul.rating li ion-icon {
   font-size: 30px;
 }
 
-page-result-selection .checkbox {
-  width: 17%;
-  margin-left: -7%;
-  padding: 0px;
+page-result-selection ion-checkbox button.item-cover {
+  width: 15%;
+}
+
+page-result-selection ion-label button.item-cover {
+  width: 85%;
+  right: 0;
+  left: auto;
 }
 
 page-result-selection .item-checkbox-right {
@@ -32861,7 +32873,6 @@ page-result-selection .item-checkbox-right {
 }
 
 page-result-selection .col {
-  width: 70% !important;
   padding: 0px !important;
 }
 

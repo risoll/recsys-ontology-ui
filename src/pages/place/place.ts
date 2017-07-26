@@ -9,15 +9,15 @@ import { IonicPage } from "ionic-angular";
           <button ion-button menuToggle>
             <ion-icon name="menu"></ion-icon>
           </button>
-          <ion-title>Place</ion-title>
+          <ion-title>Tempat Wisata</ion-title>
         </ion-navbar>
         <ion-toolbar no-border-top>
           <ion-segment [(ngModel)]="type">
             <ion-segment-button value="details">
-              Details
+              Rincian
             </ion-segment-button>
             <ion-segment-button value="maps">
-              Maps
+              Peta
             </ion-segment-button>
           </ion-segment>
       </ion-toolbar>

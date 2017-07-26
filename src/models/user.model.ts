@@ -24,3 +24,8 @@ export interface IpApi{
     longitude: number;
     timezone: string;
 }
+
+export interface Location{
+    lat: number;
+    lng: number;
+}
