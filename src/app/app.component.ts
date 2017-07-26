@@ -34,7 +34,7 @@ import { AppState } from "../models/state.model";
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = 'RecommendationPage';
+  rootPage: any = 'IntroPage';
   loader: Loading;
 
   pages: Array<{ title: string, component: any }>;
@@ -94,7 +94,7 @@ export class MyApp {
     }else{
       console.log("FAILED");
     }
-    
+
   }
 
   initializeApp() {

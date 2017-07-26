@@ -745,7 +745,7 @@ var MyApp = (function () {
         this.storage = storage;
         this.splashScreen = splashScreen;
         this.statusBar = statusBar;
-        this.rootPage = 'RecommendationPage';
+        this.rootPage = 'IntroPage';
         // this.presentLoading();
         this.userService.ipApi().subscribe(function (ipApi) {
             _this.store.dispatch(_this.userActions.setIpApi(ipApi));
