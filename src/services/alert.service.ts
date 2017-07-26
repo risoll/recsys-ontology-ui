@@ -15,7 +15,7 @@ export class AlertService {
 						text: 'OK'
 					}
 				]
-			})
+			});
 
 		return alert.present();
 	}

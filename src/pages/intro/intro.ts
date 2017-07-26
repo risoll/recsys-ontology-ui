@@ -18,7 +18,7 @@ import { NavController, IonicPage } from 'ionic-angular';
                 <img src="assets/images/intro/4.jpg" class="slide-image"/>
                 <h2 class="slide-title">Anda siap?</h2>
                 <button (click)=goToHome() ion-button large clear icon-end color="primary">
-                    Continue
+                    Lanjut
                     <ion-icon name="arrow-forward"></ion-icon>
                 </button>
             </ion-slide>

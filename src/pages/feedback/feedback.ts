@@ -13,13 +13,14 @@ import { LoadingService } from '../../services/loading.service';
 @IonicPage()
 @Component({
   selector: 'page-feedback',
-  template: `
+  template:
+      `
     <ion-header>
       <ion-navbar color="sky">
         <button ion-button menuToggle>
           <ion-icon name="menu"></ion-icon>
         </button>
-        <ion-title>Feedback</ion-title>
+        <ion-title>Survei Pengguna</ion-title>
       </ion-navbar>
     </ion-header>
     <ion-content>

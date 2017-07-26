@@ -18,6 +18,7 @@ import {
   IonicPage
 } from 'ionic-angular';
 import {isFormFilled} from "../../utils/common.util";
+import {AlertService} from "../../services/alert.service";
 
 @IonicPage()
 @Component({
@@ -85,8 +86,7 @@ export class ResultPage {
               private store: Store<AppState>,
               private navParams: NavParams,
               private attractionsActions: AttractionsActions,
-              public loadingCtrl: LoadingController,
-              public alertCtrl: AlertController,
+              public alertService: AlertService,
               public modalCtrl: ModalController,
               private app: App) {
     this.recomms = this.navParams.get("recomms");
@@ -117,21 +117,13 @@ export class ResultPage {
   }
 
   navigate() {
-    let check = isFormFilled({rate: this.rate})
+    let check = isFormFilled({rate: this.rate});
     if (check)
       this.navCtrl.push(FeedbackPage, {
         rate: this.rate
       });
-    else this.showAlert();
+    else this.alertService.presentAlert("", "Harap beri penilaian terhadap hasil rekomendasi terlebih dahulu");
   }
 
-  showAlert() {
-    let alert = this.alertCtrl.create({
-      title: 'Failed',
-      message: 'Please rate the recommendation',
-      buttons: ['OK']
-    });
-    alert.present();
-  }
 
 }

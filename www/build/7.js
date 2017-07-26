@@ -203,11 +203,12 @@ IntroPage = __decorate([
     __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["f" /* IonicPage */](),
     __WEBPACK_IMPORTED_MODULE_1__angular_core__["Component"]({
         selector: 'page-intro',
-        template: "\n    <ion-content padding>\n        <ion-slides pager>\n            <ion-slide *ngFor=\"let slide of slides\">\n                <img style=\"width: 60%\" [src]=\"slide.image\" class=\"slide-image\"/>\n                <h2 class=\"slide-title\" [innerHTML]=\"slide.title\"></h2>\n                <p [innerHTML]=\"slide.description\"></p>\n            </ion-slide>\n            <ion-slide>\n                <img src=\"assets/images/intro/4.jpg\" class=\"slide-image\"/>\n                <h2 class=\"slide-title\">Anda siap?</h2>\n                <button (click)=goToHome() ion-button large clear icon-end color=\"primary\">\n                    Continue\n                    <ion-icon name=\"arrow-forward\"></ion-icon>\n                </button>\n            </ion-slide>\n        </ion-slides>\n    </ion-content>\n  "
+        template: "\n    <ion-content padding>\n        <ion-slides pager>\n            <ion-slide *ngFor=\"let slide of slides\">\n                <img style=\"width: 60%\" [src]=\"slide.image\" class=\"slide-image\"/>\n                <h2 class=\"slide-title\" [innerHTML]=\"slide.title\"></h2>\n                <p [innerHTML]=\"slide.description\"></p>\n            </ion-slide>\n            <ion-slide>\n                <img src=\"assets/images/intro/4.jpg\" class=\"slide-image\"/>\n                <h2 class=\"slide-title\">Anda siap?</h2>\n                <button (click)=goToHome() ion-button large clear icon-end color=\"primary\">\n                    Lanjut\n                    <ion-icon name=\"arrow-forward\"></ion-icon>\n                </button>\n            </ion-slide>\n        </ion-slides>\n    </ion-content>\n  "
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["k" /* NavController */]])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["k" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["k" /* NavController */]) === "function" && _a || Object])
 ], IntroPage);
 
+var _a;
 //# sourceMappingURL=intro.js.map
 // CONCATENATED MODULE: ./src/pages/intro/intro.module.ts
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "IntroPageModule", function() { return IntroPageModule; });
