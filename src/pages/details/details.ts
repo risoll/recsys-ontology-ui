@@ -16,17 +16,18 @@ import { AppState } from "../../models/state.model";
         <ion-card-title>
             {{place.name}}
         </ion-card-title>
+        
+        <h6 ion-text color="primary" style="font-size: small">Deskripsi</h6>
+        <p>{{place.description}}</p>
+      
         <h6 ion-text color="primary" style="font-size: small">Alamat</h6>
-
-        <p>
-            {{place.formatted_address}}
-        </p>
+        <p>{{place.formatted_address}}</p>
+      
         <h6 ion-text color="primary" style="font-size: small">Telepon</h6>
-
-        <p>
-            {{place.phone}}
-        </p>
+        <p>{{place.phone}}</p>
+        
         <hr>
+        
         <h6 ion-text color="primary">Jam Buka dan Jam Tutup</h6>
         <table>
             <tr *ngFor="let schedule of schedules">

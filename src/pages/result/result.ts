@@ -1,14 +1,23 @@
-import { AttractionsActions } from './../../actions/attractions.actions';
-import { AppState } from './../../models/state.model';
-import { Store } from '@ngrx/store';
-import { Place } from './../../models/place.model';
-import { PlacePage } from './../place/place';
-import { ExplanationPage } from './../explanation/explanation';
-import { FeedbackPage } from './../feedback/feedback';
-import { Component } from '@angular/core';
+import {AttractionsActions} from './../../actions/attractions.actions';
+import {AppState} from './../../models/state.model';
+import {Store} from '@ngrx/store';
+import {Place} from './../../models/place.model';
+import {PlacePage} from './../place/place';
+import {ExplanationPage} from './../explanation/explanation';
+import {FeedbackPage} from './../feedback/feedback';
+import {Component} from '@angular/core';
 
-import { NavController, LoadingController, Loading, AlertController, ModalController, App, NavParams, IonicPage } from 'ionic-angular';
-import { isFormFilled } from "../../utils/common.util";
+import {
+  NavController,
+  LoadingController,
+  Loading,
+  AlertController,
+  ModalController,
+  App,
+  NavParams,
+  IonicPage
+} from 'ionic-angular';
+import {isFormFilled} from "../../utils/common.util";
 
 @IonicPage()
 @Component({
@@ -23,45 +32,42 @@ import { isFormFilled } from "../../utils/common.util";
       </ion-navbar>
     </ion-header>
     <ion-content>
-        <ion-card>
-        <img [src]="recomm.photo"/>
+      <ion-card style="text-align: center">
+        <ion-card-header>
+          Berikan penilaian anda terhadap <br>
+          rekomendasi yang dihasilkan
+        </ion-card-header>
         <ion-card-content>
-            <ion-card-title>
-                {{recomm.name}}
-            </ion-card-title>
-            <p>{{recomm.formatted_address}}</p>
-            <hr>
-            <ion-row no-padding>
-                <ion-col text-right>
-                    <button (click)=details(recomm) ion-button small color="danger" icon-start>
-                    <ion-icon name='navigate'></ion-icon>
-                    Details
-                    </button>
-                </ion-col>
-            </ion-row>
+          {{comment}}
+          <rating [(ngModel)]="rate"
+                  readOnly="false"
+                  max="5"
+                  emptyStarIconName="star-outline"
+                  halfStarIconName="star-half"
+                  starIconName="star"
+                  nullable="false"
+                  (ngModelChange)="onModelChange($event)">
+          </rating>
         </ion-card-content>
-    </ion-card>
-        <ion-card style="text-align: center">
-            <ion-card-header>
-                Berikan penilaian anda terhadap <br> 
-                rekomendasi yang dihasilkan
-            </ion-card-header>
-            <ion-card-content>
-                <rating [(ngModel)]="rate" 
-                        readOnly="false"
-                        max="5" 
-                        emptyStarIconName="star-outline" 
-                        halfStarIconName="star-half"
-                        starIconName="star"
-                        nullable="false"
-                        (ngModelChange)="onModelChange($event)">
-                </rating>
-                {{comment}}
-            </ion-card-content>
+      </ion-card>
+      <hr>
+      <div class="pins">
+        <ion-card (click)="details(recomm)" class="pin" *ngFor="let recomm of recomms">
+          <img [src]="recomm.photo"/>
+          <div *ngIf="recomm.description" class="post-description">
+            <small>{{ recomm.description }}</small>
+          </div>
+          <ion-item>
+            <small>{{recomm.name}}</small>
+            <p>
+              <small>{{recomm.formatted_address}}</small>
+            </p>
+          </ion-item>
         </ion-card>
+      </div>
     </ion-content>
-    <ion-footer style="height: 10%;">        
-        <button style="height: 100%;" color="fire" ion-button block (click)="navigate()">Lanjut</button> 
+    <ion-footer style="height: 10%;">
+    <button style="height: 100%;" color="fire" ion-button block (click)="navigate()">Lanjut</button>
     </ion-footer>
 
   `
@@ -73,49 +79,49 @@ export class ResultPage {
   comment: string;
   explanation: string = "This is an explanation page";
   place: string = "Place";
-  private recomm: Place;
+  private recomms: Place[];
 
   constructor(public navCtrl: NavController,
-    private store: Store<AppState>,
-    private navParams: NavParams,
-    private attractionsActions: AttractionsActions,
-    public loadingCtrl: LoadingController,
-    public alertCtrl: AlertController,
-    public modalCtrl: ModalController,
-    private app: App) {
-      this.recomm = this.navParams.get("recomm");
+              private store: Store<AppState>,
+              private navParams: NavParams,
+              private attractionsActions: AttractionsActions,
+              public loadingCtrl: LoadingController,
+              public alertCtrl: AlertController,
+              public modalCtrl: ModalController,
+              private app: App) {
+    this.recomms = this.navParams.get("recomms");
   }
 
-  details(place: Place){
+  details(place: Place) {
     this.store.dispatch(this.attractionsActions.selectPlace(place));
     this.app.getRootNav().push(PlacePage);
   }
 
-  explain(){
+  explain() {
     let modal = this.modalCtrl.create(ExplanationPage, {
-        explanation: this.explanation
+      explanation: this.explanation
     });
     modal.present();
   }
 
-  onModelChange(value: any){
-      this.starToText(value);
+  onModelChange(value: any) {
+    this.starToText(value);
   }
 
-  starToText(value: number){
-    if(value == 1) this.comment = "Sangat Buruk";
-    else if(value == 2) this.comment = "Buruk";
-    else if(value == 3) this.comment = "Cukup";
-    else if(value == 4) this.comment = "Baik";
+  starToText(value: number) {
+    if (value == 1) this.comment = "Sangat Buruk";
+    else if (value == 2) this.comment = "Buruk";
+    else if (value == 3) this.comment = "Cukup";
+    else if (value == 4) this.comment = "Baik";
     else this.comment = "Sangat Baik";
   }
 
-  navigate(){
+  navigate() {
     let check = isFormFilled({rate: this.rate})
-    if(check)
-        this.navCtrl.push(FeedbackPage, {
-            rate: this.rate
-        })
+    if (check)
+      this.navCtrl.push(FeedbackPage, {
+        rate: this.rate
+      });
     else this.showAlert();
   }
 
@@ -128,15 +134,4 @@ export class ResultPage {
     alert.present();
   }
 
-
-  stopLoading(){
-    this.loader.dismiss();
-  }
-
-  presentLoading() {
-    this.loader = this.loadingCtrl.create({
-      content: "Please wait..."
-    });
-    this.loader.present();
-  }
 }

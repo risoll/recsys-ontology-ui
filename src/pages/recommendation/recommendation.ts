@@ -60,7 +60,7 @@ import { LoadingService } from "../../services/loading.service";
         <ion-row>
           <ion-col col-12>
             <ion-item>
-              <p style="text-align: center">Jarak maksimal anda dengan tempat wisata</p>
+              <p style="text-align: center">Jarak maksimal anda dengan tempat wisata <br> {{distance}} Km</p>
             </ion-item>
             <ion-item>
               <ion-range step="5" min="5" [(ngModel)]="distance">
@@ -68,9 +68,9 @@ import { LoadingService } from "../../services/loading.service";
                 <ion-icon range-right name="flag"></ion-icon>
               </ion-range>
             </ion-item>
-            <ion-item>
-              <p style="text-align: center">{{distance}} Km</p>
-            </ion-item>
+            <!--<ion-item>-->
+              <!--<p style="text-align: center">{{distance}} Km</p>-->
+            <!--</ion-item>-->
           </ion-col>
         </ion-row>
       </ion-grid>   
@@ -131,7 +131,7 @@ export class RecommendationPage {
           this.questions = [];
           for (let j = i; j < i + this.divider; j++) {
             if (questions[j])
-              this.questions.push({ 
+              this.questions.push({
                 name: questions[j].name, image: questions[j].image,
                 description: questions[j].description, root: questions[j].root,
                 showDesc: false

@@ -6,8 +6,10 @@ export interface DistanceMatrix{
 export interface Place{
     duration: DistanceMatrix,
     distance: DistanceMatrix,
-    place_id: string, 
-    name: string, 
+    description?: string,
+    root?: string,
+    place_id: string,
+    name: string,
     formatted_address: string,
     phone: string, length_of_visit: string, tariff: number,
     photo: string, lat: number, lng: number, rating: number,

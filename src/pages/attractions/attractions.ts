@@ -67,7 +67,7 @@ export class AttractionsPage {
     let pagination = <Pagination>{
       limit: 15,
       offset: this.offset
-    }
+    };
     this.getPlaces(pagination);
     this.offset += 15;
   }

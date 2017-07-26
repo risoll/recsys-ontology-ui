@@ -157,7 +157,7 @@ RecommendationPage = __decorate([
     __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["f" /* IonicPage */](),
     __WEBPACK_IMPORTED_MODULE_2__angular_core__["Component"]({
         selector: 'page-recommendation',
-        template: "\n    <ion-header>\n      <ion-navbar color=\"sky\">\n        <button ion-button menuToggle>\n          <ion-icon name=\"menu\"></ion-icon>\n        </button>\n        <ion-title>Rekomendasi</ion-title>\n      </ion-navbar>\n    </ion-header>\n    <ion-content *ngIf=\"questions\" class=\"card-background-page\">\n      <h6 ion-text style=\"font-size: small;\" color=\"ocean\" class=\"highlight\">\n        Tentukan tingkat prioritas anda pada<br>\n        kategori tempat wisata dibawah ini dengan skala 1-100\n      </h6>\n      <ion-grid>\n        <ion-row *ngFor=\"let cols of colsQuestions\">\n          <ion-col col-6 *ngFor=\"let col of cols.cols\">\n            <ion-card>\n              <img style=\"width: 100%;\" [src]=\"col.image\">\n              <div class=\"card-title\">{{col.name}}</div>\n              <div class=\"card-subtitle\" *ngIf=\"findIndex(col.name) != -1 && questionsValue[findIndex(col.name)].pref > 0\">{{questionsValue[findIndex(col.name)].pref * 100}}</div>\n              <ion-range \n                step=\"10\" \n                style=\"top: 15% !important\" \n                class=\"card-title\" \n                (ionChange)=\"changeValue(col.name, $event)\" \n                color=\"danger\" \n                pin=\"true\">\n              </ion-range>\n              <button style=\"font-size: smaller\" (click)=\"col.showDesc = !col.showDesc\" ion-button clear small color=\"fire\" icon-start>\n                <ion-icon *ngIf=\"!col.showDesc\" name='arrow-dropdown'></ion-icon>\n                <ion-icon *ngIf=\"col.showDesc\" name='arrow-dropup'></ion-icon>\n                Deskripsi\n              </button>\n            </ion-card>\n            <ion-card *ngIf=\"col.showDesc\">\n              <p style=\"padding: 10px; font-size: smaller;\">\n                {{col.description}}\n              </p>\n            </ion-card>\n          </ion-col>\n        </ion-row>\n        <ion-row>\n          <ion-col col-12>\n            <ion-item>\n              <p style=\"text-align: center\">Jarak maksimal anda dengan tempat wisata</p>\n            </ion-item>\n            <ion-item>\n              <ion-range step=\"5\" min=\"5\" [(ngModel)]=\"distance\">\n                <ion-icon range-left name=\"people\"></ion-icon>\n                <ion-icon range-right name=\"flag\"></ion-icon>\n              </ion-range>\n            </ion-item>\n            <ion-item>\n              <p style=\"text-align: center\">{{distance}} Km</p>\n            </ion-item>\n          </ion-col>\n        </ion-row>\n      </ion-grid>   \n    </ion-content> \n    <ion-footer style=\"height: 10%;\">        \n      <button color=\"fire\" style=\"height: 100%;\" ion-button block (click)=\"navigate()\">Lanjut</button> \n    </ion-footer>\n\n  "
+        template: "\n    <ion-header>\n      <ion-navbar color=\"sky\">\n        <button ion-button menuToggle>\n          <ion-icon name=\"menu\"></ion-icon>\n        </button>\n        <ion-title>Rekomendasi</ion-title>\n      </ion-navbar>\n    </ion-header>\n    <ion-content *ngIf=\"questions\" class=\"card-background-page\">\n      <h6 ion-text style=\"font-size: small;\" color=\"ocean\" class=\"highlight\">\n        Tentukan tingkat prioritas anda pada<br>\n        kategori tempat wisata dibawah ini dengan skala 1-100\n      </h6>\n      <ion-grid>\n        <ion-row *ngFor=\"let cols of colsQuestions\">\n          <ion-col col-6 *ngFor=\"let col of cols.cols\">\n            <ion-card>\n              <img style=\"width: 100%;\" [src]=\"col.image\">\n              <div class=\"card-title\">{{col.name}}</div>\n              <div class=\"card-subtitle\" *ngIf=\"findIndex(col.name) != -1 && questionsValue[findIndex(col.name)].pref > 0\">{{questionsValue[findIndex(col.name)].pref * 100}}</div>\n              <ion-range \n                step=\"10\" \n                style=\"top: 15% !important\" \n                class=\"card-title\" \n                (ionChange)=\"changeValue(col.name, $event)\" \n                color=\"danger\" \n                pin=\"true\">\n              </ion-range>\n              <button style=\"font-size: smaller\" (click)=\"col.showDesc = !col.showDesc\" ion-button clear small color=\"fire\" icon-start>\n                <ion-icon *ngIf=\"!col.showDesc\" name='arrow-dropdown'></ion-icon>\n                <ion-icon *ngIf=\"col.showDesc\" name='arrow-dropup'></ion-icon>\n                Deskripsi\n              </button>\n            </ion-card>\n            <ion-card *ngIf=\"col.showDesc\">\n              <p style=\"padding: 10px; font-size: smaller;\">\n                {{col.description}}\n              </p>\n            </ion-card>\n          </ion-col>\n        </ion-row>\n        <ion-row>\n          <ion-col col-12>\n            <ion-item>\n              <p style=\"text-align: center\">Jarak maksimal anda dengan tempat wisata <br> {{distance}} Km</p>\n            </ion-item>\n            <ion-item>\n              <ion-range step=\"5\" min=\"5\" [(ngModel)]=\"distance\">\n                <ion-icon range-left name=\"people\"></ion-icon>\n                <ion-icon range-right name=\"flag\"></ion-icon>\n              </ion-range>\n            </ion-item>\n            <!--<ion-item>-->\n              <!--<p style=\"text-align: center\">{{distance}} Km</p>-->\n            <!--</ion-item>-->\n          </ion-col>\n        </ion-row>\n      </ion-grid>   \n    </ion-content> \n    <ion-footer style=\"height: 10%;\">        \n      <button color=\"fire\" style=\"height: 100%;\" ion-button block (click)=\"navigate()\">Lanjut</button> \n    </ion-footer>\n\n  "
     }),
     __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["k" /* NavController */],
         __WEBPACK_IMPORTED_MODULE_1__ngrx_store__["a" /* Store */],
@@ -360,7 +360,7 @@ var ResultPage = (function () {
         this.app = app;
         this.explanation = "This is an explanation page";
         this.place = "Place";
-        this.recomm = this.navParams.get("recomm");
+        this.recomms = this.navParams.get("recomms");
     }
     ResultPage.prototype.details = function (place) {
         this.store.dispatch(this.attractionsActions.selectPlace(place));
@@ -404,33 +404,18 @@ var ResultPage = (function () {
         });
         alert.present();
     };
-    ResultPage.prototype.stopLoading = function () {
-        this.loader.dismiss();
-    };
-    ResultPage.prototype.presentLoading = function () {
-        this.loader = this.loadingCtrl.create({
-            content: "Please wait..."
-        });
-        this.loader.present();
-    };
     return ResultPage;
 }());
 ResultPage = __decorate([
     __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["f" /* IonicPage */](),
     __WEBPACK_IMPORTED_MODULE_5__angular_core__["Component"]({
         selector: 'page-result',
-        template: "\n    <ion-header>\n      <ion-navbar color=\"sky\">\n        <button ion-button menuToggle>\n          <ion-icon name=\"menu\"></ion-icon>\n        </button>\n        <ion-title>Rekomendasi Terpilih</ion-title>\n      </ion-navbar>\n    </ion-header>\n    <ion-content>\n        <ion-card>\n        <img [src]=\"recomm.photo\"/>\n        <ion-card-content>\n            <ion-card-title>\n                {{recomm.name}}\n            </ion-card-title>\n            <p>{{recomm.formatted_address}}</p>\n            <hr>\n            <ion-row no-padding>\n                <ion-col text-right>\n                    <button (click)=details(recomm) ion-button small color=\"danger\" icon-start>\n                    <ion-icon name='navigate'></ion-icon>\n                    Details\n                    </button>\n                </ion-col>\n            </ion-row>\n        </ion-card-content>\n    </ion-card>\n        <ion-card style=\"text-align: center\">\n            <ion-card-header>\n                Berikan penilaian anda terhadap <br> \n                rekomendasi yang dihasilkan\n            </ion-card-header>\n            <ion-card-content>\n                <rating [(ngModel)]=\"rate\" \n                        readOnly=\"false\"\n                        max=\"5\" \n                        emptyStarIconName=\"star-outline\" \n                        halfStarIconName=\"star-half\"\n                        starIconName=\"star\"\n                        nullable=\"false\"\n                        (ngModelChange)=\"onModelChange($event)\">\n                </rating>\n                {{comment}}\n            </ion-card-content>\n        </ion-card>\n    </ion-content>\n    <ion-footer style=\"height: 10%;\">        \n        <button style=\"height: 100%;\" color=\"fire\" ion-button block (click)=\"navigate()\">Lanjut</button> \n    </ion-footer>\n\n  "
+        template: "\n    <ion-header>\n      <ion-navbar color=\"sky\">\n        <button ion-button menuToggle>\n          <ion-icon name=\"menu\"></ion-icon>\n        </button>\n        <ion-title>Rekomendasi Terpilih</ion-title>\n      </ion-navbar>\n    </ion-header>\n    <ion-content>\n      <ion-card style=\"text-align: center\">\n        <ion-card-header>\n          Berikan penilaian anda terhadap <br>\n          rekomendasi yang dihasilkan\n        </ion-card-header>\n        <ion-card-content>\n          {{comment}}\n          <rating [(ngModel)]=\"rate\"\n                  readOnly=\"false\"\n                  max=\"5\"\n                  emptyStarIconName=\"star-outline\"\n                  halfStarIconName=\"star-half\"\n                  starIconName=\"star\"\n                  nullable=\"false\"\n                  (ngModelChange)=\"onModelChange($event)\">\n          </rating>\n        </ion-card-content>\n      </ion-card>\n      <hr>\n      <div class=\"pins\">\n        <ion-card (click)=\"details(recomm)\" class=\"pin\" *ngFor=\"let recomm of recomms\">\n          <img [src]=\"recomm.photo\"/>\n          <div *ngIf=\"recomm.description\" class=\"post-description\">\n            <small>{{ recomm.description }}</small>\n          </div>\n          <ion-item>\n            <small>{{recomm.name}}</small>\n            <p>\n              <small>{{recomm.formatted_address}}</small>\n            </p>\n          </ion-item>\n        </ion-card>\n      </div>\n    </ion-content>\n    <ion-footer style=\"height: 10%;\">\n    <button style=\"height: 100%;\" color=\"fire\" ion-button block (click)=\"navigate()\">Lanjut</button>\n    </ion-footer>\n\n  "
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_6_ionic_angular__["k" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_1__ngrx_store__["a" /* Store */],
-        __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["l" /* NavParams */],
-        __WEBPACK_IMPORTED_MODULE_0__actions_attractions_actions__["a" /* AttractionsActions */],
-        __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["h" /* LoadingController */],
-        __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["a" /* AlertController */],
-        __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["i" /* ModalController */],
-        __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["b" /* App */]])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["k" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["k" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__ngrx_store__["a" /* Store */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__ngrx_store__["a" /* Store */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["l" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["l" /* NavParams */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__actions_attractions_actions__["a" /* AttractionsActions */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__actions_attractions_actions__["a" /* AttractionsActions */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["h" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["h" /* LoadingController */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["a" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["a" /* AlertController */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["i" /* ModalController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["i" /* ModalController */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["b" /* App */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["b" /* App */]) === "function" && _h || Object])
 ], ResultPage);
 
+var _a, _b, _c, _d, _e, _f, _g, _h;
 //# sourceMappingURL=result.js.map
 
 /***/ }),
@@ -491,6 +476,7 @@ var ResultSelectionPage = (function () {
         this.selectedPlaces = [];
         this.storedPlaces = [];
         this.selectedRecomms = [];
+        this.staticTitle = "";
         this.title = "Hasil Rekomendasi";
         this.places = [];
         this.limit = 15;
@@ -504,9 +490,14 @@ var ResultSelectionPage = (function () {
                 this.recommService.upPropagation(this.params).subscribe(function (data) {
                     console.log("data", data);
                     _this.selectedPlaces = data;
+                    _this.title = _this.selectedPlaces.length + " Hasil Rekomendasi";
+                    _this.staticTitle = _this.title;
                     _this.loadingService.stopLoading();
                 });
     }
+    ResultSelectionPage.prototype.reset = function () {
+        this.navCtrl.setRoot('RecommendationPage');
+    };
     ResultSelectionPage.prototype.check = function (data, value) {
         if (data.checked) {
             this.selectedRecomms.push(value.name);
@@ -521,9 +512,9 @@ var ResultSelectionPage = (function () {
                 this.storedPlaces.splice(idx2, 1);
         }
         if (this.selectedRecomms.length > 0)
-            this.title = this.selectedRecomms.length + " Item Terpilih";
+            this.title = this.selectedRecomms.length + " Rekomendasi Terpilih";
         else
-            this.title = "Hasil Rekomendasi";
+            this.title = this.staticTitle;
         console.log("recomms", this.selectedRecomms);
         console.log("stored places", this.storedPlaces);
     };
@@ -531,19 +522,23 @@ var ResultSelectionPage = (function () {
         var _this = this;
         var check = __WEBPACK_IMPORTED_MODULE_6__utils_common_util__["d" /* isFormFilled */]({ recomms: this.selectedRecomms });
         if (check) {
-            if (this.selectedRecomms.length > 0) {
-                var recomm = void 0;
-                for (var i = 0; i < this.selectedPlaces.length; i++) {
-                    if (this.selectedRecomms[0] == this.selectedPlaces[i].name) {
-                        recomm = this.selectedPlaces[i];
-                        break;
-                    }
-                }
-                this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_2__result_result__["a" /* ResultPage */], { recomm: recomm });
-            }
+            // if (this.selectedRecomms.length > 0) {
+            // 	let recomms: Place[];
+            // 	for (let i = 0; i < this.selectedPlaces.length; i++) {
+            // 		if (this.selectedRecomms[i] == this.selectedPlaces[i].name) {
+            // 			recomms.push(this.selectedPlaces[i]);
+            // 		}
+            // 	}
+            // 	this.navCtrl.push(ResultPage, { recomm: recomm });
+            // }
+            var filtered = this.selectedPlaces.filter(function (place) {
+                return _this.selectedRecomms.indexOf(place.name) > -1;
+            });
+            console.log("FILTERED", filtered);
+            this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_2__result_result__["a" /* ResultPage */], { recomms: filtered });
         }
         else {
-            this.alertService.presentAlertWithCallback("", "Anda tidak memilih rekomendasi, apakah anda ingin mengulangi proses rekomendasi?", "Tidak", "Iya, ulangi").then(function (status) {
+            this.alertService.presentAlertWithCallback("", "Anda tidak memilih rekomendasi, apakah anda ingin mengulangi proses rekomendasi dari awal?", "Tidak", "Iya, ulangi").then(function (status) {
                 if (status)
                     _this.navCtrl.setRoot('RecommendationPage');
             });
@@ -552,6 +547,7 @@ var ResultSelectionPage = (function () {
     ResultSelectionPage.prototype.details = function (place) {
         this.store.dispatch(this.attractionsActions.selectPlace(place));
         this.app.getRootNav().push(__WEBPACK_IMPORTED_MODULE_3__place_place__["a" /* PlacePage */]);
+        // this.navCtrl.push(PlacePage);
     };
     return ResultSelectionPage;
 }());
@@ -559,7 +555,7 @@ ResultSelectionPage = __decorate([
     __WEBPACK_IMPORTED_MODULE_0_ionic_angular__["f" /* IonicPage */](),
     __WEBPACK_IMPORTED_MODULE_4__angular_core__["Component"]({
         selector: 'page-result-selection',
-        template: "\n    <ion-header>\n      <ion-navbar color=\"sky\">\n        <button ion-button menuToggle>\n          <ion-icon name=\"menu\"></ion-icon>\n        </button>\n        <ion-title>{{title}}</ion-title>\n      </ion-navbar>\n    </ion-header>\n    <ion-content>\n      <ion-list>\n\t\t\t\n\t\t\t\t<ion-item (click)=\"details(place)\" *ngFor=\"let place of selectedPlaces\">\n\t\t\t\t\t<ion-avatar item-start>\n\t\t\t\t\t\t<img [src]=\"place.photo\">\n\t\t\t\t\t</ion-avatar>\n\t\t\t\t\t<ion-label item-inner>\n\t\t\t\t\t\t<h2>{{place.name}}</h2>\n\t\t\t\t\t\t<p>{{place.formatted_address}}</p>\n\t\t\t\t\t</ion-label>\n\t\t\t\t\t<ion-checkbox item-end (ionChange)=\"check($event, place)\" color=\"sky\" checked=\"false\"></ion-checkbox>\n\t\t\t\t\t\n\t\t\t\t</ion-item>\n\t\t\t\n      </ion-list>\n    </ion-content>\n    <ion-footer style=\"height: 10%;\">        \n      <button color=\"fire\" style=\"height: 100%;\" ion-button block (click)=\"navigate()\">Lanjut</button> \n    </ion-footer>\n\n  "
+        template: "\n    <ion-header>\n      <ion-navbar color=\"sky\">\n        <button ion-button menuToggle>\n          <ion-icon name=\"menu\"></ion-icon>\n        </button>\n        <ion-title>{{title}}</ion-title>\n      </ion-navbar>\n    </ion-header>\n    <ion-content padding>\n      <ion-list style=\"padding-bottom: 10%\">\n\n        <ion-item (click)=\"details(place)\" *ngFor=\"let place of selectedPlaces\">\n          <ion-avatar item-start>\n            <img [src]=\"place.photo\">\n          </ion-avatar>\n          <ion-label item-inner>\n            <h2>{{place.name}}</h2>\n            <p>{{place.formatted_address}}</p>\n          </ion-label>\n          <ion-checkbox item-end (ionChange)=\"check($event, place)\" color=\"sky\" checked=\"false\"></ion-checkbox>\n\n        </ion-item>\n\n      </ion-list>\n      <div *ngIf=\"selectedPlaces.length == 0\" style=\"text-align: center\">\n        <p>Tidak ditemukan rekomendasi dalam preferensi anda, ingin mengulangi proses rekomendasi dari awal?</p>\n        <button (click)=\"reset()\" color=\"fire\" ion-button icon-left>\n          <ion-icon name=\"refresh\"></ion-icon>\n          Ulangi Proses Rekomendasi\n        </button>\n      </div>\n    </ion-content>\n    <ion-footer *ngIf=\"selectedPlaces.length > 0\" style=\"height: 10%;\">\n      <button color=\"fire\" style=\"height: 100%;\" ion-button block (click)=\"navigate()\">Lanjut</button>\n    </ion-footer>\n\n  "
     }),
     __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_8__actions_attractions_actions__["a" /* AttractionsActions */],
         __WEBPACK_IMPORTED_MODULE_7__ngrx_store__["a" /* Store */],
