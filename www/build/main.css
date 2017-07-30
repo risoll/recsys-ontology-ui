@@ -32738,6 +32738,70 @@ page-begin .card-background-page .card-subtitle {
   color: #fff;
 }
 
+page-begin2 .selected {
+  border: 3px #1ba0e2 solid;
+  opacity: 1 !important;
+}
+
+page-begin2 .highlight {
+  text-align: center;
+}
+
+page-begin2 .card-background-page ion-card {
+  position: relative;
+  text-align: center;
+}
+
+page-begin2 .card-background-page .card-title {
+  position: absolute;
+  top: 23%;
+  font-size: 1.0em;
+  width: 100%;
+  font-weight: bold;
+  color: #fff;
+}
+
+page-begin2 .card-background-page .card-subtitle {
+  font-size: 1.0em;
+  font-weight: bolder;
+  position: absolute;
+  top: 60%;
+  width: 100%;
+  color: #fff;
+}
+
+page-begin2 .strike {
+  display: block;
+  text-align: center;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+page-begin2 .strike > span {
+  position: relative;
+  display: inline-block;
+}
+
+page-begin2 .strike > span:before,
+page-begin2 .strike > span:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 9999px;
+  height: 1px;
+  background: darkgrey;
+}
+
+page-begin2 .strike > span:before {
+  right: 100%;
+  margin-right: 15px;
+}
+
+page-begin2 .strike > span:after {
+  left: 100%;
+  margin-left: 15px;
+}
+
 page-enhance .selected {
   border: 3px #1ba0e2 solid;
   opacity: 1 !important;
@@ -32798,6 +32862,14 @@ page-intro p {
 
 page-intro p b {
   color: #000000;
+}
+
+page-method-selection .incomplete {
+  color: #f53d3d;
+}
+
+page-method-selection .complete {
+  color: #32db64;
 }
 
 page-recommendation .selected {

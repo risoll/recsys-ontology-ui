@@ -8,6 +8,7 @@ import { Storage } from '@ionic/storage';
 
 import { Store } from "@ngrx/store";
 import { AppState } from "../models/state.model";
+import {RecommActions} from "../actions/recomm.actions";
 
 @Component({
   template: `
@@ -45,6 +46,7 @@ export class MyApp {
     public loadingCtrl: LoadingController,
     public storage: Storage,
     private splashScreen: SplashScreen,
+    private recommActions: RecommActions,
     private statusBar: StatusBar) {
     // this.presentLoading();
     this.userService.ipApi().subscribe(ipApi => {
@@ -53,7 +55,7 @@ export class MyApp {
     this.initializeApp();
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Rekomendasi', component: 'RecommendationPage' },
+      { title: 'Rekomendasi', component: 'MethodSelectionPage' },
       { title: 'Jelajah', component: 'AttractionsPage' },
       { title: 'Tentang', component: 'AboutPage' }
       // { title: 'Advanced', component: AdvancedPage },
@@ -62,6 +64,28 @@ export class MyApp {
     ];
 
   }
+
+  resetStatus(){
+    let mode1Status = this.storage.get('mode1Status');
+    let mode2Status = this.storage.get('mode2Status');
+    if(mode1Status){
+      mode1Status.then(status=>{
+        console.log("1 Status", status);
+        if(status == "completed"){
+          this.store.dispatch(this.recommActions.setMode1Status("completed"));
+        }
+      })
+    }
+    if(mode2Status){
+      mode2Status.then(status=>{
+        console.log("2 Status", status);
+        if(status == "completed"){
+          this.store.dispatch(this.recommActions.setMode2Status("completed"));
+        }
+      })
+    }
+  }
+
   openPage(page) {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
@@ -95,6 +119,8 @@ export class MyApp {
       console.log("FAILED");
     }
 
+    this.resetStatus();
+
   }
 
   initializeApp() {
@@ -103,7 +129,7 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       this.storage.get('introShown').then((result) => {
         if (result) {
-          this.rootPage = 'RecommendationPage';
+          this.rootPage = 'MethodSelectionPage';
         } else {
           this.rootPage = 'IntroPage';
           this.storage.set('introShown', true);

@@ -34,7 +34,7 @@
 /******/
 /******/ 	// objects to store loaded and loading chunks
 /******/ 	var installedChunks = {
-/******/ 		14: 0
+/******/ 		16: 0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -6256,7 +6256,7 @@ var SystemJsNgModuleLoader = (function () {
         if (exportName === undefined) {
             exportName = 'default';
         }
-        return __webpack_require__(33)(module)
+        return __webpack_require__(34)(module)
             .then(function (module) { return module[exportName]; })
             .then(function (type) { return checkNotEmpty(type, module, exportName); })
             .then(function (type) { return _this._compiler.compileModuleAsync(type); });
@@ -6272,7 +6272,7 @@ var SystemJsNgModuleLoader = (function () {
             exportName = 'default';
             factoryClassSuffix = '';
         }
-        return __webpack_require__(33)(this._config.factoryPathPrefix + module + this._config.factoryPathSuffix)
+        return __webpack_require__(34)(this._config.factoryPathPrefix + module + this._config.factoryPathSuffix)
             .then(function (module) { return module[exportName + factoryClassSuffix]; })
             .then(function (factory) { return checkNotEmpty(factory, module, exportName); });
     };
@@ -14528,7 +14528,7 @@ function transition$$1(stateChangeExpr, steps) {
 
 //# sourceMappingURL=core.es5.js.map
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(16)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(17)))
 
 /***/ }),
 /* 1 */
@@ -14538,7 +14538,7 @@ function transition$$1(stateChangeExpr, steps) {
 
 var root_1 = __webpack_require__(4);
 var toSubscriber_1 = __webpack_require__(46);
-var observable_1 = __webpack_require__(29);
+var observable_1 = __webpack_require__(30);
 /**
  * A representation of any set of values over any amount of time. This the most basic building block
  * of RxJS.
@@ -14803,10 +14803,10 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var isFunction_1 = __webpack_require__(17);
+var isFunction_1 = __webpack_require__(18);
 var Subscription_1 = __webpack_require__(6);
-var Observer_1 = __webpack_require__(28);
-var rxSubscriber_1 = __webpack_require__(19);
+var Observer_1 = __webpack_require__(29);
+var rxSubscriber_1 = __webpack_require__(20);
 /**
  * Implements the {@link Observer} interface and extends the
  * {@link Subscription} class. While the {@link Observer} is the public API for
@@ -21166,7 +21166,7 @@ exports.root = _root;
     }
 })();
 //# sourceMappingURL=root.js.map
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(16)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17)))
 
 /***/ }),
 /* 5 */
@@ -25685,10 +25685,10 @@ var VERSION = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["Version"]('4.1.3'
 
 "use strict";
 
-var isArray_1 = __webpack_require__(26);
-var isObject_1 = __webpack_require__(27);
-var isFunction_1 = __webpack_require__(17);
-var tryCatch_1 = __webpack_require__(18);
+var isArray_1 = __webpack_require__(27);
+var isObject_1 = __webpack_require__(28);
+var isFunction_1 = __webpack_require__(18);
+var tryCatch_1 = __webpack_require__(19);
 var errorObject_1 = __webpack_require__(12);
 var UnsubscriptionError_1 = __webpack_require__(47);
 /**
@@ -25892,9 +25892,9 @@ var __extends = (this && this.__extends) || function (d, b) {
 var Observable_1 = __webpack_require__(1);
 var Subscriber_1 = __webpack_require__(2);
 var Subscription_1 = __webpack_require__(6);
-var ObjectUnsubscribedError_1 = __webpack_require__(32);
+var ObjectUnsubscribedError_1 = __webpack_require__(33);
 var SubjectSubscription_1 = __webpack_require__(60);
-var rxSubscriber_1 = __webpack_require__(19);
+var rxSubscriber_1 = __webpack_require__(20);
 /**
  * @class SubjectSubscriber<T>
  */
@@ -50940,7 +50940,7 @@ function InfiniteScrollContent_tsickle_Closure_declarations() {
 /* harmony import */ var input___WEBPACK_IMPORTED_MODULE_1__angular_forms__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Subject__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Subject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_Subject__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_takeUntil__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_takeUntil__ = __webpack_require__(35);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_takeUntil___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_takeUntil__);
 var input___extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -56400,7 +56400,7 @@ function loadAndCompile(compiler, modulePath, ngModuleExport) {
     if (!ngModuleExport) {
         ngModuleExport = 'default';
     }
-    return __webpack_require__(35)(modulePath)
+    return __webpack_require__(36)(modulePath)
         .then(function (rawModule) {
         var /** @type {?} */ module = rawModule[ngModuleExport];
         if (!module) {
@@ -56415,7 +56415,7 @@ function loadAndCompile(compiler, modulePath, ngModuleExport) {
  * @return {?}
  */
 function loadPrecompiledFactory(modulePath, ngModuleExport) {
-    return __webpack_require__(35)(modulePath)
+    return __webpack_require__(36)(modulePath)
         .then(function (rawModule) {
         var /** @type {?} */ ngModuleFactory = rawModule[ngModuleExport];
         if (!ngModuleFactory) {
@@ -68606,7 +68606,7 @@ function TabHighlight_tsickle_Closure_declarations() {
 /* harmony import */ var tabs___WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Subject__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Subject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs_Subject__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_takeUntil__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_takeUntil__ = __webpack_require__(35);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_takeUntil___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_takeUntil__);
 var tabs___extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -82524,11 +82524,11 @@ exports.OuterSubscriber = OuterSubscriber;
 var root_1 = __webpack_require__(4);
 var isArrayLike_1 = __webpack_require__(53);
 var isPromise_1 = __webpack_require__(54);
-var isObject_1 = __webpack_require__(27);
+var isObject_1 = __webpack_require__(28);
 var Observable_1 = __webpack_require__(1);
 var iterator_1 = __webpack_require__(55);
 var InnerSubscriber_1 = __webpack_require__(56);
-var observable_1 = __webpack_require__(29);
+var observable_1 = __webpack_require__(30);
 function subscribeToResult(outerSubscriber, result, outerValue, outerIndex) {
     var destination = new InnerSubscriber_1.InnerSubscriber(outerSubscriber, outerValue, outerIndex);
     if (destination.closed) {
@@ -82693,7 +82693,8 @@ var MapSubscriber = (function (_super) {
 //# sourceMappingURL=map.js.map
 
 /***/ }),
-/* 16 */
+/* 16 */,
+/* 17 */
 /***/ (function(module, exports) {
 
 var g;
@@ -82720,7 +82721,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -82732,7 +82733,7 @@ exports.isFunction = isFunction;
 //# sourceMappingURL=isFunction.js.map
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -82757,7 +82758,7 @@ exports.tryCatch = tryCatch;
 //# sourceMappingURL=tryCatch.js.map
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -82773,7 +82774,7 @@ exports.$$rxSubscriber = exports.rxSubscriber;
 //# sourceMappingURL=rxSubscriber.js.map
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -82784,7 +82785,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Subject_1 = __webpack_require__(7);
-var ObjectUnsubscribedError_1 = __webpack_require__(32);
+var ObjectUnsubscribedError_1 = __webpack_require__(33);
 /**
  * @class BehaviorSubject<T>
  */
@@ -82828,7 +82829,7 @@ exports.BehaviorSubject = BehaviorSubject;
 //# sourceMappingURL=BehaviorSubject.js.map
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -82839,14 +82840,14 @@ Observable_1.Observable.prototype.map = map_1.map;
 //# sourceMappingURL=map.js.map
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 // CONCATENATED MODULE: ./node_modules/@ngrx/store/src/dispatcher.js
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rxjs_BehaviorSubject__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rxjs_BehaviorSubject__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rxjs_BehaviorSubject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_rxjs_BehaviorSubject__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -82876,7 +82877,7 @@ var Dispatcher = (function (_super) {
 
 //# sourceMappingURL=dispatcher.js.map
 // CONCATENATED MODULE: ./node_modules/@ngrx/store/src/reducer.js
-/* harmony import */ var reducer___WEBPACK_IMPORTED_MODULE_0_rxjs_BehaviorSubject__ = __webpack_require__(20);
+/* harmony import */ var reducer___WEBPACK_IMPORTED_MODULE_0_rxjs_BehaviorSubject__ = __webpack_require__(21);
 /* harmony import */ var reducer___WEBPACK_IMPORTED_MODULE_0_rxjs_BehaviorSubject___default = __webpack_require__.n(reducer___WEBPACK_IMPORTED_MODULE_0_rxjs_BehaviorSubject__);
 var reducer___extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -83085,7 +83086,7 @@ var store_Store = (function (_super) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operator_observeOn___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_operator_observeOn__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_scheduler_queue__ = __webpack_require__(72);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_scheduler_queue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_scheduler_queue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_BehaviorSubject__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_BehaviorSubject__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_BehaviorSubject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_BehaviorSubject__);
 var state___extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -83259,10 +83260,276 @@ var StoreModule = (function () {
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 23 */,
 /* 24 */,
 /* 25 */,
 /* 26 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+
+// CONCATENATED MODULE: ./node_modules/@ionic/storage/es2015/storage.js
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_localforage__ = __webpack_require__(79);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_localforage___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_localforage__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_localforage_cordovasqlitedriver__ = __webpack_require__(80);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_localforage_cordovasqlitedriver___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_localforage_cordovasqlitedriver__);
+
+
+
+/**
+ * Storage is an easy way to store key/value pairs and JSON objects.
+ * Storage uses a variety of storage engines underneath, picking the best one available
+ * depending on the platform.
+ *
+ * When running in a native app context, Storage will prioritize using SQLite, as it's one of
+ * the most stable and widely used file-based databases, and avoids some of the
+ * pitfalls of things like localstorage and IndexedDB, such as the OS deciding to clear out such
+ * data in low disk-space situations.
+ *
+ * When running in the web or as a Progressive Web App, Storage will attempt to use
+ * IndexedDB, WebSQL, and localstorage, in that order.
+ *
+ * @usage
+ * First, if you'd like to use SQLite, install the cordova-sqlite-storage plugin:
+ * ```bash
+ * cordova plugin add cordova-sqlite-storage --save
+ * ```
+ *
+ * Next, install the package (comes by default for Ionic 2 apps >= RC.0)
+ *
+ * ```bash
+ * npm install --save @ionic/storage
+ * ```
+ *
+ * Next, add it to the imports list in your `NgModule` declaration (for example, in `src/app.module.ts`):
+ *
+ * ```typescript
+ * import { IonicStorageModule } from '@ionic/storage';
+ *
+ * @NgModule({
+ *   declarations: [
+ *     // ...
+ *   ],
+ *   imports: [
+ *     IonicModule.forRoot(MyApp),
+ *     IonicStorageModule.forRoot()
+ *   ],
+ *   bootstrap: [IonicApp],
+ *   entryComponents: [
+ *     // ...
+ *   ],
+ *   providers: []
+ * })
+ * export class AppModule {}
+ *```
+ *
+ * Finally, inject it into any of your components or pages:
+ * ```typescript
+ * import { Storage } from '@ionic/storage';
+
+ * export class MyApp {
+ *   constructor(storage: Storage) {
+ *
+ *      storage.ready().then(() => {
+ *
+ *        // set a key/value
+ *        storage.set('name', 'Max');
+ *
+ *        // Or to get a key/value pair
+ *        storage.get('age').then((val) => {
+ *          console.log('Your age is', val);
+ *        })
+ *      });
+ *   }
+ * }
+ * ```
+ *
+ * ### Configuring Storage
+ *
+ * The Storage engine can be configured both with specific storage engine priorities, or custom configuration
+ * options to pass to localForage. See the localForage config docs for possible options: https://github.com/localForage/localForage#configuration
+ *
+ * Note: Any custom configurations will be merged with the default configuration
+ *
+ * ```typescript
+ * import { IonicStorageModule } from '@ionic/storage';
+ *
+ * export function provideStorage() {
+ *   return new Storage({ name: '__mydb' });
+ * }
+ *
+ * @NgModule({
+ *   declarations: ...,
+ *   imports: [
+ *     IonicStorageModule.forRoot({ useFactory: provideStorage })
+ *   ],
+ *   bootstrap: ...,
+ *   entryComponents: ...,
+ *    providers: []
+ * })
+ * export class AppModule {}
+ * ```
+ */
+var Storage = (function () {
+    /**
+     * Create a new Storage instance using the order of drivers and any additional config
+     * options to pass to LocalForage.
+     *
+     * Possible driver options are: ['sqlite', 'indexeddb', 'websql', 'localstorage'] and the
+     * default is that exact ordering.
+     */
+    function Storage(config) {
+        var _this = this;
+        this._driver = null;
+        this._dbPromise = new Promise(function (resolve, reject) {
+            var db;
+            var defaultConfig = getDefaultConfig();
+            var actualConfig = Object.assign(defaultConfig, config || {});
+            __WEBPACK_IMPORTED_MODULE_1_localforage___default.a.defineDriver(__WEBPACK_IMPORTED_MODULE_2_localforage_cordovasqlitedriver___default.a).then(function () {
+                db = __WEBPACK_IMPORTED_MODULE_1_localforage___default.a.createInstance(actualConfig);
+            })
+                .then(function () { return db.setDriver(_this._getDriverOrder(actualConfig.driverOrder)); })
+                .then(function () {
+                _this._driver = db.driver();
+                resolve(db);
+            })
+                .catch(function (reason) { return reject(reason); });
+        });
+    }
+    Object.defineProperty(Storage.prototype, "driver", {
+        /**
+         * Get the name of the driver being used.
+         * @return Name of the driver
+         */
+        get: function () {
+            return this._driver;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Reflect the readiness of the store.
+     * @return Promise that resolves when the store is ready
+     */
+    Storage.prototype.ready = function () {
+        return this._dbPromise;
+    };
+    Storage.prototype._getDriverOrder = function (driverOrder) {
+        return driverOrder.map(function (driver) {
+            switch (driver) {
+                case 'sqlite':
+                    return __WEBPACK_IMPORTED_MODULE_2_localforage_cordovasqlitedriver___default.a._driver;
+                case 'indexeddb':
+                    return __WEBPACK_IMPORTED_MODULE_1_localforage___default.a.INDEXEDDB;
+                case 'websql':
+                    return __WEBPACK_IMPORTED_MODULE_1_localforage___default.a.WEBSQL;
+                case 'localstorage':
+                    return __WEBPACK_IMPORTED_MODULE_1_localforage___default.a.LOCALSTORAGE;
+            }
+        });
+    };
+    /**
+     * Get the value associated with the given key.
+     * @param key the key to identify this value
+     * @return Promise that resolves with the value
+     */
+    Storage.prototype.get = function (key) {
+        return this._dbPromise.then(function (db) { return db.getItem(key); });
+    };
+    /**
+     * Set the value for the given key.
+     * @param key the key to identify this value
+     * @param value the value for this key
+     * @return Promise that resolves when the value is set
+     */
+    Storage.prototype.set = function (key, value) {
+        return this._dbPromise.then(function (db) { return db.setItem(key, value); });
+    };
+    /**
+     * Remove any value associated with this key.
+     * @param key the key to identify this value
+     * @return Promise that resolves when the value is removed
+     */
+    Storage.prototype.remove = function (key) {
+        return this._dbPromise.then(function (db) { return db.removeItem(key); });
+    };
+    /**
+     * Clear the entire key value store. WARNING: HOT!
+     * @return Promise that resolves when the store is cleared
+     */
+    Storage.prototype.clear = function () {
+        return this._dbPromise.then(function (db) { return db.clear(); });
+    };
+    /**
+     * @return Promise that resolves with the number of keys stored.
+     */
+    Storage.prototype.length = function () {
+        return this._dbPromise.then(function (db) { return db.length(); });
+    };
+    /**
+     * @return Promise that resolves with the keys in the store.
+     */
+    Storage.prototype.keys = function () {
+        return this._dbPromise.then(function (db) { return db.keys(); });
+    };
+    /**
+     * Iterate through each key,value pair.
+     * @param iteratorCallback a callback of the form (value, key, iterationNumber)
+     * @return Promise that resolves when the iteration has finished.
+     */
+    Storage.prototype.forEach = function (iteratorCallback) {
+        return this._dbPromise.then(function (db) { return db.iterate(iteratorCallback); });
+    };
+    return Storage;
+}());
+function getDefaultConfig() {
+    return {
+        name: '_ionicstorage',
+        storeName: '_ionickv',
+        driverOrder: ['sqlite', 'indexeddb', 'websql', 'localstorage']
+    };
+}
+;
+var StorageConfigToken = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["OpaqueToken"]('STORAGE_CONFIG_TOKEN');
+function provideStorage(storageConfig) {
+    var config = !!storageConfig ? storageConfig : getDefaultConfig();
+    return new Storage(config);
+}
+
+// CONCATENATED MODULE: ./node_modules/@ionic/storage/es2015/index.js
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return es2015_IonicStorageModule; });
+/* harmony import */ var es2015___WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* unused concated harmony import StorageConfigToken */
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, false, function() { return StorageConfigToken; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "b", function() { return Storage; });
+
+
+
+var es2015_IonicStorageModule = (function () {
+    function IonicStorageModule() {
+    }
+    IonicStorageModule.forRoot = function (storageConfig) {
+        if (storageConfig === void 0) { storageConfig = null; }
+        return {
+            ngModule: IonicStorageModule,
+            providers: [
+                { provide: StorageConfigToken, useValue: storageConfig },
+                { provide: Storage, useFactory: provideStorage, deps: [StorageConfigToken] },
+            ]
+        };
+    };
+    IonicStorageModule.decorators = [
+        { type: es2015___WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"], args: [{},] },
+    ];
+    /** @nocollapse */
+    IonicStorageModule.ctorParameters = function () { return []; };
+    return IonicStorageModule;
+}());
+
+
+/***/ }),
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -83271,7 +83538,7 @@ exports.isArray = Array.isArray || (function (x) { return x && typeof x.length =
 //# sourceMappingURL=isArray.js.map
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -83283,7 +83550,7 @@ exports.isObject = isObject;
 //# sourceMappingURL=isObject.js.map
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -83297,7 +83564,7 @@ exports.empty = {
 //# sourceMappingURL=Observer.js.map
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -83329,7 +83596,7 @@ exports.$$observable = exports.observable;
 //# sourceMappingURL=observable.js.map
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -83416,7 +83683,7 @@ exports.EmptyObservable = EmptyObservable;
 //# sourceMappingURL=EmptyObservable.js.map
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -83428,7 +83695,7 @@ exports.isScheduler = isScheduler;
 //# sourceMappingURL=isScheduler.js.map
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -83461,8 +83728,8 @@ exports.ObjectUnsubscribedError = ObjectUnsubscribedError;
 //# sourceMappingURL=ObjectUnsubscribedError.js.map
 
 /***/ }),
-/* 33 */,
-/* 34 */
+/* 34 */,
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -83473,14 +83740,14 @@ Observable_1.Observable.prototype.takeUntil = takeUntil_1.takeUntil;
 //# sourceMappingURL=takeUntil.js.map
 
 /***/ }),
-/* 35 */,
-/* 36 */
+/* 36 */,
+/* 37 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return StatusBar; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ionic_native_core__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ionic_native_core__ = __webpack_require__(38);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -83683,7 +83950,7 @@ StatusBar = __decorate([
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -83779,7 +84046,7 @@ function checkReady() {
 // CONCATENATED MODULE: ./node_modules/@ionic-native/core/plugin.js
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Observable__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_Observable__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_observable_fromEvent__ = __webpack_require__(79);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_observable_fromEvent__ = __webpack_require__(81);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_observable_fromEvent___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_observable_fromEvent__);
 
 
@@ -84076,7 +84343,7 @@ function wrapInstance(pluginObj, methodName, opts) {
 // CONCATENATED MODULE: ./node_modules/@ionic-native/core/decorators.js
 /* harmony import */ var decorators___WEBPACK_IMPORTED_MODULE_2_rxjs_Observable__ = __webpack_require__(1);
 /* harmony import */ var decorators___WEBPACK_IMPORTED_MODULE_2_rxjs_Observable___default = __webpack_require__.n(decorators___WEBPACK_IMPORTED_MODULE_2_rxjs_Observable__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_observable_throw__ = __webpack_require__(82);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_observable_throw__ = __webpack_require__(84);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_observable_throw___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_observable_throw__);
 
 
@@ -84421,13 +84688,13 @@ var IonicNativePlugin = (function () {
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SplashScreen; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ionic_native_core__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ionic_native_core__ = __webpack_require__(38);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -84512,273 +84779,6 @@ SplashScreen = __decorate([
 ], SplashScreen);
 
 //# sourceMappingURL=index.js.map
-
-/***/ }),
-/* 39 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-
-// CONCATENATED MODULE: ./node_modules/@ionic/storage/es2015/storage.js
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_localforage__ = __webpack_require__(84);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_localforage___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_localforage__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_localforage_cordovasqlitedriver__ = __webpack_require__(85);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_localforage_cordovasqlitedriver___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_localforage_cordovasqlitedriver__);
-
-
-
-/**
- * Storage is an easy way to store key/value pairs and JSON objects.
- * Storage uses a variety of storage engines underneath, picking the best one available
- * depending on the platform.
- *
- * When running in a native app context, Storage will prioritize using SQLite, as it's one of
- * the most stable and widely used file-based databases, and avoids some of the
- * pitfalls of things like localstorage and IndexedDB, such as the OS deciding to clear out such
- * data in low disk-space situations.
- *
- * When running in the web or as a Progressive Web App, Storage will attempt to use
- * IndexedDB, WebSQL, and localstorage, in that order.
- *
- * @usage
- * First, if you'd like to use SQLite, install the cordova-sqlite-storage plugin:
- * ```bash
- * cordova plugin add cordova-sqlite-storage --save
- * ```
- *
- * Next, install the package (comes by default for Ionic 2 apps >= RC.0)
- *
- * ```bash
- * npm install --save @ionic/storage
- * ```
- *
- * Next, add it to the imports list in your `NgModule` declaration (for example, in `src/app.module.ts`):
- *
- * ```typescript
- * import { IonicStorageModule } from '@ionic/storage';
- *
- * @NgModule({
- *   declarations: [
- *     // ...
- *   ],
- *   imports: [
- *     IonicModule.forRoot(MyApp),
- *     IonicStorageModule.forRoot()
- *   ],
- *   bootstrap: [IonicApp],
- *   entryComponents: [
- *     // ...
- *   ],
- *   providers: []
- * })
- * export class AppModule {}
- *```
- *
- * Finally, inject it into any of your components or pages:
- * ```typescript
- * import { Storage } from '@ionic/storage';
-
- * export class MyApp {
- *   constructor(storage: Storage) {
- *
- *      storage.ready().then(() => {
- *
- *        // set a key/value
- *        storage.set('name', 'Max');
- *
- *        // Or to get a key/value pair
- *        storage.get('age').then((val) => {
- *          console.log('Your age is', val);
- *        })
- *      });
- *   }
- * }
- * ```
- *
- * ### Configuring Storage
- *
- * The Storage engine can be configured both with specific storage engine priorities, or custom configuration
- * options to pass to localForage. See the localForage config docs for possible options: https://github.com/localForage/localForage#configuration
- *
- * Note: Any custom configurations will be merged with the default configuration
- *
- * ```typescript
- * import { IonicStorageModule } from '@ionic/storage';
- *
- * export function provideStorage() {
- *   return new Storage({ name: '__mydb' });
- * }
- *
- * @NgModule({
- *   declarations: ...,
- *   imports: [
- *     IonicStorageModule.forRoot({ useFactory: provideStorage })
- *   ],
- *   bootstrap: ...,
- *   entryComponents: ...,
- *    providers: []
- * })
- * export class AppModule {}
- * ```
- */
-var Storage = (function () {
-    /**
-     * Create a new Storage instance using the order of drivers and any additional config
-     * options to pass to LocalForage.
-     *
-     * Possible driver options are: ['sqlite', 'indexeddb', 'websql', 'localstorage'] and the
-     * default is that exact ordering.
-     */
-    function Storage(config) {
-        var _this = this;
-        this._driver = null;
-        this._dbPromise = new Promise(function (resolve, reject) {
-            var db;
-            var defaultConfig = getDefaultConfig();
-            var actualConfig = Object.assign(defaultConfig, config || {});
-            __WEBPACK_IMPORTED_MODULE_1_localforage___default.a.defineDriver(__WEBPACK_IMPORTED_MODULE_2_localforage_cordovasqlitedriver___default.a).then(function () {
-                db = __WEBPACK_IMPORTED_MODULE_1_localforage___default.a.createInstance(actualConfig);
-            })
-                .then(function () { return db.setDriver(_this._getDriverOrder(actualConfig.driverOrder)); })
-                .then(function () {
-                _this._driver = db.driver();
-                resolve(db);
-            })
-                .catch(function (reason) { return reject(reason); });
-        });
-    }
-    Object.defineProperty(Storage.prototype, "driver", {
-        /**
-         * Get the name of the driver being used.
-         * @return Name of the driver
-         */
-        get: function () {
-            return this._driver;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Reflect the readiness of the store.
-     * @return Promise that resolves when the store is ready
-     */
-    Storage.prototype.ready = function () {
-        return this._dbPromise;
-    };
-    Storage.prototype._getDriverOrder = function (driverOrder) {
-        return driverOrder.map(function (driver) {
-            switch (driver) {
-                case 'sqlite':
-                    return __WEBPACK_IMPORTED_MODULE_2_localforage_cordovasqlitedriver___default.a._driver;
-                case 'indexeddb':
-                    return __WEBPACK_IMPORTED_MODULE_1_localforage___default.a.INDEXEDDB;
-                case 'websql':
-                    return __WEBPACK_IMPORTED_MODULE_1_localforage___default.a.WEBSQL;
-                case 'localstorage':
-                    return __WEBPACK_IMPORTED_MODULE_1_localforage___default.a.LOCALSTORAGE;
-            }
-        });
-    };
-    /**
-     * Get the value associated with the given key.
-     * @param key the key to identify this value
-     * @return Promise that resolves with the value
-     */
-    Storage.prototype.get = function (key) {
-        return this._dbPromise.then(function (db) { return db.getItem(key); });
-    };
-    /**
-     * Set the value for the given key.
-     * @param key the key to identify this value
-     * @param value the value for this key
-     * @return Promise that resolves when the value is set
-     */
-    Storage.prototype.set = function (key, value) {
-        return this._dbPromise.then(function (db) { return db.setItem(key, value); });
-    };
-    /**
-     * Remove any value associated with this key.
-     * @param key the key to identify this value
-     * @return Promise that resolves when the value is removed
-     */
-    Storage.prototype.remove = function (key) {
-        return this._dbPromise.then(function (db) { return db.removeItem(key); });
-    };
-    /**
-     * Clear the entire key value store. WARNING: HOT!
-     * @return Promise that resolves when the store is cleared
-     */
-    Storage.prototype.clear = function () {
-        return this._dbPromise.then(function (db) { return db.clear(); });
-    };
-    /**
-     * @return Promise that resolves with the number of keys stored.
-     */
-    Storage.prototype.length = function () {
-        return this._dbPromise.then(function (db) { return db.length(); });
-    };
-    /**
-     * @return Promise that resolves with the keys in the store.
-     */
-    Storage.prototype.keys = function () {
-        return this._dbPromise.then(function (db) { return db.keys(); });
-    };
-    /**
-     * Iterate through each key,value pair.
-     * @param iteratorCallback a callback of the form (value, key, iterationNumber)
-     * @return Promise that resolves when the iteration has finished.
-     */
-    Storage.prototype.forEach = function (iteratorCallback) {
-        return this._dbPromise.then(function (db) { return db.iterate(iteratorCallback); });
-    };
-    return Storage;
-}());
-function getDefaultConfig() {
-    return {
-        name: '_ionicstorage',
-        storeName: '_ionickv',
-        driverOrder: ['sqlite', 'indexeddb', 'websql', 'localstorage']
-    };
-}
-;
-var StorageConfigToken = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["OpaqueToken"]('STORAGE_CONFIG_TOKEN');
-function provideStorage(storageConfig) {
-    var config = !!storageConfig ? storageConfig : getDefaultConfig();
-    return new Storage(config);
-}
-
-// CONCATENATED MODULE: ./node_modules/@ionic/storage/es2015/index.js
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return es2015_IonicStorageModule; });
-/* harmony import */ var es2015___WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* unused concated harmony import StorageConfigToken */
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, false, function() { return StorageConfigToken; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "b", function() { return Storage; });
-
-
-
-var es2015_IonicStorageModule = (function () {
-    function IonicStorageModule() {
-    }
-    IonicStorageModule.forRoot = function (storageConfig) {
-        if (storageConfig === void 0) { storageConfig = null; }
-        return {
-            ngModule: IonicStorageModule,
-            providers: [
-                { provide: StorageConfigToken, useValue: storageConfig },
-                { provide: Storage, useFactory: provideStorage, deps: [StorageConfigToken] },
-            ]
-        };
-    };
-    IonicStorageModule.decorators = [
-        { type: es2015___WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"], args: [{},] },
-    ];
-    /** @nocollapse */
-    IonicStorageModule.ctorParameters = function () { return []; };
-    return IonicStorageModule;
-}());
-
 
 /***/ }),
 /* 40 */,
@@ -111408,8 +111408,8 @@ var platformBrowserDynamic = __WEBPACK_IMPORTED_MODULE_1__angular_core__["create
 "use strict";
 
 var Subscriber_1 = __webpack_require__(2);
-var rxSubscriber_1 = __webpack_require__(19);
-var Observer_1 = __webpack_require__(28);
+var rxSubscriber_1 = __webpack_require__(20);
+var Observer_1 = __webpack_require__(29);
 function toSubscriber(nextOrObserver, error, complete) {
     if (nextOrObserver) {
         if (nextOrObserver instanceof Subscriber_1.Subscriber) {
@@ -111477,7 +111477,7 @@ exports.merge = merge_1.mergeStatic;
 var Observable_1 = __webpack_require__(1);
 var ArrayObservable_1 = __webpack_require__(50);
 var mergeAll_1 = __webpack_require__(52);
-var isScheduler_1 = __webpack_require__(31);
+var isScheduler_1 = __webpack_require__(32);
 /* tslint:enable:max-line-length */
 /**
  * Creates an output Observable which concurrently emits all values from every
@@ -111632,8 +111632,8 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var Observable_1 = __webpack_require__(1);
 var ScalarObservable_1 = __webpack_require__(51);
-var EmptyObservable_1 = __webpack_require__(30);
-var isScheduler_1 = __webpack_require__(31);
+var EmptyObservable_1 = __webpack_require__(31);
+var isScheduler_1 = __webpack_require__(32);
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
@@ -112371,8 +112371,8 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Observable_1 = __webpack_require__(1);
-var EmptyObservable_1 = __webpack_require__(30);
-var isArray_1 = __webpack_require__(26);
+var EmptyObservable_1 = __webpack_require__(31);
+var isArray_1 = __webpack_require__(27);
 var subscribeToResult_1 = __webpack_require__(14);
 var OuterSubscriber_1 = __webpack_require__(13);
 /**
@@ -112770,7 +112770,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Subscriber_1 = __webpack_require__(2);
-var tryCatch_1 = __webpack_require__(18);
+var tryCatch_1 = __webpack_require__(19);
 var errorObject_1 = __webpack_require__(12);
 /* tslint:enable:max-line-length */
 /**
@@ -113846,272 +113846,6 @@ exports.Scheduler = Scheduler;
 
 /***/ }),
 /* 79 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var Observable_1 = __webpack_require__(1);
-var fromEvent_1 = __webpack_require__(80);
-Observable_1.Observable.fromEvent = fromEvent_1.fromEvent;
-//# sourceMappingURL=fromEvent.js.map
-
-/***/ }),
-/* 80 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var FromEventObservable_1 = __webpack_require__(81);
-exports.fromEvent = FromEventObservable_1.FromEventObservable.create;
-//# sourceMappingURL=fromEvent.js.map
-
-/***/ }),
-/* 81 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var Observable_1 = __webpack_require__(1);
-var tryCatch_1 = __webpack_require__(18);
-var isFunction_1 = __webpack_require__(17);
-var errorObject_1 = __webpack_require__(12);
-var Subscription_1 = __webpack_require__(6);
-var toString = Object.prototype.toString;
-function isNodeStyleEventEmitter(sourceObj) {
-    return !!sourceObj && typeof sourceObj.addListener === 'function' && typeof sourceObj.removeListener === 'function';
-}
-function isJQueryStyleEventEmitter(sourceObj) {
-    return !!sourceObj && typeof sourceObj.on === 'function' && typeof sourceObj.off === 'function';
-}
-function isNodeList(sourceObj) {
-    return !!sourceObj && toString.call(sourceObj) === '[object NodeList]';
-}
-function isHTMLCollection(sourceObj) {
-    return !!sourceObj && toString.call(sourceObj) === '[object HTMLCollection]';
-}
-function isEventTarget(sourceObj) {
-    return !!sourceObj && typeof sourceObj.addEventListener === 'function' && typeof sourceObj.removeEventListener === 'function';
-}
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @extends {Ignored}
- * @hide true
- */
-var FromEventObservable = (function (_super) {
-    __extends(FromEventObservable, _super);
-    function FromEventObservable(sourceObj, eventName, selector, options) {
-        _super.call(this);
-        this.sourceObj = sourceObj;
-        this.eventName = eventName;
-        this.selector = selector;
-        this.options = options;
-    }
-    /* tslint:enable:max-line-length */
-    /**
-     * Creates an Observable that emits events of a specific type coming from the
-     * given event target.
-     *
-     * <span class="informal">Creates an Observable from DOM events, or Node
-     * EventEmitter events or others.</span>
-     *
-     * <img src="./img/fromEvent.png" width="100%">
-     *
-     * Creates an Observable by attaching an event listener to an "event target",
-     * which may be an object with `addEventListener` and `removeEventListener`,
-     * a Node.js EventEmitter, a jQuery style EventEmitter, a NodeList from the
-     * DOM, or an HTMLCollection from the DOM. The event handler is attached when
-     * the output Observable is subscribed, and removed when the Subscription is
-     * unsubscribed.
-     *
-     * @example <caption>Emits clicks happening on the DOM document</caption>
-     * var clicks = Rx.Observable.fromEvent(document, 'click');
-     * clicks.subscribe(x => console.log(x));
-     *
-     * // Results in:
-     * // MouseEvent object logged to console everytime a click
-     * // occurs on the document.
-     *
-     * @see {@link from}
-     * @see {@link fromEventPattern}
-     *
-     * @param {EventTargetLike} target The DOMElement, event target, Node.js
-     * EventEmitter, NodeList or HTMLCollection to attach the event handler to.
-     * @param {string} eventName The event name of interest, being emitted by the
-     * `target`.
-     * @param {EventListenerOptions} [options] Options to pass through to addEventListener
-     * @param {SelectorMethodSignature<T>} [selector] An optional function to
-     * post-process results. It takes the arguments from the event handler and
-     * should return a single value.
-     * @return {Observable<T>}
-     * @static true
-     * @name fromEvent
-     * @owner Observable
-     */
-    FromEventObservable.create = function (target, eventName, options, selector) {
-        if (isFunction_1.isFunction(options)) {
-            selector = options;
-            options = undefined;
-        }
-        return new FromEventObservable(target, eventName, selector, options);
-    };
-    FromEventObservable.setupSubscription = function (sourceObj, eventName, handler, subscriber, options) {
-        var unsubscribe;
-        if (isNodeList(sourceObj) || isHTMLCollection(sourceObj)) {
-            for (var i = 0, len = sourceObj.length; i < len; i++) {
-                FromEventObservable.setupSubscription(sourceObj[i], eventName, handler, subscriber, options);
-            }
-        }
-        else if (isEventTarget(sourceObj)) {
-            var source_1 = sourceObj;
-            sourceObj.addEventListener(eventName, handler, options);
-            unsubscribe = function () { return source_1.removeEventListener(eventName, handler); };
-        }
-        else if (isJQueryStyleEventEmitter(sourceObj)) {
-            var source_2 = sourceObj;
-            sourceObj.on(eventName, handler);
-            unsubscribe = function () { return source_2.off(eventName, handler); };
-        }
-        else if (isNodeStyleEventEmitter(sourceObj)) {
-            var source_3 = sourceObj;
-            sourceObj.addListener(eventName, handler);
-            unsubscribe = function () { return source_3.removeListener(eventName, handler); };
-        }
-        else {
-            throw new TypeError('Invalid event target');
-        }
-        subscriber.add(new Subscription_1.Subscription(unsubscribe));
-    };
-    FromEventObservable.prototype._subscribe = function (subscriber) {
-        var sourceObj = this.sourceObj;
-        var eventName = this.eventName;
-        var options = this.options;
-        var selector = this.selector;
-        var handler = selector ? function () {
-            var args = [];
-            for (var _i = 0; _i < arguments.length; _i++) {
-                args[_i - 0] = arguments[_i];
-            }
-            var result = tryCatch_1.tryCatch(selector).apply(void 0, args);
-            if (result === errorObject_1.errorObject) {
-                subscriber.error(errorObject_1.errorObject.e);
-            }
-            else {
-                subscriber.next(result);
-            }
-        } : function (e) { return subscriber.next(e); };
-        FromEventObservable.setupSubscription(sourceObj, eventName, handler, subscriber, options);
-    };
-    return FromEventObservable;
-}(Observable_1.Observable));
-exports.FromEventObservable = FromEventObservable;
-//# sourceMappingURL=FromEventObservable.js.map
-
-/***/ }),
-/* 82 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var ErrorObservable_1 = __webpack_require__(83);
-exports._throw = ErrorObservable_1.ErrorObservable.create;
-//# sourceMappingURL=throw.js.map
-
-/***/ }),
-/* 83 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var Observable_1 = __webpack_require__(1);
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @extends {Ignored}
- * @hide true
- */
-var ErrorObservable = (function (_super) {
-    __extends(ErrorObservable, _super);
-    function ErrorObservable(error, scheduler) {
-        _super.call(this);
-        this.error = error;
-        this.scheduler = scheduler;
-    }
-    /**
-     * Creates an Observable that emits no items to the Observer and immediately
-     * emits an error notification.
-     *
-     * <span class="informal">Just emits 'error', and nothing else.
-     * </span>
-     *
-     * <img src="./img/throw.png" width="100%">
-     *
-     * This static operator is useful for creating a simple Observable that only
-     * emits the error notification. It can be used for composing with other
-     * Observables, such as in a {@link mergeMap}.
-     *
-     * @example <caption>Emit the number 7, then emit an error.</caption>
-     * var result = Rx.Observable.throw(new Error('oops!')).startWith(7);
-     * result.subscribe(x => console.log(x), e => console.error(e));
-     *
-     * @example <caption>Map and flatten numbers to the sequence 'a', 'b', 'c', but throw an error for 13</caption>
-     * var interval = Rx.Observable.interval(1000);
-     * var result = interval.mergeMap(x =>
-     *   x === 13 ?
-     *     Rx.Observable.throw('Thirteens are bad') :
-     *     Rx.Observable.of('a', 'b', 'c')
-     * );
-     * result.subscribe(x => console.log(x), e => console.error(e));
-     *
-     * @see {@link create}
-     * @see {@link empty}
-     * @see {@link never}
-     * @see {@link of}
-     *
-     * @param {any} error The particular Error to pass to the error notification.
-     * @param {Scheduler} [scheduler] A {@link IScheduler} to use for scheduling
-     * the emission of the error notification.
-     * @return {Observable} An error Observable: emits only the error notification
-     * using the given error argument.
-     * @static true
-     * @name throw
-     * @owner Observable
-     */
-    ErrorObservable.create = function (error, scheduler) {
-        return new ErrorObservable(error, scheduler);
-    };
-    ErrorObservable.dispatch = function (arg) {
-        var error = arg.error, subscriber = arg.subscriber;
-        subscriber.error(error);
-    };
-    ErrorObservable.prototype._subscribe = function (subscriber) {
-        var error = this.error;
-        var scheduler = this.scheduler;
-        subscriber.syncErrorThrowable = true;
-        if (scheduler) {
-            return scheduler.schedule(ErrorObservable.dispatch, 0, {
-                error: error, subscriber: subscriber
-            });
-        }
-        else {
-            subscriber.error(error);
-        }
-    };
-    return ErrorObservable;
-}(Observable_1.Observable));
-exports.ErrorObservable = ErrorObservable;
-//# sourceMappingURL=ErrorObservable.js.map
-
-/***/ }),
-/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var require;var require;/*!
@@ -116415,10 +116149,10 @@ module.exports = localforage_js;
 
 },{"3":3}]},{},[4])(4)
 });
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(16)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17)))
 
 /***/ }),
-/* 85 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function (global, factory) {
@@ -116577,6 +116311,272 @@ module.exports = localforage_js;
     return cordovaSQLiteDriver;
 
 }));
+
+/***/ }),
+/* 81 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var Observable_1 = __webpack_require__(1);
+var fromEvent_1 = __webpack_require__(82);
+Observable_1.Observable.fromEvent = fromEvent_1.fromEvent;
+//# sourceMappingURL=fromEvent.js.map
+
+/***/ }),
+/* 82 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var FromEventObservable_1 = __webpack_require__(83);
+exports.fromEvent = FromEventObservable_1.FromEventObservable.create;
+//# sourceMappingURL=fromEvent.js.map
+
+/***/ }),
+/* 83 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var Observable_1 = __webpack_require__(1);
+var tryCatch_1 = __webpack_require__(19);
+var isFunction_1 = __webpack_require__(18);
+var errorObject_1 = __webpack_require__(12);
+var Subscription_1 = __webpack_require__(6);
+var toString = Object.prototype.toString;
+function isNodeStyleEventEmitter(sourceObj) {
+    return !!sourceObj && typeof sourceObj.addListener === 'function' && typeof sourceObj.removeListener === 'function';
+}
+function isJQueryStyleEventEmitter(sourceObj) {
+    return !!sourceObj && typeof sourceObj.on === 'function' && typeof sourceObj.off === 'function';
+}
+function isNodeList(sourceObj) {
+    return !!sourceObj && toString.call(sourceObj) === '[object NodeList]';
+}
+function isHTMLCollection(sourceObj) {
+    return !!sourceObj && toString.call(sourceObj) === '[object HTMLCollection]';
+}
+function isEventTarget(sourceObj) {
+    return !!sourceObj && typeof sourceObj.addEventListener === 'function' && typeof sourceObj.removeEventListener === 'function';
+}
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @extends {Ignored}
+ * @hide true
+ */
+var FromEventObservable = (function (_super) {
+    __extends(FromEventObservable, _super);
+    function FromEventObservable(sourceObj, eventName, selector, options) {
+        _super.call(this);
+        this.sourceObj = sourceObj;
+        this.eventName = eventName;
+        this.selector = selector;
+        this.options = options;
+    }
+    /* tslint:enable:max-line-length */
+    /**
+     * Creates an Observable that emits events of a specific type coming from the
+     * given event target.
+     *
+     * <span class="informal">Creates an Observable from DOM events, or Node
+     * EventEmitter events or others.</span>
+     *
+     * <img src="./img/fromEvent.png" width="100%">
+     *
+     * Creates an Observable by attaching an event listener to an "event target",
+     * which may be an object with `addEventListener` and `removeEventListener`,
+     * a Node.js EventEmitter, a jQuery style EventEmitter, a NodeList from the
+     * DOM, or an HTMLCollection from the DOM. The event handler is attached when
+     * the output Observable is subscribed, and removed when the Subscription is
+     * unsubscribed.
+     *
+     * @example <caption>Emits clicks happening on the DOM document</caption>
+     * var clicks = Rx.Observable.fromEvent(document, 'click');
+     * clicks.subscribe(x => console.log(x));
+     *
+     * // Results in:
+     * // MouseEvent object logged to console everytime a click
+     * // occurs on the document.
+     *
+     * @see {@link from}
+     * @see {@link fromEventPattern}
+     *
+     * @param {EventTargetLike} target The DOMElement, event target, Node.js
+     * EventEmitter, NodeList or HTMLCollection to attach the event handler to.
+     * @param {string} eventName The event name of interest, being emitted by the
+     * `target`.
+     * @param {EventListenerOptions} [options] Options to pass through to addEventListener
+     * @param {SelectorMethodSignature<T>} [selector] An optional function to
+     * post-process results. It takes the arguments from the event handler and
+     * should return a single value.
+     * @return {Observable<T>}
+     * @static true
+     * @name fromEvent
+     * @owner Observable
+     */
+    FromEventObservable.create = function (target, eventName, options, selector) {
+        if (isFunction_1.isFunction(options)) {
+            selector = options;
+            options = undefined;
+        }
+        return new FromEventObservable(target, eventName, selector, options);
+    };
+    FromEventObservable.setupSubscription = function (sourceObj, eventName, handler, subscriber, options) {
+        var unsubscribe;
+        if (isNodeList(sourceObj) || isHTMLCollection(sourceObj)) {
+            for (var i = 0, len = sourceObj.length; i < len; i++) {
+                FromEventObservable.setupSubscription(sourceObj[i], eventName, handler, subscriber, options);
+            }
+        }
+        else if (isEventTarget(sourceObj)) {
+            var source_1 = sourceObj;
+            sourceObj.addEventListener(eventName, handler, options);
+            unsubscribe = function () { return source_1.removeEventListener(eventName, handler); };
+        }
+        else if (isJQueryStyleEventEmitter(sourceObj)) {
+            var source_2 = sourceObj;
+            sourceObj.on(eventName, handler);
+            unsubscribe = function () { return source_2.off(eventName, handler); };
+        }
+        else if (isNodeStyleEventEmitter(sourceObj)) {
+            var source_3 = sourceObj;
+            sourceObj.addListener(eventName, handler);
+            unsubscribe = function () { return source_3.removeListener(eventName, handler); };
+        }
+        else {
+            throw new TypeError('Invalid event target');
+        }
+        subscriber.add(new Subscription_1.Subscription(unsubscribe));
+    };
+    FromEventObservable.prototype._subscribe = function (subscriber) {
+        var sourceObj = this.sourceObj;
+        var eventName = this.eventName;
+        var options = this.options;
+        var selector = this.selector;
+        var handler = selector ? function () {
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i - 0] = arguments[_i];
+            }
+            var result = tryCatch_1.tryCatch(selector).apply(void 0, args);
+            if (result === errorObject_1.errorObject) {
+                subscriber.error(errorObject_1.errorObject.e);
+            }
+            else {
+                subscriber.next(result);
+            }
+        } : function (e) { return subscriber.next(e); };
+        FromEventObservable.setupSubscription(sourceObj, eventName, handler, subscriber, options);
+    };
+    return FromEventObservable;
+}(Observable_1.Observable));
+exports.FromEventObservable = FromEventObservable;
+//# sourceMappingURL=FromEventObservable.js.map
+
+/***/ }),
+/* 84 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var ErrorObservable_1 = __webpack_require__(85);
+exports._throw = ErrorObservable_1.ErrorObservable.create;
+//# sourceMappingURL=throw.js.map
+
+/***/ }),
+/* 85 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var Observable_1 = __webpack_require__(1);
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @extends {Ignored}
+ * @hide true
+ */
+var ErrorObservable = (function (_super) {
+    __extends(ErrorObservable, _super);
+    function ErrorObservable(error, scheduler) {
+        _super.call(this);
+        this.error = error;
+        this.scheduler = scheduler;
+    }
+    /**
+     * Creates an Observable that emits no items to the Observer and immediately
+     * emits an error notification.
+     *
+     * <span class="informal">Just emits 'error', and nothing else.
+     * </span>
+     *
+     * <img src="./img/throw.png" width="100%">
+     *
+     * This static operator is useful for creating a simple Observable that only
+     * emits the error notification. It can be used for composing with other
+     * Observables, such as in a {@link mergeMap}.
+     *
+     * @example <caption>Emit the number 7, then emit an error.</caption>
+     * var result = Rx.Observable.throw(new Error('oops!')).startWith(7);
+     * result.subscribe(x => console.log(x), e => console.error(e));
+     *
+     * @example <caption>Map and flatten numbers to the sequence 'a', 'b', 'c', but throw an error for 13</caption>
+     * var interval = Rx.Observable.interval(1000);
+     * var result = interval.mergeMap(x =>
+     *   x === 13 ?
+     *     Rx.Observable.throw('Thirteens are bad') :
+     *     Rx.Observable.of('a', 'b', 'c')
+     * );
+     * result.subscribe(x => console.log(x), e => console.error(e));
+     *
+     * @see {@link create}
+     * @see {@link empty}
+     * @see {@link never}
+     * @see {@link of}
+     *
+     * @param {any} error The particular Error to pass to the error notification.
+     * @param {Scheduler} [scheduler] A {@link IScheduler} to use for scheduling
+     * the emission of the error notification.
+     * @return {Observable} An error Observable: emits only the error notification
+     * using the given error argument.
+     * @static true
+     * @name throw
+     * @owner Observable
+     */
+    ErrorObservable.create = function (error, scheduler) {
+        return new ErrorObservable(error, scheduler);
+    };
+    ErrorObservable.dispatch = function (arg) {
+        var error = arg.error, subscriber = arg.subscriber;
+        subscriber.error(error);
+    };
+    ErrorObservable.prototype._subscribe = function (subscriber) {
+        var error = this.error;
+        var scheduler = this.scheduler;
+        subscriber.syncErrorThrowable = true;
+        if (scheduler) {
+            return scheduler.schedule(ErrorObservable.dispatch, 0, {
+                error: error, subscriber: subscriber
+            });
+        }
+        else {
+            subscriber.error(error);
+        }
+    };
+    return ErrorObservable;
+}(Observable_1.Observable));
+exports.ErrorObservable = ErrorObservable;
+//# sourceMappingURL=ErrorObservable.js.map
 
 /***/ })
 /******/ ]);

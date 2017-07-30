@@ -3,7 +3,7 @@ import { Question, ColsQuestion, NodeValues } from './../../models/recommendatio
 import { Store } from '@ngrx/store';
 import { Component, AfterViewInit } from '@angular/core';
 
-import { NavController, LoadingController, Loading, AlertController, IonicPage } from 'ionic-angular';
+import {NavController, LoadingController, Loading, AlertController, IonicPage, NavParams} from 'ionic-angular';
 import { RecommendationService } from "../../services/recommendation.service";
 
 import { BeginPage } from "../begin/begin";
@@ -21,7 +21,7 @@ import { LoadingService } from "../../services/loading.service";
         <button ion-button menuToggle>
           <ion-icon name="menu"></ion-icon>
         </button>
-        <ion-title>Rekomendasi</ion-title>
+        <ion-title>Rekomendasi Mode {{mode}}</ion-title>
       </ion-navbar>
     </ion-header>
     <ion-content *ngIf="questions" class="card-background-page">
@@ -86,6 +86,7 @@ export class RecommendationPage {
   private colsQuestions: ColsQuestion[] = [];
   private questionsValue: NodeValues[] = [];
   private distance: number = 35;
+  private mode: number = 1;
 
   private divider = 2;
   selected: string[] = [];
@@ -93,10 +94,12 @@ export class RecommendationPage {
   constructor(public navCtrl: NavController,
     private store: Store<AppState>,
     private recommActions: RecommActions,
-    public alertCtrl: AlertController,
+    private navParams: NavParams,
     private recommendationService: RecommendationService,
     private alertService: AlertService,
     private loadingService: LoadingService) {
+    this.mode = this.navParams.get("mode");
+    console.log("MODE", this.mode);
     this.loadQuestions("tempat wisata");
   }
 
@@ -156,12 +159,15 @@ export class RecommendationPage {
       let value = 0;
       questionsValue.forEach(node => {
         value += node.pref
-      })
+      });
       if (value > 0) {
         passed = true;
         let names = questionsValue.map(q => q.name);
         this.store.dispatch(this.recommActions.setDistance(this.distance));
-        this.navCtrl.push('BeginPage', {
+        let page = '';
+        if(this.mode == 1) page = 'BeginPage';
+        else page = 'Begin2Page';
+        this.navCtrl.push(page, {
           selected: questionsValue,
           names: [names],
           loaded: this.colsQuestions

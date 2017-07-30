@@ -67,7 +67,7 @@ export class IntroPage {
   }
 
   goToHome(){
-      this.navCtrl.setRoot(RecommendationPage);
+      this.navCtrl.setRoot('MethodSelectionPage');
   }
 
 }

@@ -52,9 +52,13 @@ import {AlertService} from '../../services/alert.service';
           Ulangi Proses Rekomendasi
         </button>
       </div>
+      <p style="text-align: center" *ngIf="mode == 2">
+        Dengan menekan tombol selesai, anda akan mengakhiri proses rekomendasi <br>
+        dan dianggap puas dengan hasil rekomendasi yang ada.
+      </p>
     </ion-content>
     <ion-footer *ngIf="selectedPlaces.length > 0" style="height: 10%;">
-      <button color="fire" style="height: 100%;" ion-button block (click)="navigate()">Lanjut</button>
+      <button color="fire" style="height: 100%;" ion-button block (click)="navigate()">{{submitText}}</button>
     </ion-footer>
 
   `
@@ -64,6 +68,8 @@ export class ResultSelectionPage {
 
   private selectedPlaces: Place[] = [];
   private storedPlaces: Place[] = [];
+  private mode: number = 0;
+  private submitText: string = "";
   private params: UpPropagationParams;
   private selectedRecomms: string[] = [];
   private staticTitle = "";
@@ -87,10 +93,22 @@ export class ResultSelectionPage {
     this.loadingService.presentLoading();
     this.params = this.navParams.get("params");
     console.log("PARAMS", this.params);
-    if (this.params)
+    let places = this.navParams.get("places");
+    console.log("selected", this.places);
+    if(places){
+      this.selectedPlaces = places;
+      this.mode = 2;
+      this.submitText = "Selesai";
+      this.title = `${this.selectedPlaces.length} Hasil Rekomendasi`;
+      this.staticTitle = this.title;
+      this.loadingService.stopLoading();
+    }
+    else if (this.params)
       if (this.params.assigned)
       // if (this.params.assigned.length > 0)
         this.recommService.upPropagation(this.params).subscribe(data => {
+          this.mode = 2;
+          this.submitText = "Lanjut";
           console.log("data", data);
           this.selectedPlaces = data;
           this.title = `${this.selectedPlaces.length} Hasil Rekomendasi`;
@@ -100,7 +118,7 @@ export class ResultSelectionPage {
   }
 
   reset() {
-    this.navCtrl.setRoot('RecommendationPage');
+    this.navCtrl.setRoot('MethodSelectionPage');
   }
 
   check(data: any, value: Place) {
@@ -145,7 +163,7 @@ export class ResultSelectionPage {
     } else {
       this.alertService.presentAlertWithCallback("", "Anda tidak memilih rekomendasi, apakah anda ingin mengulangi proses rekomendasi dari awal?", "Tidak", "Iya, ulangi").then(status => {
         if (status)
-          this.navCtrl.setRoot('RecommendationPage');
+          this.navCtrl.setRoot('MethodSelectionPage');
       });
     }
   }

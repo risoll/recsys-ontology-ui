@@ -4,7 +4,7 @@ import {Headers, Http, RequestOptions } from "@angular/http";
 import {API_URL} from "../utils/constants";
 import {Observable} from "rxjs/Observable";
 import 'rxjs/add/operator/map'
-import {UpPropagationParams } from '../models/recommendation.model';
+import {UpPropagationParams, UpPropagationV2Response} from '../models/recommendation.model';
 import { Place } from '../models/place.model';
 /**
  * Created by solehuddien on 26/04/17.
@@ -78,6 +78,28 @@ export class RecommendationService{
     return this.http.post(url, body, options)
       .map(res => <Place[]>res.json())
       // .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
+
+
+  downPropagationV2(params: NodeValues[]): Observable<DownPropagationResponse>{
+    let url = `${API_URL}/recomm/propagation/downwardv2`;
+    let body = JSON.stringify(params);
+    let headers = new Headers({'Content-Type': 'application/json'});
+    let options = new RequestOptions({headers: headers});
+    return this.http.post(url, body, options)
+      .map(res => <DownPropagationResponse>res.json())
+    // .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
+  upPropagationV2(params: UpPropagationParams): Observable<UpPropagationV2Response>{
+    let url = `${API_URL}/recomm/propagation/upwardv2`;
+    let body = JSON.stringify(params);
+    let headers = new Headers({'Content-Type': 'application/json'});
+    let options = new RequestOptions({headers: headers});
+    return this.http.post(url, body, options)
+      .map(res => <UpPropagationV2Response>res.json())
+    // .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
   }
 
 

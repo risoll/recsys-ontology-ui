@@ -53,4 +53,28 @@ export class RecommActions {
             payload: distance
         }
     }
+
+    static SET_MODE = '[Recomm] Set Mode';
+    setMode(mode: number){
+        return{
+            type: RecommActions.SET_MODE,
+            payload: mode
+        }
+    }
+
+    static SET_MODE1_STATUS = '[Recomm] Set Mode 1 Status';
+    setMode1Status(status: string){
+        return{
+            type: RecommActions.SET_MODE1_STATUS,
+            payload: status
+        }
+    }
+
+    static SET_MODE2_STATUS = '[Recomm] Set Mode 2 Status';
+    setMode2Status(status: string){
+        return{
+            type: RecommActions.SET_MODE2_STATUS,
+            payload: status
+        }
+    }
 }

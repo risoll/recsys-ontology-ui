@@ -1,5 +1,6 @@
 import { Location } from './user.model';
 import { Question, NodeValues } from './recommendation.model';
+import {Place} from "./place.model";
 export interface Question {
 	name: string;
 	image: string;
@@ -37,6 +38,13 @@ export interface NodeValues {
 export interface DownPropagationResponse{
 	data: NodeValues[],
 	askedNodes: Question[]
+}
+
+
+export interface UpPropagationV2Response{
+  places: Place[],
+  old: NodeValues[],
+  askedNodes: Question[]
 }
 
 export interface UpPropagationParams{

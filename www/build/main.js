@@ -1,4 +1,4 @@
-webpackJsonp([13],{
+webpackJsonp([15],{
 
 /***/ 10:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -29,7 +29,7 @@ var API_URL = "" + API_BASE_URL + API_BASE_PORT;
 
 /***/ }),
 
-/***/ 23:
+/***/ 16:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -81,6 +81,24 @@ var RecommActions = RecommActions_1 = (function () {
             payload: distance
         };
     };
+    RecommActions.prototype.setMode = function (mode) {
+        return {
+            type: RecommActions_1.SET_MODE,
+            payload: mode
+        };
+    };
+    RecommActions.prototype.setMode1Status = function (status) {
+        return {
+            type: RecommActions_1.SET_MODE1_STATUS,
+            payload: status
+        };
+    };
+    RecommActions.prototype.setMode2Status = function (status) {
+        return {
+            type: RecommActions_1.SET_MODE2_STATUS,
+            payload: status
+        };
+    };
     return RecommActions;
 }());
 RecommActions.SELECT_ROOT_CLASS = '[Recomm] Select Root Class';
@@ -89,6 +107,9 @@ RecommActions.SELECT_CLASS = '[Recomm] Select Class';
 RecommActions.LOAD_CLASS = '[Recomm] Load Class';
 RecommActions.SELECT_PLACES = '[Recomm] Select Places';
 RecommActions.SET_DISTANCE = '[Recomm] Set Distance';
+RecommActions.SET_MODE = '[Recomm] Set Mode';
+RecommActions.SET_MODE1_STATUS = '[Recomm] Set Mode 1 Status';
+RecommActions.SET_MODE2_STATUS = '[Recomm] Set Mode 2 Status';
 RecommActions = RecommActions_1 = __decorate([
     __WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"]()
 ], RecommActions);
@@ -194,7 +215,7 @@ UserService = __decorate([
 
 /***/ }),
 
-/***/ 33:
+/***/ 34:
 /***/ (function(module, exports) {
 
 function webpackEmptyAsyncContext(req) {
@@ -203,17 +224,17 @@ function webpackEmptyAsyncContext(req) {
 webpackEmptyAsyncContext.keys = function() { return []; };
 webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
 module.exports = webpackEmptyAsyncContext;
-webpackEmptyAsyncContext.id = 33;
+webpackEmptyAsyncContext.id = 34;
 
 /***/ }),
 
-/***/ 35:
+/***/ 36:
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
 	"../pages/about/about.module": [
 		98,
-		12
+		14
 	],
 	"../pages/attractions/attractions.module": [
 		97,
@@ -221,11 +242,15 @@ var map = {
 	],
 	"../pages/begin/begin.module": [
 		90,
+		9
+	],
+	"../pages/begin2/begin2.module": [
+		99,
 		10
 	],
 	"../pages/details/details.module": [
 		86,
-		9
+		8
 	],
 	"../pages/enhance/enhance.module": [
 		95,
@@ -233,7 +258,7 @@ var map = {
 	],
 	"../pages/explanation/explanation.module": [
 		89,
-		8
+		7
 	],
 	"../pages/feedback/feedback.module": [
 		92,
@@ -241,11 +266,15 @@ var map = {
 	],
 	"../pages/intro/intro.module": [
 		96,
-		7
+		13
 	],
 	"../pages/maps/maps.module": [
 		87,
 		1
+	],
+	"../pages/method.selection/method.selection.module": [
+		100,
+		12
 	],
 	"../pages/place/place.module": [
 		88,
@@ -276,54 +305,11 @@ webpackAsyncContext.keys = function webpackAsyncContextKeys() {
 	return Object.keys(map);
 };
 module.exports = webpackAsyncContext;
-webpackAsyncContext.id = 35;
+webpackAsyncContext.id = 36;
 
 /***/ }),
 
 /***/ 40:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LoadingService; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_ionic_angular__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-var LoadingService = (function () {
-    function LoadingService(loadingCtrl) {
-        this.loadingCtrl = loadingCtrl;
-    }
-    LoadingService.prototype.presentLoading = function (message) {
-        if (message === void 0) { message = "Mohon tunggu.."; }
-        this.loader = this.loadingCtrl.create({
-            content: message
-        });
-        this.loader.present();
-    };
-    LoadingService.prototype.stopLoading = function () {
-        this.loader.dismiss();
-    };
-    return LoadingService;
-}());
-LoadingService = __decorate([
-    __WEBPACK_IMPORTED_MODULE_1__angular_core__["Injectable"](),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0_ionic_angular__["h" /* LoadingController */]])
-], LoadingService);
-
-//# sourceMappingURL=loading.service.js.map
-
-/***/ }),
-
-/***/ 41:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -399,6 +385,49 @@ AlertService = __decorate([
 
 /***/ }),
 
+/***/ 41:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LoadingService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_ionic_angular__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var LoadingService = (function () {
+    function LoadingService(loadingCtrl) {
+        this.loadingCtrl = loadingCtrl;
+    }
+    LoadingService.prototype.presentLoading = function (message) {
+        if (message === void 0) { message = "Mohon tunggu.."; }
+        this.loader = this.loadingCtrl.create({
+            content: message
+        });
+        this.loader.present();
+    };
+    LoadingService.prototype.stopLoading = function () {
+        this.loader.dismiss();
+    };
+    return LoadingService;
+}());
+LoadingService = __decorate([
+    __WEBPACK_IMPORTED_MODULE_1__angular_core__["Injectable"](),
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0_ionic_angular__["h" /* LoadingController */]])
+], LoadingService);
+
+//# sourceMappingURL=loading.service.js.map
+
+/***/ }),
+
 /***/ 42:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -407,7 +436,7 @@ AlertService = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_constants__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -486,6 +515,24 @@ var RecommendationService = (function () {
             .map(function (res) { return res.json(); });
         // .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
     };
+    RecommendationService.prototype.downPropagationV2 = function (params) {
+        var url = __WEBPACK_IMPORTED_MODULE_2__utils_constants__["a" /* API_URL */] + "/recomm/propagation/downwardv2";
+        var body = JSON.stringify(params);
+        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Headers */]({ 'Content-Type': 'application/json' });
+        var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* RequestOptions */]({ headers: headers });
+        return this.http.post(url, body, options)
+            .map(function (res) { return res.json(); });
+        // .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+    };
+    RecommendationService.prototype.upPropagationV2 = function (params) {
+        var url = __WEBPACK_IMPORTED_MODULE_2__utils_constants__["a" /* API_URL */] + "/recomm/propagation/upwardv2";
+        var body = JSON.stringify(params);
+        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Headers */]({ 'Content-Type': 'application/json' });
+        var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* RequestOptions */]({ headers: headers });
+        return this.http.post(url, body, options)
+            .map(function (res) { return res.json(); });
+        // .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+    };
     RecommendationService.prototype.parseNode = function (node) {
         return node.replace(" ", "%20");
     };
@@ -508,7 +555,7 @@ RecommendationService = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_constants__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -656,7 +703,7 @@ function UserReducer(state, action) {
 }
 //# sourceMappingURL=user.reducer.js.map
 // CONCATENATED MODULE: ./src/reducers/recomm.reducer.ts
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__actions_recomm_actions__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__actions_recomm_actions__ = __webpack_require__(16);
 
 var recomm_reducer_initialState = {
     selectedRootClass: [],
@@ -664,7 +711,10 @@ var recomm_reducer_initialState = {
     updatedClass: [],
     loadedClass: [[]],
     selectedPlaces: [],
-    distance: 5
+    distance: 5,
+    mode: 1,
+    statusMode1: "incomplete",
+    statusMode2: "incomplete"
 };
 function RecommReducer(state, action) {
     if (state === void 0) { state = recomm_reducer_initialState; }
@@ -681,6 +731,12 @@ function RecommReducer(state, action) {
             return Object.assign({}, state, { selectedPlaces: action.payload });
         case __WEBPACK_IMPORTED_MODULE_0__actions_recomm_actions__["a" /* RecommActions */].SET_DISTANCE:
             return Object.assign({}, state, { distance: action.payload });
+        case __WEBPACK_IMPORTED_MODULE_0__actions_recomm_actions__["a" /* RecommActions */].SET_MODE:
+            return Object.assign({}, state, { mode: action.payload });
+        case __WEBPACK_IMPORTED_MODULE_0__actions_recomm_actions__["a" /* RecommActions */].SET_MODE1_STATUS:
+            return Object.assign({}, state, { statusMode1: action.payload });
+        case __WEBPACK_IMPORTED_MODULE_0__actions_recomm_actions__["a" /* RecommActions */].SET_MODE2_STATUS:
+            return Object.assign({}, state, { statusMode2: action.payload });
         default:
             return state;
     }
@@ -698,7 +754,7 @@ var APP_REDUCERS = {
 };
 //# sourceMappingURL=app.reducers.js.map
 // CONCATENATED MODULE: ./src/app/app.actions.ts
-/* harmony import */ var app_actions___WEBPACK_IMPORTED_MODULE_0__actions_recomm_actions__ = __webpack_require__(23);
+/* harmony import */ var app_actions___WEBPACK_IMPORTED_MODULE_0__actions_recomm_actions__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__actions_attractions_actions__ = __webpack_require__(24);
 
 
@@ -713,10 +769,11 @@ var APP_ACTIONS = [
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_user_service__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_status_bar__ = __webpack_require__(36);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_splash_screen__ = __webpack_require__(38);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_storage__ = __webpack_require__(39);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ngrx_store__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_status_bar__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_splash_screen__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_storage__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ngrx_store__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__actions_recomm_actions__ = __webpack_require__(16);
 var app_component___decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -734,8 +791,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var MyApp = (function () {
-    function MyApp(store, userActions, userService, platform, loadingCtrl, storage, splashScreen, statusBar) {
+    function MyApp(store, userActions, userService, platform, loadingCtrl, storage, splashScreen, recommActions, statusBar) {
         var _this = this;
         this.store = store;
         this.userActions = userActions;
@@ -744,6 +802,7 @@ var MyApp = (function () {
         this.loadingCtrl = loadingCtrl;
         this.storage = storage;
         this.splashScreen = splashScreen;
+        this.recommActions = recommActions;
         this.statusBar = statusBar;
         this.rootPage = 'IntroPage';
         // this.presentLoading();
@@ -753,7 +812,7 @@ var MyApp = (function () {
         this.initializeApp();
         // used for an example of ngFor and navigation
         this.pages = [
-            { title: 'Rekomendasi', component: 'RecommendationPage' },
+            { title: 'Rekomendasi', component: 'MethodSelectionPage' },
             { title: 'Jelajah', component: 'AttractionsPage' },
             { title: 'Tentang', component: 'AboutPage' }
             // { title: 'Advanced', component: AdvancedPage },
@@ -761,6 +820,27 @@ var MyApp = (function () {
             // { title: 'Account', component: AccountPage }
         ];
     }
+    MyApp.prototype.resetStatus = function () {
+        var _this = this;
+        var mode1Status = this.storage.get('mode1Status');
+        var mode2Status = this.storage.get('mode2Status');
+        if (mode1Status) {
+            mode1Status.then(function (status) {
+                console.log("1 Status", status);
+                if (status == "completed") {
+                    _this.store.dispatch(_this.recommActions.setMode1Status("completed"));
+                }
+            });
+        }
+        if (mode2Status) {
+            mode2Status.then(function (status) {
+                console.log("2 Status", status);
+                if (status == "completed") {
+                    _this.store.dispatch(_this.recommActions.setMode2Status("completed"));
+                }
+            });
+        }
+    };
     MyApp.prototype.openPage = function (page) {
         // Reset the content nav to have just this page
         // we wouldn't want the back button to show in this scenario
@@ -793,6 +873,7 @@ var MyApp = (function () {
         else {
             console.log("FAILED");
         }
+        this.resetStatus();
     };
     MyApp.prototype.initializeApp = function () {
         var _this = this;
@@ -801,7 +882,7 @@ var MyApp = (function () {
             // Here you can do any higher level native things you might need.
             _this.storage.get('introShown').then(function (result) {
                 if (result) {
-                    _this.rootPage = 'RecommendationPage';
+                    _this.rootPage = 'MethodSelectionPage';
                 }
                 else {
                     _this.rootPage = 'IntroPage';
@@ -829,6 +910,7 @@ MyApp = app_component___decorate([
         __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["h" /* LoadingController */],
         __WEBPACK_IMPORTED_MODULE_6__ionic_storage__["b" /* Storage */],
         __WEBPACK_IMPORTED_MODULE_5__ionic_native_splash_screen__["a" /* SplashScreen */],
+        __WEBPACK_IMPORTED_MODULE_8__actions_recomm_actions__["a" /* RecommActions */],
         __WEBPACK_IMPORTED_MODULE_4__ionic_native_status_bar__["a" /* StatusBar */]])
 ], MyApp);
 
@@ -837,7 +919,7 @@ MyApp = app_component___decorate([
 /* harmony import */ var google_service___WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_constants__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__);
 var google_service___decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -872,11 +954,11 @@ GoogleService = google_service___decorate([
 
 //# sourceMappingURL=google.service.js.map
 // CONCATENATED MODULE: ./src/app/app.services.ts
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_loading_service__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_loading_service__ = __webpack_require__(41);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_user_service__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_recommendation_service__ = __webpack_require__(42);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_place_service__ = __webpack_require__(43);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_alert_service__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_alert_service__ = __webpack_require__(40);
 
 
 
@@ -900,10 +982,10 @@ var APP_SERVICES = [
 /* harmony import */ var app_module___WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_platform_browser__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__angular_http__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_native_status_bar__ = __webpack_require__(36);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ionic_native_splash_screen__ = __webpack_require__(38);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ngrx_store__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ionic_storage__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_native_status_bar__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ionic_native_splash_screen__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ngrx_store__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ionic_storage__ = __webpack_require__(26);
 var app_module___decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -950,7 +1032,9 @@ AppModule = app_module___decorate([
                     { loadChildren: '../pages/maps/maps.module#MapsPageModule', name: 'MapsPage', segment: 'maps', priority: 'low', defaultHistory: [] },
                     { loadChildren: '../pages/details/details.module#DetailsPageModule', name: 'DetailsPage', segment: 'details', priority: 'low', defaultHistory: [] },
                     { loadChildren: '../pages/attractions/attractions.module#AttractionsPageModule', name: 'AttractionsPage', segment: 'attractions', priority: 'low', defaultHistory: [] },
-                    { loadChildren: '../pages/about/about.module#AboutPageModule', name: 'AboutPage', segment: 'about', priority: 'low', defaultHistory: [] }
+                    { loadChildren: '../pages/about/about.module#AboutPageModule', name: 'AboutPage', segment: 'about', priority: 'low', defaultHistory: [] },
+                    { loadChildren: '../pages/begin2/begin2.module#Begin2PageModule', name: 'Begin2Page', segment: 'begin2', priority: 'low', defaultHistory: [] },
+                    { loadChildren: '../pages/method.selection/method.selection.module#MethodSelectionPageModule', name: 'MethodSelectionPage', segment: 'method.selection', priority: 'low', defaultHistory: [] }
                 ]
             }),
             __WEBPACK_IMPORTED_MODULE_11__ionic_storage__["a" /* IonicStorageModule */].forRoot()

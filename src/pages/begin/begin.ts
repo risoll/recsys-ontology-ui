@@ -18,7 +18,7 @@ import { AlertService } from '../../services/alert.service';
   template: `
     <ion-header>
       <ion-navbar color="sky">
-        <ion-title>Rekomendasi</ion-title>
+        <ion-title>Rekomendasi Mode 1</ion-title>
       </ion-navbar>
     </ion-header>
     <ion-content *ngIf="questions" class="card-background-page">
@@ -133,8 +133,8 @@ export class BeginPage {
           this.questions = [];
           for (let j = i; j < i + this.divider; j++) {
             if (askedNodes[j])
-              this.questions.push({ 
-                name: askedNodes[j].name, 
+              this.questions.push({
+                name: askedNodes[j].name,
                 image: askedNodes[j].image,
                 description: askedNodes[j].description,
                 root: askedNodes[j].root
