@@ -1,7 +1,7 @@
 import { Place } from './../models/place.model';
 import { ColsQuestion } from './../models/recommendation.model';
 import {Injectable} from '@angular/core';
-import { NodeValues } from '../models/recommendation.model';
+import {NodeValues, Static} from '../models/recommendation.model';
 
 
 @Injectable()
@@ -75,6 +75,14 @@ export class RecommActions {
         return{
             type: RecommActions.SET_MODE2_STATUS,
             payload: status
+        }
+    }
+
+    static SET_STATIC = '[Recomm] Set Static';
+    setStatic(staticData: Static){
+        return{
+            type: RecommActions.SET_STATIC,
+            payload: staticData
         }
     }
 }

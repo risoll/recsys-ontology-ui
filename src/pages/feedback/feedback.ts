@@ -11,6 +11,8 @@ import {AlertService} from '../../services/alert.service';
 import {LoadingService} from '../../services/loading.service';
 import {Storage} from '@ionic/storage';
 import {RecommActions} from "../../actions/recomm.actions";
+import {Observable} from "rxjs/Observable";
+import {Static} from "../../models/recommendation.model";
 
 @IonicPage()
 @Component({
@@ -38,11 +40,11 @@ import {RecommActions} from "../../actions/recomm.actions";
           </ion-list-header>
           <ion-item>
             <ion-label>Laki-laki</ion-label>
-            <ion-radio value="male"></ion-radio>
+            <ion-radio [checked]="male" value="male"></ion-radio>
           </ion-item>
           <ion-item>
             <ion-label>Perempuan</ion-label>
-            <ion-radio value="female"></ion-radio>
+            <ion-radio [checked]="female" value="female"></ion-radio>
           </ion-item>
         </ion-list>
       </ion-card>
@@ -59,7 +61,7 @@ import {RecommActions} from "../../actions/recomm.actions";
       <ion-card>
         <ion-list radio-group [(ngModel)]="pu1">
           <ion-list-header>
-            Aplikasi ini berguna untuk mencari <br> 
+            Aplikasi ini berguna untuk mencari <br>
             tempat wisata
           </ion-list-header>
           <ion-item *ngFor="let scale of likertScales">
@@ -82,7 +84,7 @@ import {RecommActions} from "../../actions/recomm.actions";
       <ion-card>
         <ion-list radio-group [(ngModel)]="tr1">
           <ion-list-header>
-            Aplikasi ini menghasilkan rekomendasi <br> 
+            Aplikasi ini menghasilkan rekomendasi <br>
             yang dapat dipercaya
           </ion-list-header>
           <ion-item *ngFor="let scale of likertScales">
@@ -94,7 +96,7 @@ import {RecommActions} from "../../actions/recomm.actions";
       <ion-card>
         <ion-list radio-group [(ngModel)]="pe1">
           <ion-list-header>
-            Saya merasa nyaman saat <br> 
+            Saya merasa nyaman saat <br>
             menggunakan aplikasi ini
           </ion-list-header>
           <ion-item *ngFor="let scale of likertScales">
@@ -106,7 +108,7 @@ import {RecommActions} from "../../actions/recomm.actions";
       <ion-card>
         <ion-list radio-group [(ngModel)]="bi1">
           <ion-list-header>
-            Saya akan menggunakan kembali <br> 
+            Saya akan menggunakan kembali <br>
             aplikasi ini di masa yang akan datang
           </ion-list-header>
           <ion-item *ngFor="let scale of likertScales">
@@ -119,6 +121,7 @@ import {RecommActions} from "../../actions/recomm.actions";
     <ion-footer style="height: 10%;">
       <button style="height: 100%;" ion-button block color="fire" (click)="navigate()">Submit</button>
     </ion-footer>
+
 
   `
 })
@@ -134,12 +137,16 @@ export class FeedbackPage {
   rating: number;
   ip: string;
   city: string;
+  male: boolean = false;
+  female: boolean = false;
 
   pu1: number;
   eou1: number;
   tr1: number;
   pe1: number;
   bi1: number;
+
+  staticData: Static;
 
   private likertScales = [
     {label: "Sangat setuju", value: 5},
@@ -158,6 +165,18 @@ export class FeedbackPage {
               public storage: Storage,
               private recommActions: RecommActions) {
     this.rating = navParams.get("rate");
+    this.staticData = captureState(this.store).recomm.staticData;
+    this.name = this.staticData.name;
+    this.age = this.staticData.age;
+    this.city = this.staticData.city;
+    if(this.staticData.gender){
+      if(this.staticData.gender == "male"){
+        this.male = true;
+      }
+      else{
+        this.female = true;
+      }
+    }
   }
 
 
@@ -191,6 +210,13 @@ export class FeedbackPage {
         saya sangat berterimakasih karena anda sudah berpartisipasi dalam survey tugas akhir ini`);
 
         let currentMode = captureState(this.store).recomm.mode;
+
+        this.store.dispatch(this.recommActions.setStatic({
+          name: this.name,
+          city: this.city,
+          gender: this.gender,
+          age: this.age
+        }));
 
         this.storage.set(`mode${currentMode}Status`, 'completed');
         if (currentMode == 1)

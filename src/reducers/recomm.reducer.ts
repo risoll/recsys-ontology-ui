@@ -1,5 +1,5 @@
 import {Place} from './../models/place.model';
-import {ColsQuestion, NodeValues} from './../models/recommendation.model';
+import {ColsQuestion, NodeValues, Static} from './../models/recommendation.model';
 import {RecommActions} from './../actions/recomm.actions';
 
 export interface RecommState {
@@ -12,6 +12,7 @@ export interface RecommState {
   mode: number;
   statusMode1: string;
   statusMode2: string;
+  staticData: Static;
 }
 
 const initialState = <RecommState>{
@@ -23,7 +24,8 @@ const initialState = <RecommState>{
   distance: 5,
   mode: 1,
   statusMode1: "incomplete",
-  statusMode2: "incomplete"
+  statusMode2: "incomplete",
+  staticData: {}
 };
 
 export function RecommReducer(state: RecommState = initialState, action) {
@@ -46,6 +48,8 @@ export function RecommReducer(state: RecommState = initialState, action) {
       return Object.assign({}, state, {statusMode1: action.payload});
     case RecommActions.SET_MODE2_STATUS:
       return Object.assign({}, state, {statusMode2: action.payload});
+    case RecommActions.SET_STATIC:
+      return Object.assign({}, state, {staticData: action.payload});
     default:
       return state;
   }

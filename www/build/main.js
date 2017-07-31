@@ -99,6 +99,12 @@ var RecommActions = RecommActions_1 = (function () {
             payload: status
         };
     };
+    RecommActions.prototype.setStatic = function (staticData) {
+        return {
+            type: RecommActions_1.SET_STATIC,
+            payload: staticData
+        };
+    };
     return RecommActions;
 }());
 RecommActions.SELECT_ROOT_CLASS = '[Recomm] Select Root Class';
@@ -110,6 +116,7 @@ RecommActions.SET_DISTANCE = '[Recomm] Set Distance';
 RecommActions.SET_MODE = '[Recomm] Set Mode';
 RecommActions.SET_MODE1_STATUS = '[Recomm] Set Mode 1 Status';
 RecommActions.SET_MODE2_STATUS = '[Recomm] Set Mode 2 Status';
+RecommActions.SET_STATIC = '[Recomm] Set Static';
 RecommActions = RecommActions_1 = __decorate([
     __WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"]()
 ], RecommActions);
@@ -714,7 +721,8 @@ var recomm_reducer_initialState = {
     distance: 5,
     mode: 1,
     statusMode1: "incomplete",
-    statusMode2: "incomplete"
+    statusMode2: "incomplete",
+    staticData: {}
 };
 function RecommReducer(state, action) {
     if (state === void 0) { state = recomm_reducer_initialState; }
@@ -737,6 +745,8 @@ function RecommReducer(state, action) {
             return Object.assign({}, state, { statusMode1: action.payload });
         case __WEBPACK_IMPORTED_MODULE_0__actions_recomm_actions__["a" /* RecommActions */].SET_MODE2_STATUS:
             return Object.assign({}, state, { statusMode2: action.payload });
+        case __WEBPACK_IMPORTED_MODULE_0__actions_recomm_actions__["a" /* RecommActions */].SET_STATIC:
+            return Object.assign({}, state, { staticData: action.payload });
         default:
             return state;
     }

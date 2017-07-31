@@ -40,6 +40,13 @@ export interface DownPropagationResponse{
 	askedNodes: Question[]
 }
 
+export interface Static{
+  name: string;
+  gender: string;
+  city: string;
+  age: number;
+}
+
 
 export interface UpPropagationV2Response{
   places: Place[],

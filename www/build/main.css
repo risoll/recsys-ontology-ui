@@ -32722,7 +32722,7 @@ page-begin .card-background-page ion-card {
 
 page-begin .card-background-page .card-title {
   position: absolute;
-  top: 23%;
+  top: 20%;
   font-size: 1.0em;
   width: 100%;
   font-weight: bold;
@@ -32754,7 +32754,7 @@ page-begin2 .card-background-page ion-card {
 
 page-begin2 .card-background-page .card-title {
   position: absolute;
-  top: 23%;
+  top: 20%;
   font-size: 1.0em;
   width: 100%;
   font-weight: bold;
@@ -32896,7 +32896,7 @@ page-recommendation .card-background-page ion-card {
 
 page-recommendation .card-background-page .card-title {
   position: absolute;
-  top: 23%;
+  top: 20%;
   font-size: 1.0em;
   width: 100%;
   font-weight: bold;
