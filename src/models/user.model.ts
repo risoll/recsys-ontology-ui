@@ -7,10 +7,12 @@ export interface Feedback{
     name: string;
     gender: string;
     age: number;
-    profession: string;
-    univ: string;
-    majors: string;
     rating: number;
+    pu1: number;
+    eou1: number;
+    tr1: number;
+    pe1: number;
+    bi1: number;
 }
 
 export interface IpApi{

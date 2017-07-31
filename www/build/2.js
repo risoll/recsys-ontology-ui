@@ -222,6 +222,13 @@ var FeedbackPage = (function () {
         this.store = store;
         this.storage = storage;
         this.recommActions = recommActions;
+        this.likertScales = [
+            { label: "Sangat setuju", value: 5 },
+            { label: "Setuju", value: 4 },
+            { label: "Netral", value: 3 },
+            { label: "Tidak setuju", value: 2 },
+            { label: "Sangat tidak setuju", value: 1 },
+        ];
         this.rating = navParams.get("rate");
     }
     FeedbackPage.prototype.navigate = function () {
@@ -238,11 +245,15 @@ var FeedbackPage = (function () {
             name: this.name,
             gender: this.gender,
             age: Number(this.age),
-            profession: this.profession,
-            univ: this.univ,
-            majors: this.majors,
-            rating: this.rating
+            rating: this.rating,
+            // rating: 0,
+            pu1: this.pu1,
+            eou1: this.eou1,
+            tr1: this.tr1,
+            pe1: this.pe1,
+            bi1: this.bi1,
         };
+        console.log("params", params);
         if (__WEBPACK_IMPORTED_MODULE_4__utils_common_util__["d" /* isFormFilled */](params)) {
             this.loadingService.presentLoading();
             this.userService.addFeedback(params).subscribe(function (feedback) {
@@ -266,7 +277,7 @@ FeedbackPage = __decorate([
     __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["f" /* IonicPage */](),
     __WEBPACK_IMPORTED_MODULE_2__angular_core__["Component"]({
         selector: 'page-feedback',
-        template: "\n    <ion-header>\n      <ion-navbar color=\"sky\">\n        <button ion-button menuToggle>\n          <ion-icon name=\"menu\"></ion-icon>\n        </button>\n        <ion-title>Survei Pengguna</ion-title>\n      </ion-navbar>\n    </ion-header>\n    <ion-content>\n      <ion-list>\n        <ion-item [(ngModel)]=\"name\">\n          <ion-label color=\"primary\" stacked>Nama</ion-label>\n          <ion-input placeholder=\"Nama Lengkap\"></ion-input>\n        </ion-item>\n      </ion-list>\n      <ion-card>\n        <ion-list radio-group [(ngModel)]=\"gender\">\n          <ion-list-header>\n            Jenis Kelamin\n          </ion-list-header>\n          <ion-item>\n            <ion-label>Laki-laki</ion-label>\n            <ion-radio value=\"male\"></ion-radio>\n          </ion-item>\n          <ion-item>\n            <ion-label>Perempuan</ion-label>\n            <ion-radio value=\"female\"></ion-radio>\n          </ion-item>\n        </ion-list>\n      </ion-card>\n      <ion-list>\n        <ion-item [(ngModel)]=\"city\">\n          <ion-label color=\"primary\" stacked>Kota Domisili</ion-label>\n          <ion-input placeholder=\"contoh: Bandung\"></ion-input>\n        </ion-item>\n        <ion-item [(ngModel)]=\"age\">\n          <ion-label color=\"primary\" stacked>Umur</ion-label>\n          <ion-input type=\"number\" placeholder=\"contoh: 17\"></ion-input>\n        </ion-item>\n        <ion-item [(ngModel)]=\"profession\">\n          <ion-label color=\"primary\" stacked>Profesi</ion-label>\n          <ion-input placeholder=\"contoh: Mahasiswa\"></ion-input>\n        </ion-item>\n        <ion-item [(ngModel)]=\"univ\">\n          <ion-label color=\"primary\" stacked>Universitas</ion-label>\n          <ion-input placeholder=\"contoh: Telkom University\"></ion-input>\n        </ion-item>\n        <ion-item [(ngModel)]=\"majors\">\n          <ion-label color=\"primary\" stacked>Fakultas</ion-label>\n          <ion-input placeholder=\"contoh: Teknik Informatika\"></ion-input>\n        </ion-item>\n      </ion-list>\n    </ion-content>\n    <ion-footer style=\"height: 10%;\">\n      <button style=\"height: 100%;\" ion-button block color=\"fire\" (click)=\"navigate()\">Submit</button>\n    </ion-footer>\n\n  "
+        template: "\n    <ion-header>\n      <ion-navbar color=\"sky\">\n        <button ion-button menuToggle>\n          <ion-icon name=\"menu\"></ion-icon>\n        </button>\n        <ion-title>Survei Pengguna</ion-title>\n      </ion-navbar>\n    </ion-header>\n    <ion-content>\n      <ion-list>\n        <ion-item [(ngModel)]=\"name\">\n          <ion-label color=\"primary\" stacked>Nama</ion-label>\n          <ion-input placeholder=\"Nama Lengkap\"></ion-input>\n        </ion-item>\n      </ion-list>\n      <ion-card>\n        <ion-list radio-group [(ngModel)]=\"gender\">\n          <ion-list-header>\n            Jenis Kelamin\n          </ion-list-header>\n          <ion-item>\n            <ion-label>Laki-laki</ion-label>\n            <ion-radio value=\"male\"></ion-radio>\n          </ion-item>\n          <ion-item>\n            <ion-label>Perempuan</ion-label>\n            <ion-radio value=\"female\"></ion-radio>\n          </ion-item>\n        </ion-list>\n      </ion-card>\n      <ion-list>\n        <ion-item [(ngModel)]=\"city\">\n          <ion-label color=\"primary\" stacked>Kota Domisili</ion-label>\n          <ion-input placeholder=\"contoh: Bandung\"></ion-input>\n        </ion-item>\n        <ion-item [(ngModel)]=\"age\">\n          <ion-label color=\"primary\" stacked>Umur</ion-label>\n          <ion-input type=\"number\" placeholder=\"contoh: 17\"></ion-input>\n        </ion-item>\n      </ion-list>\n      <ion-card>\n        <ion-list radio-group [(ngModel)]=\"pu1\">\n          <ion-list-header>\n            Aplikasi ini berguna untuk mencari <br> \n            tempat wisata\n          </ion-list-header>\n          <ion-item *ngFor=\"let scale of likertScales\">\n            <ion-label>{{scale.label}}</ion-label>\n            <ion-radio [value]=\"scale.value\"></ion-radio>\n          </ion-item>\n        </ion-list>\n      </ion-card>\n      <ion-card>\n        <ion-list radio-group [(ngModel)]=\"eou1\">\n          <ion-list-header>\n            Aplikasi ini mudah digunakan\n          </ion-list-header>\n          <ion-item *ngFor=\"let scale of likertScales\">\n            <ion-label>{{scale.label}}</ion-label>\n            <ion-radio [value]=\"scale.value\"></ion-radio>\n          </ion-item>\n        </ion-list>\n      </ion-card>\n      <ion-card>\n        <ion-list radio-group [(ngModel)]=\"tr1\">\n          <ion-list-header>\n            Aplikasi ini menghasilkan rekomendasi <br> \n            yang dapat dipercaya\n          </ion-list-header>\n          <ion-item *ngFor=\"let scale of likertScales\">\n            <ion-label>{{scale.label}}</ion-label>\n            <ion-radio [value]=\"scale.value\"></ion-radio>\n          </ion-item>\n        </ion-list>\n      </ion-card>\n      <ion-card>\n        <ion-list radio-group [(ngModel)]=\"pe1\">\n          <ion-list-header>\n            Saya merasa nyaman saat <br> \n            menggunakan aplikasi ini\n          </ion-list-header>\n          <ion-item *ngFor=\"let scale of likertScales\">\n            <ion-label>{{scale.label}}</ion-label>\n            <ion-radio [value]=\"scale.value\"></ion-radio>\n          </ion-item>\n        </ion-list>\n      </ion-card>\n      <ion-card>\n        <ion-list radio-group [(ngModel)]=\"bi1\">\n          <ion-list-header>\n            Saya akan menggunakan kembali <br> \n            aplikasi ini di masa yang akan datang\n          </ion-list-header>\n          <ion-item *ngFor=\"let scale of likertScales\">\n            <ion-label>{{scale.label}}</ion-label>\n            <ion-radio [value]=\"scale.value\"></ion-radio>\n          </ion-item>\n        </ion-list>\n      </ion-card>\n    </ion-content>\n    <ion-footer style=\"height: 10%;\">\n      <button style=\"height: 100%;\" ion-button block color=\"fire\" (click)=\"navigate()\">Submit</button>\n    </ion-footer>\n\n  "
     }),
     __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["k" /* NavController */],
         __WEBPACK_IMPORTED_MODULE_1__services_user_service__["a" /* UserService */],

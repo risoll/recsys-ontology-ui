@@ -130,6 +130,7 @@ export class MyApp {
       this.storage.get('introShown').then((result) => {
         if (result) {
           this.rootPage = 'MethodSelectionPage';
+          // this.rootPage = 'FeedbackPage';
         } else {
           this.rootPage = 'IntroPage';
           this.storage.set('introShown', true);

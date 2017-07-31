@@ -883,6 +883,7 @@ var MyApp = (function () {
             _this.storage.get('introShown').then(function (result) {
                 if (result) {
                     _this.rootPage = 'MethodSelectionPage';
+                    // this.rootPage = 'FeedbackPage';
                 }
                 else {
                     _this.rootPage = 'IntroPage';

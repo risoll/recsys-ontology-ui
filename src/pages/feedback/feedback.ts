@@ -55,19 +55,66 @@ import {RecommActions} from "../../actions/recomm.actions";
           <ion-label color="primary" stacked>Umur</ion-label>
           <ion-input type="number" placeholder="contoh: 17"></ion-input>
         </ion-item>
-        <ion-item [(ngModel)]="profession">
-          <ion-label color="primary" stacked>Profesi</ion-label>
-          <ion-input placeholder="contoh: Mahasiswa"></ion-input>
-        </ion-item>
-        <ion-item [(ngModel)]="univ">
-          <ion-label color="primary" stacked>Universitas</ion-label>
-          <ion-input placeholder="contoh: Telkom University"></ion-input>
-        </ion-item>
-        <ion-item [(ngModel)]="majors">
-          <ion-label color="primary" stacked>Fakultas</ion-label>
-          <ion-input placeholder="contoh: Teknik Informatika"></ion-input>
-        </ion-item>
       </ion-list>
+      <ion-card>
+        <ion-list radio-group [(ngModel)]="pu1">
+          <ion-list-header>
+            Aplikasi ini berguna untuk mencari <br> 
+            tempat wisata
+          </ion-list-header>
+          <ion-item *ngFor="let scale of likertScales">
+            <ion-label>{{scale.label}}</ion-label>
+            <ion-radio [value]="scale.value"></ion-radio>
+          </ion-item>
+        </ion-list>
+      </ion-card>
+      <ion-card>
+        <ion-list radio-group [(ngModel)]="eou1">
+          <ion-list-header>
+            Aplikasi ini mudah digunakan
+          </ion-list-header>
+          <ion-item *ngFor="let scale of likertScales">
+            <ion-label>{{scale.label}}</ion-label>
+            <ion-radio [value]="scale.value"></ion-radio>
+          </ion-item>
+        </ion-list>
+      </ion-card>
+      <ion-card>
+        <ion-list radio-group [(ngModel)]="tr1">
+          <ion-list-header>
+            Aplikasi ini menghasilkan rekomendasi <br> 
+            yang dapat dipercaya
+          </ion-list-header>
+          <ion-item *ngFor="let scale of likertScales">
+            <ion-label>{{scale.label}}</ion-label>
+            <ion-radio [value]="scale.value"></ion-radio>
+          </ion-item>
+        </ion-list>
+      </ion-card>
+      <ion-card>
+        <ion-list radio-group [(ngModel)]="pe1">
+          <ion-list-header>
+            Saya merasa nyaman saat <br> 
+            menggunakan aplikasi ini
+          </ion-list-header>
+          <ion-item *ngFor="let scale of likertScales">
+            <ion-label>{{scale.label}}</ion-label>
+            <ion-radio [value]="scale.value"></ion-radio>
+          </ion-item>
+        </ion-list>
+      </ion-card>
+      <ion-card>
+        <ion-list radio-group [(ngModel)]="bi1">
+          <ion-list-header>
+            Saya akan menggunakan kembali <br> 
+            aplikasi ini di masa yang akan datang
+          </ion-list-header>
+          <ion-item *ngFor="let scale of likertScales">
+            <ion-label>{{scale.label}}</ion-label>
+            <ion-radio [value]="scale.value"></ion-radio>
+          </ion-item>
+        </ion-list>
+      </ion-card>
     </ion-content>
     <ion-footer style="height: 10%;">
       <button style="height: 100%;" ion-button block color="fire" (click)="navigate()">Submit</button>
@@ -87,6 +134,20 @@ export class FeedbackPage {
   rating: number;
   ip: string;
   city: string;
+
+  pu1: number;
+  eou1: number;
+  tr1: number;
+  pe1: number;
+  bi1: number;
+
+  private likertScales = [
+    {label: "Sangat setuju", value: 5},
+    {label: "Setuju", value: 4},
+    {label: "Netral", value: 3},
+    {label: "Tidak setuju", value: 2},
+    {label: "Sangat tidak setuju", value: 1},
+  ];
 
   constructor(public navCtrl: NavController,
               private userService: UserService,
@@ -112,11 +173,16 @@ export class FeedbackPage {
       name: this.name,
       gender: this.gender,
       age: Number(this.age),
-      profession: this.profession,
-      univ: this.univ,
-      majors: this.majors,
-      rating: this.rating
+      rating: this.rating,
+      // rating: 0,
+      pu1: this.pu1,
+      eou1: this.eou1,
+      tr1: this.tr1,
+      pe1: this.pe1,
+      bi1: this.bi1,
+
     };
+    console.log("params", params);
     if (isFormFilled(params)) {
       this.loadingService.presentLoading();
       this.userService.addFeedback(params).subscribe(feedback => {
