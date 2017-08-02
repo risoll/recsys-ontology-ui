@@ -39,6 +39,7 @@ import {AlertService} from '../../services/alert.service';
           <ion-label item-inner>
             <h2>{{place.name}}</h2>
             <p>{{place.formatted_address}}</p>
+            <p *ngIf="place.utilization">Utilisasi: {{place.utilization}}</p>
           </ion-label>
           <ion-checkbox item-end (ionChange)="check($event, place)" color="sky" checked="false"></ion-checkbox>
 
@@ -52,10 +53,10 @@ import {AlertService} from '../../services/alert.service';
           Ulangi Proses Rekomendasi
         </button>
       </div>
-      <p style="text-align: center" *ngIf="mode == 2">
-        Dengan menekan tombol selesai, anda akan mengakhiri proses rekomendasi <br>
-        dan dianggap puas dengan hasil rekomendasi yang ada.
-      </p>
+      <!--<p style="text-align: center" *ngIf="mode == 2">-->
+        <!--Dengan menekan tombol selesai, anda akan mengakhiri proses rekomendasi <br>-->
+        <!--dan dianggap puas dengan hasil rekomendasi yang ada.-->
+      <!--</p>-->
     </ion-content>
     <ion-footer *ngIf="selectedPlaces.length > 0" style="height: 10%;">
       <button color="fire" style="height: 100%;" ion-button block (click)="navigate()">{{submitText}}</button>

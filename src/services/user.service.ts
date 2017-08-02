@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs/Observable';
-import { IpApi, Feedback } from './../models/user.model';
+import { IpApi, Feedback, PostFeedback } from './../models/user.model';
 import {Headers, Http,  RequestOptions} from '@angular/http';
 import { API_URL } from './../utils/constants';
 import { Injectable } from '@angular/core';
@@ -29,6 +29,16 @@ export class UserService{
     let options = new RequestOptions({headers: headers});
     return this.http.post(url, body, options)
       .map(res => <Feedback>res.json())
+      // .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
+  addPostFeedback(params: PostFeedback): Observable<PostFeedback>{
+    let url = `${API_URL}/postfeedback/add`;
+    let body = JSON.stringify(params);
+    let headers = new Headers({'Content-Type': 'application/json'});
+    let options = new RequestOptions({headers: headers});
+    return this.http.post(url, body, options)
+      .map(res => <PostFeedback>res.json())
       // .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
   }
 }

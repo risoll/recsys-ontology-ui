@@ -12,6 +12,7 @@ export interface RecommState {
   mode: number;
   statusMode1: string;
   statusMode2: string;
+  statusComparison: string;
   staticData: Static;
 }
 
@@ -25,6 +26,7 @@ const initialState = <RecommState>{
   mode: 1,
   statusMode1: "incomplete",
   statusMode2: "incomplete",
+  statusComparison: "incomplete",
   staticData: {}
 };
 
@@ -48,6 +50,8 @@ export function RecommReducer(state: RecommState = initialState, action) {
       return Object.assign({}, state, {statusMode1: action.payload});
     case RecommActions.SET_MODE2_STATUS:
       return Object.assign({}, state, {statusMode2: action.payload});
+    case RecommActions.SET_COMPARISON_STATUS:
+      return Object.assign({}, state, {statusComparison: action.payload});
     case RecommActions.SET_STATIC:
       return Object.assign({}, state, {staticData: action.payload});
     default:

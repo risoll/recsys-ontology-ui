@@ -21,7 +21,7 @@ import { LoadingService } from "../../services/loading.service";
         <button ion-button menuToggle>
           <ion-icon name="menu"></ion-icon>
         </button>
-        <ion-title>Rekomendasi Mode {{mode}}</ion-title>
+        <ion-title>Model Interaksi {{mode}}</ion-title>
       </ion-navbar>
     </ion-header>
     <ion-content *ngIf="questions" class="card-background-page">

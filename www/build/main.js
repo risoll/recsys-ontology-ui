@@ -1,4 +1,4 @@
-webpackJsonp([15],{
+webpackJsonp([16],{
 
 /***/ 10:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -99,6 +99,12 @@ var RecommActions = RecommActions_1 = (function () {
             payload: status
         };
     };
+    RecommActions.prototype.setComparisonStatus = function (status) {
+        return {
+            type: RecommActions_1.SET_COMPARISON_STATUS,
+            payload: status
+        };
+    };
     RecommActions.prototype.setStatic = function (staticData) {
         return {
             type: RecommActions_1.SET_STATIC,
@@ -116,6 +122,7 @@ RecommActions.SET_DISTANCE = '[Recomm] Set Distance';
 RecommActions.SET_MODE = '[Recomm] Set Mode';
 RecommActions.SET_MODE1_STATUS = '[Recomm] Set Mode 1 Status';
 RecommActions.SET_MODE2_STATUS = '[Recomm] Set Mode 2 Status';
+RecommActions.SET_COMPARISON_STATUS = '[Recomm] Set Comparison Status';
 RecommActions.SET_STATIC = '[Recomm] Set Static';
 RecommActions = RecommActions_1 = __decorate([
     __WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"]()
@@ -211,6 +218,15 @@ var UserService = (function () {
             .map(function (res) { return res.json(); });
         // .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
     };
+    UserService.prototype.addPostFeedback = function (params) {
+        var url = __WEBPACK_IMPORTED_MODULE_1__utils_constants__["a" /* API_URL */] + "/postfeedback/add";
+        var body = JSON.stringify(params);
+        var headers = new __WEBPACK_IMPORTED_MODULE_0__angular_http__["a" /* Headers */]({ 'Content-Type': 'application/json' });
+        var options = new __WEBPACK_IMPORTED_MODULE_0__angular_http__["d" /* RequestOptions */]({ headers: headers });
+        return this.http.post(url, body, options)
+            .map(function (res) { return res.json(); });
+        // .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+    };
     return UserService;
 }());
 UserService = __decorate([
@@ -241,23 +257,23 @@ webpackEmptyAsyncContext.id = 34;
 var map = {
 	"../pages/about/about.module": [
 		98,
-		14
+		15
 	],
 	"../pages/attractions/attractions.module": [
 		97,
-		11
+		12
 	],
 	"../pages/begin/begin.module": [
 		90,
-		9
+		10
 	],
 	"../pages/begin2/begin2.module": [
 		99,
-		10
+		11
 	],
 	"../pages/details/details.module": [
 		86,
-		8
+		9
 	],
 	"../pages/enhance/enhance.module": [
 		95,
@@ -265,7 +281,7 @@ var map = {
 	],
 	"../pages/explanation/explanation.module": [
 		89,
-		7
+		8
 	],
 	"../pages/feedback/feedback.module": [
 		92,
@@ -273,7 +289,7 @@ var map = {
 	],
 	"../pages/intro/intro.module": [
 		96,
-		13
+		14
 	],
 	"../pages/maps/maps.module": [
 		87,
@@ -281,11 +297,15 @@ var map = {
 	],
 	"../pages/method.selection/method.selection.module": [
 		100,
-		12
+		13
 	],
 	"../pages/place/place.module": [
 		88,
 		0
+	],
+	"../pages/post.feedback/post.feedback.module": [
+		101,
+		7
 	],
 	"../pages/recommendation/recommendation.module": [
 		91,
@@ -722,6 +742,7 @@ var recomm_reducer_initialState = {
     mode: 1,
     statusMode1: "incomplete",
     statusMode2: "incomplete",
+    statusComparison: "incomplete",
     staticData: {}
 };
 function RecommReducer(state, action) {
@@ -745,6 +766,8 @@ function RecommReducer(state, action) {
             return Object.assign({}, state, { statusMode1: action.payload });
         case __WEBPACK_IMPORTED_MODULE_0__actions_recomm_actions__["a" /* RecommActions */].SET_MODE2_STATUS:
             return Object.assign({}, state, { statusMode2: action.payload });
+        case __WEBPACK_IMPORTED_MODULE_0__actions_recomm_actions__["a" /* RecommActions */].SET_COMPARISON_STATUS:
+            return Object.assign({}, state, { statusComparison: action.payload });
         case __WEBPACK_IMPORTED_MODULE_0__actions_recomm_actions__["a" /* RecommActions */].SET_STATIC:
             return Object.assign({}, state, { staticData: action.payload });
         default:
@@ -834,11 +857,27 @@ var MyApp = (function () {
         var _this = this;
         var mode1Status = this.storage.get('mode1Status');
         var mode2Status = this.storage.get('mode2Status');
+        var comparisonStatus = this.storage.get("comparisonStatus");
+        var staticData = this.storage.get("staticData");
+        if (staticData) {
+            staticData.then(function (data) {
+                console.log("static data", data);
+                _this.store.dispatch(_this.recommActions.setStatic(data));
+            });
+        }
         if (mode1Status) {
             mode1Status.then(function (status) {
                 console.log("1 Status", status);
                 if (status == "completed") {
                     _this.store.dispatch(_this.recommActions.setMode1Status("completed"));
+                }
+            });
+        }
+        if (comparisonStatus) {
+            comparisonStatus.then(function (status) {
+                console.log("comparison status", status);
+                if (status == "completed") {
+                    _this.store.dispatch(_this.recommActions.setComparisonStatus("completed"));
                 }
             });
         }
@@ -893,6 +932,7 @@ var MyApp = (function () {
             _this.storage.get('introShown').then(function (result) {
                 if (result) {
                     _this.rootPage = 'MethodSelectionPage';
+                    // this.rootPage = 'PostFeedbackPage';
                     // this.rootPage = 'FeedbackPage';
                 }
                 else {
@@ -1045,7 +1085,8 @@ AppModule = app_module___decorate([
                     { loadChildren: '../pages/attractions/attractions.module#AttractionsPageModule', name: 'AttractionsPage', segment: 'attractions', priority: 'low', defaultHistory: [] },
                     { loadChildren: '../pages/about/about.module#AboutPageModule', name: 'AboutPage', segment: 'about', priority: 'low', defaultHistory: [] },
                     { loadChildren: '../pages/begin2/begin2.module#Begin2PageModule', name: 'Begin2Page', segment: 'begin2', priority: 'low', defaultHistory: [] },
-                    { loadChildren: '../pages/method.selection/method.selection.module#MethodSelectionPageModule', name: 'MethodSelectionPage', segment: 'method.selection', priority: 'low', defaultHistory: [] }
+                    { loadChildren: '../pages/method.selection/method.selection.module#MethodSelectionPageModule', name: 'MethodSelectionPage', segment: 'method.selection', priority: 'low', defaultHistory: [] },
+                    { loadChildren: '../pages/post.feedback/post.feedback.module#PostFeedbackPageModule', name: 'PostFeedbackPage', segment: 'post.feedback', priority: 'low', defaultHistory: [] }
                 ]
             }),
             __WEBPACK_IMPORTED_MODULE_11__ionic_storage__["a" /* IonicStorageModule */].forRoot()

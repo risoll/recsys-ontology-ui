@@ -18,7 +18,7 @@ import { AlertService } from '../../services/alert.service';
   template: `
     <ion-header>
       <ion-navbar color="sky">
-        <ion-title>Rekomendasi Mode 1</ion-title>
+        <ion-title>Model Interaksi 1</ion-title>
       </ion-navbar>
     </ion-header>
     <ion-content *ngIf="questions" class="card-background-page">

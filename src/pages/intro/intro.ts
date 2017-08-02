@@ -57,7 +57,7 @@ export class IntroPage {
     },
     {
       title: "Bantu saya",
-      description: "Anda dapat membantu saya dalam pengerjaan Tugas Akhir ini dengan menggunakan aplikasi ini, terimakasih!",
+      description: "Anda dapat membantu saya dalam pengerjaan Tugas Akhir ini dengan menggunakan aplikasi ini dan mengisi survei yang ada, terimakasih!",
       image: "assets/images/intro/3.jpg",
     }
   ];

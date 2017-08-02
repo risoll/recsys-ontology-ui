@@ -8,6 +8,7 @@ export interface Place{
     distance: DistanceMatrix,
     description?: string,
     root?: string,
+    utilization?: number,
     place_id: string,
     name: string,
     formatted_address: string,

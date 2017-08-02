@@ -1,18 +1,18 @@
-import {RecommendationPage} from './../recommendation/recommendation';
-import {Store} from '@ngrx/store';
-import {Feedback} from './../../models/user.model';
-import {UserService} from './../../services/user.service';
-import {Component} from '@angular/core';
+import { RecommendationPage } from './../recommendation/recommendation';
+import { Store } from '@ngrx/store';
+import { Feedback } from './../../models/user.model';
+import { UserService } from './../../services/user.service';
+import { Component } from '@angular/core';
 
-import {NavController, LoadingController, Loading, NavParams, AlertController, IonicPage} from 'ionic-angular';
-import {captureState, isFormFilled} from "../../utils/common.util";
-import {AppState} from "../../models/state.model";
-import {AlertService} from '../../services/alert.service';
-import {LoadingService} from '../../services/loading.service';
-import {Storage} from '@ionic/storage';
-import {RecommActions} from "../../actions/recomm.actions";
-import {Observable} from "rxjs/Observable";
-import {Static} from "../../models/recommendation.model";
+import { NavController, LoadingController, Loading, NavParams, AlertController, IonicPage } from 'ionic-angular';
+import { captureState, isFormFilled } from '../../utils/common.util';
+import { AppState } from "../../models/state.model";
+import { AlertService } from '../../services/alert.service';
+import { LoadingService } from '../../services/loading.service';
+import { Storage } from '@ionic/storage';
+import { RecommActions } from "../../actions/recomm.actions";
+import { Observable } from "rxjs/Observable";
+import { Static } from "../../models/recommendation.model";
 
 @IonicPage()
 @Component({
@@ -23,7 +23,7 @@ import {Static} from "../../models/recommendation.model";
         <button ion-button menuToggle>
           <ion-icon name="menu"></ion-icon>
         </button>
-        <ion-title>Survei Pengguna</ion-title>
+        <ion-title>Survei Model {{mode}}</ion-title>
       </ion-navbar>
     </ion-header>
     <ion-content>
@@ -40,11 +40,11 @@ import {Static} from "../../models/recommendation.model";
           </ion-list-header>
           <ion-item>
             <ion-label>Laki-laki</ion-label>
-            <ion-radio [checked]="male" value="male"></ion-radio>
+            <ion-radio value="male"></ion-radio>
           </ion-item>
           <ion-item>
             <ion-label>Perempuan</ion-label>
-            <ion-radio [checked]="female" value="female"></ion-radio>
+            <ion-radio value="female"></ion-radio>
           </ion-item>
         </ion-list>
       </ion-card>
@@ -58,62 +58,13 @@ import {Static} from "../../models/recommendation.model";
           <ion-input type="number" placeholder="contoh: 17"></ion-input>
         </ion-item>
       </ion-list>
-      <ion-card>
-        <ion-list radio-group [(ngModel)]="pu1">
-          <ion-list-header>
-            Aplikasi ini berguna untuk mencari <br>
-            tempat wisata
+      <ion-card *ngFor="let q of questions; let index = index">
+        <ion-list radio-group [(ngModel)]="answers[index]">
+          <ion-list-header [innerHTML]="q">
           </ion-list-header>
-          <ion-item *ngFor="let scale of likertScales">
-            <ion-label>{{scale.label}}</ion-label>
-            <ion-radio [value]="scale.value"></ion-radio>
-          </ion-item>
-        </ion-list>
-      </ion-card>
-      <ion-card>
-        <ion-list radio-group [(ngModel)]="eou1">
-          <ion-list-header>
-            Aplikasi ini mudah digunakan
-          </ion-list-header>
-          <ion-item *ngFor="let scale of likertScales">
-            <ion-label>{{scale.label}}</ion-label>
-            <ion-radio [value]="scale.value"></ion-radio>
-          </ion-item>
-        </ion-list>
-      </ion-card>
-      <ion-card>
-        <ion-list radio-group [(ngModel)]="tr1">
-          <ion-list-header>
-            Aplikasi ini menghasilkan rekomendasi <br>
-            yang dapat dipercaya
-          </ion-list-header>
-          <ion-item *ngFor="let scale of likertScales">
-            <ion-label>{{scale.label}}</ion-label>
-            <ion-radio [value]="scale.value"></ion-radio>
-          </ion-item>
-        </ion-list>
-      </ion-card>
-      <ion-card>
-        <ion-list radio-group [(ngModel)]="pe1">
-          <ion-list-header>
-            Saya merasa nyaman saat <br>
-            menggunakan aplikasi ini
-          </ion-list-header>
-          <ion-item *ngFor="let scale of likertScales">
-            <ion-label>{{scale.label}}</ion-label>
-            <ion-radio [value]="scale.value"></ion-radio>
-          </ion-item>
-        </ion-list>
-      </ion-card>
-      <ion-card>
-        <ion-list radio-group [(ngModel)]="bi1">
-          <ion-list-header>
-            Saya akan menggunakan kembali <br>
-            aplikasi ini di masa yang akan datang
-          </ion-list-header>
-          <ion-item *ngFor="let scale of likertScales">
-            <ion-label>{{scale.label}}</ion-label>
-            <ion-radio [value]="scale.value"></ion-radio>
+          <ion-item *ngFor="let a of answerTypes">
+            <ion-label [color]="a.color">{{a.label}}</ion-label>
+            <ion-radio [value]="a.value"></ion-radio>
           </ion-item>
         </ion-list>
       </ion-card>
@@ -131,6 +82,26 @@ export class FeedbackPage {
   name: string;
   gender: string;
   age: number;
+  questions = [
+    "Petunjuk (kalimat dalam model ini) yang diberikan mudah dimengerti",
+    "Saya mengerti dengan baik semua petunjuk yang diberikan",
+    "Saya dapat melihat rincian informasi suatu destinasi wisata dengan mudah",
+    "Secara umum saya kesulitan menemukan destinasi wisata yang saya inginkan",
+    "Saya dapat menemukan destinasi wisata yang saya inginkan dengan cepat",
+    "Saya sangat menyukai destinasi wisata yang saya pilih",
+    "Saya ingin mengunjungi destinasi wisata yang saya pilih suatu saat nanti",
+    "Saya tidak suka cara berinteraksi model ini",
+    "Saya tidak mempunyai kesulitan menggunakan model ini",
+    "Saya akan menggunakan model ini kembali jika suatu saat saya ingin berwisata"
+  ];
+
+  answerTypes = [
+    { label: "Setuju", color: "secondary", value: 1 },
+    { label: "Tidak Setuju", color: "danger", value: 0 }
+  ];
+
+  answers = [];
+
   profession: string;
   univ: string;
   majors: string;
@@ -139,6 +110,7 @@ export class FeedbackPage {
   city: string;
   male: boolean = false;
   female: boolean = false;
+  mode: number;
 
   pu1: number;
   eou1: number;
@@ -149,82 +121,101 @@ export class FeedbackPage {
   staticData: Static;
 
   private likertScales = [
-    {label: "Sangat setuju", value: 5},
-    {label: "Setuju", value: 4},
-    {label: "Netral", value: 3},
-    {label: "Tidak setuju", value: 2},
-    {label: "Sangat tidak setuju", value: 1},
+    { label: "Sangat setuju", value: 5 },
+    { label: "Setuju", value: 4 },
+    { label: "Netral", value: 3 },
+    { label: "Tidak setuju", value: 2 },
+    { label: "Sangat tidak setuju", value: 1 },
   ];
 
   constructor(public navCtrl: NavController,
-              private userService: UserService,
-              private navParams: NavParams,
-              public alertService: AlertService,
-              public loadingService: LoadingService,
-              private store: Store<AppState>,
-              public storage: Storage,
-              private recommActions: RecommActions) {
+    private userService: UserService,
+    private navParams: NavParams,
+    public alertService: AlertService,
+    public loadingService: LoadingService,
+    private store: Store<AppState>,
+    public storage: Storage,
+    private recommActions: RecommActions) {
+    this.mode = captureState(this.store).recomm.mode;
     this.rating = navParams.get("rate");
     this.staticData = captureState(this.store).recomm.staticData;
-    this.name = this.staticData.name;
-    this.age = this.staticData.age;
-    this.city = this.staticData.city;
-    if(this.staticData.gender){
-      if(this.staticData.gender == "male"){
-        this.male = true;
-      }
-      else{
-        this.female = true;
+    if (this.staticData) {
+      this.name = this.staticData.name;
+      this.age = this.staticData.age;
+      this.city = this.staticData.city;
+
+      if (this.staticData.gender) {
+        this.gender = this.staticData.gender;
+        if (this.staticData.gender == "male") {
+          this.male = true;
+        }
+        else {
+          this.female = true;
+        }
       }
     }
+    console.log("MALE", this.male, "FEMALE", this.female);
   }
 
 
   navigate() {
-    this.ip = captureState(this.store).user.ipApi.ip;
-    if (!this.ip) this.ip = "-";
-    let params = <Feedback>{
-      id: 0,
-      user_agent: navigator.userAgent,
-      platform: navigator.platform,
-      ip: this.ip,
-      city: this.city,
-      name: this.name,
-      gender: this.gender,
-      age: Number(this.age),
-      rating: this.rating,
-      // rating: 0,
-      pu1: this.pu1,
-      eou1: this.eou1,
-      tr1: this.tr1,
-      pe1: this.pe1,
-      bi1: this.bi1,
+    let date = new Date();
+    if (this.answers.length == this.questions.length) {
+      this.ip = captureState(this.store).user.ipApi.ip;
+      if (!this.ip) this.ip = "-";
+      let params = <Feedback>{
+        id: 0,
+        user_agent: navigator.userAgent,
+        platform: navigator.platform,
+        ip: this.ip,
+        city: this.city,
+        name: this.name,
+        gender: this.gender,
+        age: Number(this.age),
+        // rating: this.rating,
+        rating: 0,
+        eou: this.answers[0],
+        eou2: this.answers[1],
+        inf: this.answers[2],
+        etu: this.answers[3],
+        pe: this.answers[4],
+        prq: this.answers[5],
+        tr: this.answers[6],
+        prq2: this.answers[7],
+        etu2: this.answers[8],
+        tr2: this.answers[9],
+        mode: this.mode,
+        time: date.getTime()
+      };
+      console.log("params", params);
 
-    };
-    console.log("params", params);
-    if (isFormFilled(params)) {
-      this.loadingService.presentLoading();
-      this.userService.addFeedback(params).subscribe(feedback => {
-        this.loadingService.stopLoading();
-        this.alertService.presentAlert("Terimakasih", `${params.name}, 
+      if (isFormFilled(params)) {
+        this.loadingService.presentLoading();
+        this.userService.addFeedback(params).subscribe(feedback => {
+          this.loadingService.stopLoading();
+          this.alertService.presentAlert("Terimakasih", `${params.name}, 
         saya sangat berterimakasih karena anda sudah berpartisipasi dalam survey tugas akhir ini`);
 
-        let currentMode = captureState(this.store).recomm.mode;
+          let currentMode = captureState(this.store).recomm.mode;
 
-        this.store.dispatch(this.recommActions.setStatic({
-          name: this.name,
-          city: this.city,
-          gender: this.gender,
-          age: this.age
-        }));
+          let staticData = {
+            name: this.name,
+            city: this.city,
+            gender: this.gender,
+            age: this.age
+          };
+          this.store.dispatch(this.recommActions.setStatic(staticData));
+          this.storage.set("staticData", staticData)
 
-        this.storage.set(`mode${currentMode}Status`, 'completed');
-        if (currentMode == 1)
-          this.store.dispatch(this.recommActions.setMode1Status("completed"))
-        else
-          this.store.dispatch(this.recommActions.setMode2Status("completed"))
-        this.navCtrl.setRoot('MethodSelectionPage');
-      })
+          this.storage.set(`mode${currentMode}Status`, 'completed');
+          if (currentMode == 1)
+            this.store.dispatch(this.recommActions.setMode1Status("completed"))
+          else
+            this.store.dispatch(this.recommActions.setMode2Status("completed"))
+          this.navCtrl.setRoot('MethodSelectionPage');
+        })
+      }
+      else this.alertService.presentAlert("", "Mohon isi data dengan lengkap terlebih dahulu");
     }
     else this.alertService.presentAlert("", "Mohon isi data dengan lengkap terlebih dahulu");
   }

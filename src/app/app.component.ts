@@ -68,11 +68,27 @@ export class MyApp {
   resetStatus(){
     let mode1Status = this.storage.get('mode1Status');
     let mode2Status = this.storage.get('mode2Status');
+    let comparisonStatus = this.storage.get("comparisonStatus");
+    let staticData = this.storage.get("staticData");
+    if(staticData){
+      staticData.then(data=>{
+        console.log("static data", data);
+        this.store.dispatch(this.recommActions.setStatic(data));
+      })
+    }
     if(mode1Status){
       mode1Status.then(status=>{
         console.log("1 Status", status);
         if(status == "completed"){
           this.store.dispatch(this.recommActions.setMode1Status("completed"));
+        }
+      })
+    }
+    if(comparisonStatus){
+      comparisonStatus.then(status=>{
+        console.log("comparison status", status);
+        if(status == "completed"){
+          this.store.dispatch(this.recommActions.setComparisonStatus("completed"));
         }
       })
     }
@@ -130,6 +146,7 @@ export class MyApp {
       this.storage.get('introShown').then((result) => {
         if (result) {
           this.rootPage = 'MethodSelectionPage';
+          // this.rootPage = 'PostFeedbackPage';
           // this.rootPage = 'FeedbackPage';
         } else {
           this.rootPage = 'IntroPage';

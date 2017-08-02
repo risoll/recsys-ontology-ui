@@ -1,16 +1,55 @@
 webpackJsonp([12],{
 
-/***/ 100:
+/***/ 104:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PlacePage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var PlacePage = (function () {
+    function PlacePage() {
+        this.type = "details";
+    }
+    return PlacePage;
+}());
+PlacePage = __decorate([
+    __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* IonicPage */](),
+    __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"]({
+        template: "\n    <ion-header>\n        <ion-navbar color=\"sky\">\n          <button ion-button menuToggle>\n            <ion-icon name=\"menu\"></ion-icon>\n          </button>\n          <ion-title>Tempat Wisata</ion-title>\n        </ion-navbar>\n        <ion-toolbar no-border-top>\n          <ion-segment [(ngModel)]=\"type\">\n            <ion-segment-button value=\"details\">\n              Rincian\n            </ion-segment-button>\n            <ion-segment-button value=\"maps\">\n              Peta\n            </ion-segment-button>\n          </ion-segment>\n      </ion-toolbar>\n    </ion-header>\n    <ion-content>\n      <div [ngSwitch]=\"type\">\n        <page-details *ngSwitchCase=\"'details'\"></page-details>\n        <page-maps *ngSwitchCase=\"'maps'\"></page-maps>\n      </div>\n    </ion-content>\n  "
+    }),
+    __metadata("design:paramtypes", [])
+], PlacePage);
+
+//# sourceMappingURL=place.js.map
+
+/***/ }),
+
+/***/ 97:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
-// CONCATENATED MODULE: ./src/pages/method.selection/method.selection.ts
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ngrx_store__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__actions_recomm_actions__ = __webpack_require__(16);
+// CONCATENATED MODULE: ./src/pages/attractions/attractions.ts
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_loading_service__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__place_place__ = __webpack_require__(104);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_place_service__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__actions_attractions_actions__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ngrx_store__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_ionic_angular__ = __webpack_require__(9);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -24,39 +63,63 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var MethodSelectionPage = (function () {
-    function MethodSelectionPage(navCtrl, store, recommActions) {
-        this.navCtrl = navCtrl;
+
+
+
+var AttractionsPage = (function () {
+    function AttractionsPage(attractionsActions, store, loadingService, navCtrl, placeService, app) {
+        this.attractionsActions = attractionsActions;
         this.store = store;
-        this.recommActions = recommActions;
-        this.statusMode1$ = this.store.select(function (s) { return s.recomm.statusMode1; });
-        this.statusMode2$ = this.store.select(function (s) { return s.recomm.statusMode2; });
+        this.loadingService = loadingService;
+        this.navCtrl = navCtrl;
+        this.placeService = placeService;
+        this.app = app;
+        this.places = [];
+        this.limit = 15;
+        this.offset = 0;
+        this.loadingService.presentLoading();
+        this.loadMore();
     }
-    MethodSelectionPage.prototype.navigate = function (mode) {
-        this.store.dispatch(this.recommActions.setMode(mode));
-        this.navCtrl.push('RecommendationPage', {
-            mode: mode
+    AttractionsPage.prototype.details = function (place) {
+        this.store.dispatch(this.attractionsActions.selectPlace(place));
+        this.app.getRootNav().push(__WEBPACK_IMPORTED_MODULE_1__place_place__["a" /* PlacePage */]);
+    };
+    AttractionsPage.prototype.getPlaces = function (pagination) {
+        var _this = this;
+        this.placeService.getPlaces(pagination).subscribe(function (places) {
+            _this.places = _this.places.concat(places);
+            _this.store.dispatch(_this.attractionsActions.setAttractionsLoadStatus("loaded"));
+            _this.loadingService.stopLoading();
         });
     };
-    return MethodSelectionPage;
+    AttractionsPage.prototype.loadMore = function () {
+        var pagination = {
+            limit: 15,
+            offset: this.offset
+        };
+        this.getPlaces(pagination);
+        this.offset += 15;
+    };
+    return AttractionsPage;
 }());
-MethodSelectionPage = __decorate([
-    __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* IonicPage */](),
-    __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"]({
-        selector: 'page-method-selection',
-        template: "\n    <ion-header>\n      <ion-navbar color=\"sky\">\n        <button ion-button menuToggle>\n          <ion-icon name=\"menu\"></ion-icon>\n        </button>\n        <ion-title>\n          Mode Rekomendasi\n        </ion-title>\n      </ion-navbar>\n    </ion-header>\n    <ion-content>\n      <h6 ion-text style=\"padding: 10px; text-align: center; font-size: small;\" color=\"ocean\" class=\"highlight\">\n        Aplikasi ini menggunakan dua mode.<br>\n        Mohon kesediannya untuk menyelesaikan <br> \n        proses rekomendasi pada kedua mode dibawah ini.\n      </h6>\n      <ion-grid>\n        <ion-row>\n          <ion-col col-6>\n            <ion-card>\n              <ion-card-header>\n                <ion-card-title>\n                  Mode 1\n                </ion-card-title>\n              </ion-card-header>\n              <ion-card-content>\n                Mode ini menggunakan suatu <b>algoritma yang ada</b>\n                pada suatu penelitian.\n              </ion-card-content>\n              <ion-row no-padding>\n                <ion-col text-left>\n                  <button (click)=\"navigate(1)\" color=\"fire\" ion-button icon-right>\n                    Mulai Mode 1\n                  </button>\n                </ion-col>\n              </ion-row>\n              <ion-row padding>\n                <ion-col text-left *ngIf=\"(statusMode1$ | async) == 'incomplete'\">\n                  <p class=\"incomplete\"><ion-icon name=\"close-circle\"></ion-icon>\n                  Belum diselesaikan</p>\n                </ion-col>\n                <ion-col text-left *ngIf=\"(statusMode1$ | async) == 'completed'\">\n                  <p class=\"complete\"><ion-icon name=\"checkmark-circle\"></ion-icon>\n                  Sudah diselesaikan</p>\n                </ion-col>\n              </ion-row>\n            </ion-card>\n          </ion-col>\n          <ion-col col-6>\n            <ion-card>\n              <ion-card-header>\n                <ion-card-title>\n                  Mode 2\n                </ion-card-title>\n              </ion-card-header>\n              <ion-card-content>\n                Mode ini menggunakan <b>pengembangan algoritma</b>\n                pada Mode 1.\n              </ion-card-content>\n              <ion-row no-padding>\n                <ion-col text-left>\n                  <button (click)=\"navigate(2)\" color=\"fire\" ion-button icon-right>\n                    Mulai Mode 2\n                  </button>\n                </ion-col>\n              </ion-row>\n              <ion-row padding>\n                <ion-col text-left *ngIf=\"(statusMode2$ | async) == 'incomplete'\">\n                  <p class=\"incomplete\"><ion-icon name=\"close-circle\"></ion-icon>\n                  Belum diselesaikan</p>\n                </ion-col>\n                <ion-col text-left *ngIf=\"(statusMode2$ | async) == 'completed'\">\n                  <p class=\"complete\"><ion-icon name=\"checkmark-circle\"></ion-icon>\n                  Sudah diselesaikan</p>\n                </ion-col>\n              </ion-row>\n            </ion-card>\n          </ion-col>\n        </ion-row>\n      </ion-grid>\n      <p style=\"text-align: center; padding: 10px;\" *ngIf=\"(statusMode1$ | async) == 'completed' && (statusMode2$ | async) == 'completed'\">\n        Terimakasih karena telah menjalankan dan mengisi survey pada kedua mode diatas!\n      </p>\n    </ion-content>\n  "
+AttractionsPage = __decorate([
+    __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["f" /* IonicPage */](),
+    __WEBPACK_IMPORTED_MODULE_4__angular_core__["Component"]({
+        selector: 'page-attractions',
+        template: "\n    <ion-header>\n      <ion-navbar color=\"sky\">\n        <button ion-button menuToggle>\n          <ion-icon name=\"menu\"></ion-icon>\n        </button>\n        <ion-title>Jelajah</ion-title>\n      </ion-navbar>\n    </ion-header>\n    <ion-content>\n      <ion-list>\n\t\t\t\t<ion-item (click)=\"details(place)\" *ngFor=\"let place of places\">\n\t\t\t\t\t<ion-avatar item-start>\n\t\t\t\t\t\t<img [src]=\"place.photo\">\n\t\t\t\t\t</ion-avatar>\n\t\t\t\t\t<h2>{{place.name}}</h2>\n\t\t\t\t\t<p>{{place.formatted_address}}</p>\n\t\t\t\t</ion-item>\n      </ion-list>\n      <button color=\"fire\" ion-button block style=\"height: 10%;\" (click)=\"loadMore()\">Tampilkan lebih banyak</button> \n    </ion-content>\n  ",
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_2__ngrx_store__["a" /* Store */],
-        __WEBPACK_IMPORTED_MODULE_3__actions_recomm_actions__["a" /* RecommActions */]])
-], MethodSelectionPage);
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3__actions_attractions_actions__["a" /* AttractionsActions */],
+        __WEBPACK_IMPORTED_MODULE_5__ngrx_store__["a" /* Store */], __WEBPACK_IMPORTED_MODULE_0__services_loading_service__["a" /* LoadingService */],
+        __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["k" /* NavController */], __WEBPACK_IMPORTED_MODULE_2__services_place_service__["a" /* PlaceService */],
+        __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["b" /* App */]])
+], AttractionsPage);
 
-//# sourceMappingURL=method.selection.js.map
-// CONCATENATED MODULE: ./src/pages/method.selection/method.selection.module.ts
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MethodSelectionPageModule", function() { return MethodSelectionPageModule; });
-/* harmony import */ var method_selection_module___WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var method_selection_module___WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
-var method_selection_module___decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+//# sourceMappingURL=attractions.js.map
+// CONCATENATED MODULE: ./src/pages/attractions/attractions.module.ts
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AttractionsPageModule", function() { return AttractionsPageModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
+var attractions_module___decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -65,20 +128,20 @@ var method_selection_module___decorate = (this && this.__decorate) || function (
 
 
 
-var MethodSelectionPageModule = (function () {
-    function MethodSelectionPageModule() {
+var AttractionsPageModule = (function () {
+    function AttractionsPageModule() {
     }
-    return MethodSelectionPageModule;
+    return AttractionsPageModule;
 }());
-MethodSelectionPageModule = method_selection_module___decorate([
-    method_selection_module___WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"]({
-        declarations: [MethodSelectionPage],
-        imports: [method_selection_module___WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* IonicPageModule */].forChild(MethodSelectionPage)],
-        entryComponents: [MethodSelectionPage]
+AttractionsPageModule = attractions_module___decorate([
+    __WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"]({
+        declarations: [AttractionsPage],
+        imports: [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* IonicPageModule */].forChild(AttractionsPage)],
+        entryComponents: [AttractionsPage]
     })
-], MethodSelectionPageModule);
+], AttractionsPageModule);
 
-//# sourceMappingURL=method.selection.module.js.map
+//# sourceMappingURL=attractions.module.js.map
 
 /***/ })
 

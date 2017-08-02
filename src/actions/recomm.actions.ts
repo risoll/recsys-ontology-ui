@@ -78,6 +78,14 @@ export class RecommActions {
         }
     }
 
+    static SET_COMPARISON_STATUS = '[Recomm] Set Comparison Status';
+    setComparisonStatus(status: string){
+        return{
+            type: RecommActions.SET_COMPARISON_STATUS,
+            payload: status
+        }
+    }
+
     static SET_STATIC = '[Recomm] Set Static';
     setStatic(staticData: Static){
         return{

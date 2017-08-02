@@ -19,11 +19,19 @@ import {Place} from "../../models/place.model";
     <ion-header>
       <ion-toolbar color="sky">
         <ion-title>
-          Rekomendasi Mode 2
+          Model Interaksi 2
         </ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content *ngIf="questions" class="card-background-page">
+
+      <div *ngIf="prevPlaces[counter].length == 0 && colsQuestions.length == 0" style="text-align: center; padding: 10px">
+        <p>Tidak ditemukan rekomendasi dalam preferensi anda, ingin mengulangi proses rekomendasi dari awal?</p>
+        <button (click)="reset()" color="fire" ion-button icon-left>
+          <ion-icon name="refresh"></ion-icon>
+          Ulangi Proses Rekomendasi
+        </button>
+      </div>
       <div *ngIf="prevPlaces[counter].length > 0">
         <h6 ion-text style="font-size: small;" color="ocean" class="highlight">
           <b>{{prevPlaces[counter].length}}</b> Rekomendasi tempat wisata ditemukan
@@ -149,6 +157,11 @@ export class Begin2Page {
 
     console.log("COUNTER", this.counter, "DATA", this.navParams.get("loaded"));
     this.loadQuestions();
+  }
+
+
+  reset() {
+    this.navCtrl.setRoot('MethodSelectionPage');
   }
 
   showPlaces() {
@@ -281,7 +294,7 @@ export class Begin2Page {
       console.log("colsQuestions", this.colsQuestions.length);
       if (this.colsQuestions.length == 0) {
         this.store.dispatch(this.recommActions.setUpdatedClass(this.questionsValue));
-        this.showPlaces();
+        // this.showPlaces();
       }else{
       }
     });
