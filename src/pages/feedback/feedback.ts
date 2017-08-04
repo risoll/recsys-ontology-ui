@@ -48,14 +48,25 @@ import { Static } from "../../models/recommendation.model";
           </ion-item>
         </ion-list>
       </ion-card>
+      <ion-card>
+        <ion-list radio-group [(ngModel)]="profession">
+          <ion-list-header>
+            Pekerjaan
+          </ion-list-header>
+          <ion-item *ngFor="let p of professions">
+            <ion-label>{{p}}</ion-label>
+            <ion-radio [value]="p"></ion-radio>
+          </ion-item>
+        </ion-list>
+      </ion-card>
       <ion-list>
-        <ion-item [(ngModel)]="city">
-          <ion-label color="primary" stacked>Kota Domisili</ion-label>
-          <ion-input placeholder="contoh: Bandung"></ion-input>
-        </ion-item>
         <ion-item [(ngModel)]="age">
           <ion-label color="primary" stacked>Umur</ion-label>
           <ion-input type="number" placeholder="contoh: 17"></ion-input>
+        </ion-item>
+        <ion-item [(ngModel)]="city">
+          <ion-label color="primary" stacked>Kota Domisili</ion-label>
+          <ion-input placeholder="contoh: Bandung"></ion-input>
         </ion-item>
       </ion-list>
       <ion-card *ngFor="let q of questions; let index = index">
@@ -63,7 +74,7 @@ import { Static } from "../../models/recommendation.model";
           <ion-list-header [innerHTML]="q">
           </ion-list-header>
           <ion-item *ngFor="let a of answerTypes">
-            <ion-label [color]="a.color">{{a.label}}</ion-label>
+            <ion-label>{{a.label}}</ion-label>
             <ion-radio [value]="a.value"></ion-radio>
           </ion-item>
         </ion-list>
@@ -81,6 +92,7 @@ export class FeedbackPage {
   loader: Loading;
   name: string;
   gender: string;
+  profession: string;
   age: number;
   questions = [
     "Petunjuk (kalimat dalam model ini) yang diberikan mudah dimengerti",
@@ -95,14 +107,16 @@ export class FeedbackPage {
     "Saya akan menggunakan model ini kembali jika suatu saat saya ingin berwisata"
   ];
 
+  professions = [
+    "Mahasiswa", "Dosen", "Karyawan", "Wiraswasta", "Lainnya"
+  ];
+
   answerTypes = [
     { label: "Setuju", color: "secondary", value: 1 },
     { label: "Tidak Setuju", color: "danger", value: 0 }
   ];
 
   answers = [];
-
-  profession: string;
   univ: string;
   majors: string;
   rating: number;
@@ -143,15 +157,16 @@ export class FeedbackPage {
       this.name = this.staticData.name;
       this.age = this.staticData.age;
       this.city = this.staticData.city;
+      this.profession = this.staticData.profession;
 
       if (this.staticData.gender) {
         this.gender = this.staticData.gender;
-        if (this.staticData.gender == "male") {
-          this.male = true;
-        }
-        else {
-          this.female = true;
-        }
+        // if (this.staticData.gender == "male") {
+        //   this.male = true;
+        // }
+        // else {
+        //   this.female = true;
+        // }
       }
     }
     console.log("MALE", this.male, "FEMALE", this.female);
@@ -172,6 +187,7 @@ export class FeedbackPage {
         name: this.name,
         gender: this.gender,
         age: Number(this.age),
+        profession: this.profession,
         // rating: this.rating,
         rating: 0,
         eou: this.answers[0],
@@ -202,7 +218,8 @@ export class FeedbackPage {
             name: this.name,
             city: this.city,
             gender: this.gender,
-            age: this.age
+            age: this.age,
+            profession: this.profession
           };
           this.store.dispatch(this.recommActions.setStatic(staticData));
           this.storage.set("staticData", staticData)

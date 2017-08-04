@@ -6,6 +6,7 @@ export interface Feedback{
     city: string;
     name: string;
     gender: string;
+    profession: string;
     age: number;
     rating: number;
     eou: number;
@@ -30,6 +31,7 @@ export interface PostFeedback{
     city: string;
     name: string;
     gender: string;
+    profession: string;
     age: number;
     more_informative: number;
     easier: number;

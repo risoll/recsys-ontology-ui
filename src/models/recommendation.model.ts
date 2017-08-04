@@ -45,6 +45,7 @@ export interface Static{
   gender: string;
   city: string;
   age: number;
+  profession: string;
 }
 
 

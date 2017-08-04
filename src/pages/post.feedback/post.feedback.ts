@@ -48,14 +48,25 @@ import { Static } from "../../models/recommendation.model";
           </ion-item>
         </ion-list>
       </ion-card>
+      <ion-card>
+        <ion-list radio-group [(ngModel)]="profession">
+          <ion-list-header>
+            Pekerjaan
+          </ion-list-header>
+          <ion-item *ngFor="let p of professions">
+            <ion-label>{{p}}</ion-label>
+            <ion-radio [value]="p"></ion-radio>
+          </ion-item>
+        </ion-list>
+      </ion-card>
       <ion-list>
-        <ion-item [(ngModel)]="city">
-          <ion-label color="primary" stacked>Kota Domisili</ion-label>
-          <ion-input placeholder="contoh: Bandung"></ion-input>
-        </ion-item>
         <ion-item [(ngModel)]="age">
           <ion-label color="primary" stacked>Umur</ion-label>
           <ion-input type="number" placeholder="contoh: 17"></ion-input>
+        </ion-item>
+        <ion-item [(ngModel)]="city">
+          <ion-label color="primary" stacked>Kota Domisili</ion-label>
+          <ion-input placeholder="contoh: Bandung"></ion-input>
         </ion-item>
       </ion-list>
       <ion-card *ngFor="let q of questions; let index = index">
@@ -78,6 +89,11 @@ import { Static } from "../../models/recommendation.model";
 })
 export class PostFeedbackPage {
 
+  professions = [
+    "Mahasiswa", "Dosen", "Karyawan", "Wiraswasta", "Lainnya"
+  ];
+  profession: string;
+
   loader: Loading;
   name: string;
   gender: string;
@@ -99,7 +115,6 @@ export class PostFeedbackPage {
 
   answers = [];
 
-  profession: string;
   univ: string;
   majors: string;
   rating: number;
@@ -140,15 +155,16 @@ export class PostFeedbackPage {
       this.name = this.staticData.name;
       this.age = this.staticData.age;
       this.city = this.staticData.city;
+      this.profession = this.staticData.profession;
 
       if (this.staticData.gender) {
         this.gender = this.staticData.gender;
-        if (this.staticData.gender == "male") {
-          this.male = true;
-        }
-        else {
-          this.female = true;
-        }
+        // if (this.staticData.gender == "male") {
+        //   this.male = true;
+        // }
+        // else {
+        //   this.female = true;
+        // }
       }
     }
     console.log("MALE", this.male, "FEMALE", this.female);
@@ -169,6 +185,7 @@ export class PostFeedbackPage {
         name: this.name,
         gender: this.gender,
         age: Number(this.age),
+        profession: this.profession,
         more_informative: this.answers[0],
         easier: this.answers[1],
         more_useful: this.answers[2],
@@ -192,10 +209,13 @@ export class PostFeedbackPage {
             name: this.name,
             city: this.city,
             gender: this.gender,
-            age: this.age
+            age: this.age,
+            profession: this.profession
           };
           this.store.dispatch(this.recommActions.setStatic(staticData));
           this.storage.set("staticData", staticData)
+
+          this.storage.set('comparisonStatus', 'completed');
 
           this.store.dispatch(this.recommActions.setComparisonStatus("completed"));
           this.navCtrl.setRoot('MethodSelectionPage');
