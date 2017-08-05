@@ -269,7 +269,7 @@ var FeedbackPage = (function () {
                 // }
             }
         }
-        console.log("MALE", this.male, "FEMALE", this.female);
+        // console.log("MALE", this.male, "FEMALE", this.female);
     }
     FeedbackPage.prototype.navigate = function () {
         var _this = this;
@@ -288,8 +288,8 @@ var FeedbackPage = (function () {
                 gender: this.gender,
                 age: Number(this.age),
                 profession: this.profession,
-                // rating: this.rating,
-                rating: 0,
+                rating: this.rating,
+                // rating: 0,
                 eou: this.answers[0],
                 eou2: this.answers[1],
                 inf: this.answers[2],
@@ -303,7 +303,7 @@ var FeedbackPage = (function () {
                 mode: this.mode,
                 time: date.getTime()
             };
-            console.log("params", params_1);
+            // console.log("params", params);
             if (__WEBPACK_IMPORTED_MODULE_4__utils_common_util__["d" /* isFormFilled */](params_1)) {
                 this.loadingService.presentLoading();
                 this.userService.addFeedback(params_1).subscribe(function (feedback) {

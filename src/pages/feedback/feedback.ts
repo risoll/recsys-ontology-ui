@@ -169,7 +169,7 @@ export class FeedbackPage {
         // }
       }
     }
-    console.log("MALE", this.male, "FEMALE", this.female);
+    // console.log("MALE", this.male, "FEMALE", this.female);
   }
 
 
@@ -188,8 +188,8 @@ export class FeedbackPage {
         gender: this.gender,
         age: Number(this.age),
         profession: this.profession,
-        // rating: this.rating,
-        rating: 0,
+        rating: this.rating,
+        // rating: 0,
         eou: this.answers[0],
         eou2: this.answers[1],
         inf: this.answers[2],
@@ -203,7 +203,7 @@ export class FeedbackPage {
         mode: this.mode,
         time: date.getTime()
       };
-      console.log("params", params);
+      // console.log("params", params);
 
       if (isFormFilled(params)) {
         this.loadingService.presentLoading();

@@ -155,7 +155,7 @@ export class Begin2Page {
     this.prevSelected = this.navParams.get("names");
     this.counter = 0;
 
-    console.log("COUNTER", this.counter, "DATA", this.navParams.get("loaded"));
+    // console.log("COUNTER", this.counter, "DATA", this.navParams.get("loaded"));
     this.loadQuestions();
   }
 
@@ -174,18 +174,18 @@ export class Begin2Page {
 
   back() {
     this.questionsValue = [];
-    console.log("prevPlace1", this.prevPlaces[this.counter]);
+    // console.log("prevPlace1", this.prevPlaces[this.counter]);
     if(this.counter > 0){
       this.counter -= 1;
       this.prevColsQuestions.pop();
       this.prevPlaces.pop();
       this.olds.pop();
-      console.log("back counter", this.counter);
-      console.log("prevPlace", this.prevPlaces[this.counter].length);
+      // console.log("back counter", this.counter);
+      // console.log("prevPlace", this.prevPlaces[this.counter].length);
       this.colsQuestions = this.prevColsQuestions[this.counter];
     }
     else{
-      console.log("BACK TO ROOT");
+      // console.log("BACK TO ROOT");
       this.prevPlaces = [[]];
       this.colsQuestions = [];
       this.olds = [[]];
@@ -269,7 +269,7 @@ export class Begin2Page {
       this.old = questions.old;
       this.olds[this.counter] = questions.old;
       this.prevPlaces[this.counter] = questions.places;
-      console.log("prevPlaces on next", this.prevPlaces[this.counter], this.prevPlaces.length);
+      // console.log("prevPlaces on next", this.prevPlaces[this.counter], this.prevPlaces.length);
       let askedNodes = questions.askedNodes;
       askedNodes.forEach(question => {
         this.selected.push(question.name);
@@ -291,7 +291,7 @@ export class Begin2Page {
 
       this.prevColsQuestions.push(this.colsQuestions);
       this.loadingService.stopLoading();
-      console.log("colsQuestions", this.colsQuestions.length);
+      // console.log("colsQuestions", this.colsQuestions.length);
       if (this.colsQuestions.length == 0) {
         this.store.dispatch(this.recommActions.setUpdatedClass(this.questionsValue));
         // this.showPlaces();
@@ -306,7 +306,7 @@ export class Begin2Page {
   }
 
   sendData() {
-    console.log("SEND DATA", this.prevPlaces[this.counter]);
+    // console.log("SEND DATA", this.prevPlaces[this.counter]);
     this.navCtrl.push('ResultSelectionPage', {
       places: this.prevPlaces[this.counter]
     })
@@ -330,8 +330,8 @@ export class Begin2Page {
       userLocation: location,
       distance: distance
     };
-    console.log("UP", params);
-    console.log("VALUE", value);
+    // console.log("UP", params);
+    // console.log("VALUE", value);
     if (value <= 0) {
       if(this.prevPlaces[this.counter].length > 0){
         this.alertService.presentAlertWithCallback(
@@ -348,11 +348,11 @@ export class Begin2Page {
     }
     else {
       this.counter += 1;
-      console.log("next counter", this.counter);
-      console.log("next before", this.prevPlaces[this.counter]);
+      // console.log("next counter", this.counter);
+      // console.log("next before", this.prevPlaces[this.counter]);
       this.prevPlaces[this.counter] = [];
       this.olds[this.counter] = [];
-      console.log("next after", this.prevPlaces[this.counter]);
+      // console.log("next after", this.prevPlaces[this.counter]);
       this.loadUpwardQuestions();
     }
 

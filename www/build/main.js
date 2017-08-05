@@ -609,7 +609,7 @@ var PlaceService = (function () {
         return this.http.get(url).map(function (res) { return res.json(); });
     };
     PlaceService.prototype.getPlacesByCategories = function (params) {
-        console.log("params", params);
+        // console.log("params", params);
         var url = __WEBPACK_IMPORTED_MODULE_2__utils_constants__["a" /* API_URL */] + "/place/bulk/categories";
         var body = JSON.stringify(params);
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Headers */]({ 'Content-Type': 'application/json' });
@@ -861,13 +861,13 @@ var MyApp = (function () {
         var staticData = this.storage.get("staticData");
         if (staticData) {
             staticData.then(function (data) {
-                console.log("static data", data);
+                // console.log("static data", data);
                 _this.store.dispatch(_this.recommActions.setStatic(data));
             });
         }
         if (mode1Status) {
             mode1Status.then(function (status) {
-                console.log("1 Status", status);
+                // console.log("1 Status", status);
                 if (status == "completed") {
                     _this.store.dispatch(_this.recommActions.setMode1Status("completed"));
                 }
@@ -875,7 +875,7 @@ var MyApp = (function () {
         }
         if (comparisonStatus) {
             comparisonStatus.then(function (status) {
-                console.log("comparison status", status);
+                // console.log("comparison status", status);
                 if (status == "completed") {
                     _this.store.dispatch(_this.recommActions.setComparisonStatus("completed"));
                 }
@@ -883,7 +883,7 @@ var MyApp = (function () {
         }
         if (mode2Status) {
             mode2Status.then(function (status) {
-                console.log("2 Status", status);
+                // console.log("2 Status", status);
                 if (status == "completed") {
                     _this.store.dispatch(_this.recommActions.setMode2Status("completed"));
                 }
@@ -905,14 +905,14 @@ var MyApp = (function () {
         var _this = this;
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function (position) {
-                console.log("POSITION", position.coords);
+                // console.log("POSITION", position.coords);
                 _this.store.dispatch(_this.userActions.setLocation({
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
                 }));
             }),
                 function (error) {
-                    console.log("ERROR");
+                    // console.log("ERROR");
                 },
                 {
                     maximumAge: 0,
@@ -920,9 +920,38 @@ var MyApp = (function () {
                 };
         }
         else {
-            console.log("FAILED");
+            // console.log("FAILED");
         }
         this.resetStatus();
+    };
+    MyApp.prototype.colorLog = function (message, color) {
+        if (color === void 0) { color = ""; }
+        color = color || "black";
+        switch (color) {
+            case "success":
+                color = "Green";
+                break;
+            case "info":
+                color = "DodgerBlue";
+                break;
+            case "error":
+                color = "Red";
+                break;
+            case "warning":
+                color = "Orange";
+                break;
+            default:
+                color = color;
+        }
+        console.log("%c" + message, "color:" + color);
+    };
+    MyApp.prototype.showLog = function () {
+        console.clear();
+        this.colorLog("Hi, I'm Rizky Solechudin", "success");
+        this.colorLog("Currently working at Braincode Solution");
+        this.colorLog("as Scala and Angular Developer", "warning");
+        this.colorLog("For business inquiries you can contact me at");
+        this.colorLog("rizky.solechudin@gmail.com", "info");
     };
     MyApp.prototype.initializeApp = function () {
         var _this = this;
@@ -942,6 +971,7 @@ var MyApp = (function () {
             });
             _this.statusBar.styleDefault();
             _this.splashScreen.hide();
+            _this.showLog();
         });
     };
     return MyApp;

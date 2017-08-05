@@ -93,7 +93,7 @@ export class BeginPage {
     private loadingService: LoadingService) {
     this.questionsValue = this.navParams.get("selected");
     this.prevSelected = this.navParams.get("names");
-    console.log("DATA", this.navParams.get("loaded"));
+    // console.log("DATA", this.navParams.get("loaded"));
     this.loadQuestions();
   }
 
@@ -158,7 +158,7 @@ export class BeginPage {
   }
 
   sendData(params: UpPropagationParams){
-    console.log("SEND DATA", params);
+    // console.log("SEND DATA", params);
     this.navCtrl.push('ResultSelectionPage', {
       params: params
     })
@@ -182,7 +182,7 @@ export class BeginPage {
       userLocation: location,
       distance: distance
     };
-    console.log("UP", params);
+    // console.log("UP", params);
     if (value <= 0) {
       this.alertService.presentAlertWithCallback(
         "", "Anda yakin tidak memperbarui preferensi anda?", "Tidak Yakin", "Yakin")

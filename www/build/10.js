@@ -143,7 +143,7 @@ var BeginPage = (function () {
         this.consoleObject = function (str, obj) { return console.log(str, JSON.parse(JSON.stringify(obj))); };
         this.questionsValue = this.navParams.get("selected");
         this.prevSelected = this.navParams.get("names");
-        console.log("DATA", this.navParams.get("loaded"));
+        // console.log("DATA", this.navParams.get("loaded"));
         this.loadQuestions();
     }
     BeginPage.prototype.next = function () { };
@@ -203,7 +203,7 @@ var BeginPage = (function () {
         return questionsValue.filter(function (q) { return q.pref > 0; });
     };
     BeginPage.prototype.sendData = function (params) {
-        console.log("SEND DATA", params);
+        // console.log("SEND DATA", params);
         this.navCtrl.push('ResultSelectionPage', {
             params: params
         });
@@ -227,7 +227,7 @@ var BeginPage = (function () {
             userLocation: location,
             distance: distance
         };
-        console.log("UP", params);
+        // console.log("UP", params);
         if (value <= 0) {
             this.alertService.presentAlertWithCallback("", "Anda yakin tidak memperbarui preferensi anda?", "Tidak Yakin", "Yakin")
                 .then(function (status) {

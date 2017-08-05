@@ -148,7 +148,7 @@ var Begin2Page = (function () {
         this.questionsValue = this.navParams.get("selected");
         this.prevSelected = this.navParams.get("names");
         this.counter = 0;
-        console.log("COUNTER", this.counter, "DATA", this.navParams.get("loaded"));
+        // console.log("COUNTER", this.counter, "DATA", this.navParams.get("loaded"));
         this.loadQuestions();
     }
     Begin2Page.prototype.reset = function () {
@@ -162,18 +162,18 @@ var Begin2Page = (function () {
     };
     Begin2Page.prototype.back = function () {
         this.questionsValue = [];
-        console.log("prevPlace1", this.prevPlaces[this.counter]);
+        // console.log("prevPlace1", this.prevPlaces[this.counter]);
         if (this.counter > 0) {
             this.counter -= 1;
             this.prevColsQuestions.pop();
             this.prevPlaces.pop();
             this.olds.pop();
-            console.log("back counter", this.counter);
-            console.log("prevPlace", this.prevPlaces[this.counter].length);
+            // console.log("back counter", this.counter);
+            // console.log("prevPlace", this.prevPlaces[this.counter].length);
             this.colsQuestions = this.prevColsQuestions[this.counter];
         }
         else {
-            console.log("BACK TO ROOT");
+            // console.log("BACK TO ROOT");
             this.prevPlaces = [[]];
             this.colsQuestions = [];
             this.olds = [[]];
@@ -255,7 +255,7 @@ var Begin2Page = (function () {
             _this.old = questions.old;
             _this.olds[_this.counter] = questions.old;
             _this.prevPlaces[_this.counter] = questions.places;
-            console.log("prevPlaces on next", _this.prevPlaces[_this.counter], _this.prevPlaces.length);
+            // console.log("prevPlaces on next", this.prevPlaces[this.counter], this.prevPlaces.length);
             var askedNodes = questions.askedNodes;
             askedNodes.forEach(function (question) {
                 _this.selected.push(question.name);
@@ -276,7 +276,7 @@ var Begin2Page = (function () {
             });
             _this.prevColsQuestions.push(_this.colsQuestions);
             _this.loadingService.stopLoading();
-            console.log("colsQuestions", _this.colsQuestions.length);
+            // console.log("colsQuestions", this.colsQuestions.length);
             if (_this.colsQuestions.length == 0) {
                 _this.store.dispatch(_this.recommActions.setUpdatedClass(_this.questionsValue));
                 // this.showPlaces();
@@ -289,7 +289,7 @@ var Begin2Page = (function () {
         return questionsValue.filter(function (q) { return q.pref > 0; });
     };
     Begin2Page.prototype.sendData = function () {
-        console.log("SEND DATA", this.prevPlaces[this.counter]);
+        // console.log("SEND DATA", this.prevPlaces[this.counter]);
         this.navCtrl.push('ResultSelectionPage', {
             places: this.prevPlaces[this.counter]
         });
@@ -313,8 +313,8 @@ var Begin2Page = (function () {
             userLocation: location,
             distance: distance
         };
-        console.log("UP", params);
-        console.log("VALUE", value);
+        // console.log("UP", params);
+        // console.log("VALUE", value);
         if (value <= 0) {
             if (this.prevPlaces[this.counter].length > 0) {
                 this.alertService.presentAlertWithCallback("", "Anda yakin tidak memperbarui preferensi anda? Hasil rekomendasi akan langsung ditampilkan.", "Tidak Yakin", "Yakin")
@@ -330,11 +330,11 @@ var Begin2Page = (function () {
         }
         else {
             this.counter += 1;
-            console.log("next counter", this.counter);
-            console.log("next before", this.prevPlaces[this.counter]);
+            // console.log("next counter", this.counter);
+            // console.log("next before", this.prevPlaces[this.counter]);
             this.prevPlaces[this.counter] = [];
             this.olds[this.counter] = [];
-            console.log("next after", this.prevPlaces[this.counter]);
+            // console.log("next after", this.prevPlaces[this.counter]);
             this.loadUpwardQuestions();
         }
     };

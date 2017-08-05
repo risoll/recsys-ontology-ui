@@ -137,7 +137,7 @@ var RecommendationPage = (function () {
         this.divider = 2;
         this.selected = [];
         this.mode = this.navParams.get("mode");
-        console.log("MODE", this.mode);
+        // console.log("MODE", this.mode);
         this.loadQuestions("tempat wisata");
     }
     RecommendationPage.prototype.findIndex = function (name) {

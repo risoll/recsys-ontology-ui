@@ -82,7 +82,7 @@ export class EnhancePage {
   public loadingCtrl: LoadingController) {
     this.recommendationService.traverseNode(this.navParams.get("recomms")).subscribe(data=>{
         this.backtracks = data;
-        console.log("DATA", this.backtracks);
+        // console.log("DATA", this.backtracks);
         this.findMinLength();
         for(let i = this.minLength - 1; i >= 0; i--){
           if(this.needInherit){
@@ -91,7 +91,7 @@ export class EnhancePage {
             this.selectedIdx = i;
           }
         };
-        console.log("selectedIdx", this.selectedIdx)
+        // console.log("selectedIdx", this.selectedIdx)
     })
   }
 
@@ -140,7 +140,7 @@ export class EnhancePage {
     if(this.colsQuestions.length < 2 && this.colsQuestions[0].cols.length < 2)
       this.needInherit = true;
     this.counter += 1;
-    console.log(this.colsQuestions)
+    // console.log(this.colsQuestions)
   }
 
   showAlert() {
@@ -170,13 +170,13 @@ export class EnhancePage {
     else
       this.removeCurrentSelection();
     this.loadPrevQuestions();
-    console.log("counter", this.counter);
+    // console.log("counter", this.counter);
   }
 
   next(){
     this.direction = "next";
     let check = isFormFilled({node: this.selected});
-    console.log("cek", check, this.selected);
+    // console.log("cek", check, this.selected);
     if(!check){
         this.needAlert = true;
     }else this.needAlert = false;
@@ -184,7 +184,7 @@ export class EnhancePage {
     else{
       let places = captureState(this.store).recomm.selectedPlaces;
       // let newPlaces: Place[] = [];
-      console.log("PLACE BEFORE", places);
+      // console.log("PLACE BEFORE", places);
       let name = "";
       let child = "";
       this.backtracks.forEach(backtrack=>{
@@ -192,16 +192,16 @@ export class EnhancePage {
         name = backtrack.name;
         if(child == this.selected[0])
           places = places.filter(place=>{
-            console.log("compare name", place.name, name)
+            // console.log("compare name", place.name, name)
             return place.name == name;
           })
       })
-      console.log("PLACE AFTER", places);
+      // console.log("PLACE AFTER", places);
       // this.store.dispatch(this.recommActions.selectPlaces(places));
       this.navCtrl.push(ResultSelectionPage, {selectedPlaces: places})
       // this.loadBacktrack(this.selectedIdx);
     }
-    console.log("counter", this.counter);
+    // console.log("counter", this.counter);
   }
 
   loadPrevQuestions(){
@@ -219,25 +219,25 @@ export class EnhancePage {
     this.counter -= 2;
     this.selected = this.prevSelected[this.prevSelected.length - 1];
     if(!this.selected) this.selected = [];
-    console.log("on last remove selected", this.selected);
+    // console.log("on last remove selected", this.selected);
     this.consoleObject("on last remove prevSelected", this.prevSelected);
     // strange behavior, need to remove 2 idx all at once
     // let length = this.prevSelected.length;
     // this.prevSelected.splice(length - 2, length - 1);
     // this.prevSelected.pop();
     this.prevSelected.pop();
-    console.log("after last remove prevSelected", this.prevSelected);
+    // console.log("after last remove prevSelected", this.prevSelected);
   }
 
   removeCurrentSelection(){
     this.counter -= 1;
     this.selected = this.prevSelected[this.prevSelected.length - 1];
     if(!this.selected) this.selected = [];
-    console.log("on remove selected", this.selected);
+    // console.log("on remove selected", this.selected);
     this.consoleObject("on remove prevSelected", this.prevSelected);
     // strange behavior, need to remove 2 idx all at once
     this.prevSelected.splice(this.prevSelected.length - 1, 2);
-    console.log("after remove prevSelected", this.prevSelected);
+    // console.log("after remove prevSelected", this.prevSelected);
   }
 
 

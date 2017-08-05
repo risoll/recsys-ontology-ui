@@ -19,7 +19,7 @@ export class PlaceService{
   }
 
   getPlacesByCategories(params: string[]): Observable<Place[]>{
-    console.log("params", params);
+    // console.log("params", params);
     let url = `${API_URL}/place/bulk/categories`;
     let body = JSON.stringify(params);
     let headers = new Headers({'Content-Type': 'application/json'});

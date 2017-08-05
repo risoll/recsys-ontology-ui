@@ -72,13 +72,13 @@ export class MyApp {
     let staticData = this.storage.get("staticData");
     if(staticData){
       staticData.then(data=>{
-        console.log("static data", data);
+        // console.log("static data", data);
         this.store.dispatch(this.recommActions.setStatic(data));
       })
     }
     if(mode1Status){
       mode1Status.then(status=>{
-        console.log("1 Status", status);
+        // console.log("1 Status", status);
         if(status == "completed"){
           this.store.dispatch(this.recommActions.setMode1Status("completed"));
         }
@@ -86,7 +86,7 @@ export class MyApp {
     }
     if(comparisonStatus){
       comparisonStatus.then(status=>{
-        console.log("comparison status", status);
+        // console.log("comparison status", status);
         if(status == "completed"){
           this.store.dispatch(this.recommActions.setComparisonStatus("completed"));
         }
@@ -94,7 +94,7 @@ export class MyApp {
     }
     if(mode2Status){
       mode2Status.then(status=>{
-        console.log("2 Status", status);
+        // console.log("2 Status", status);
         if(status == "completed"){
           this.store.dispatch(this.recommActions.setMode2Status("completed"));
         }
@@ -118,25 +118,58 @@ export class MyApp {
   ngOnInit() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(position => {
-        console.log("POSITION", position.coords);
+        // console.log("POSITION", position.coords);
         this.store.dispatch(this.userActions.setLocation({
           lat: position.coords.latitude,
           lng: position.coords.longitude
         }))
       }),
       error=>{
-        console.log("ERROR");
+        // console.log("ERROR");
       },
       {
           maximumAge:0,
           timeout:5000
       }
     }else{
-      console.log("FAILED");
+      // console.log("FAILED");
     }
 
     this.resetStatus();
 
+  }
+
+  colorLog(message: string, color: string = "") {
+
+    color = color || "black";
+
+    switch (color) {
+      case "success":
+        color = "Green";
+        break;
+      case "info":
+        color = "DodgerBlue";
+        break;
+      case "error":
+        color = "Red";
+        break;
+      case "warning":
+        color = "Orange";
+        break;
+      default:
+        color = color;
+    }
+
+    console.log("%c" + message, "color:" + color);
+  }
+
+  showLog(){
+    console.clear();
+    this.colorLog("Hi, I'm Rizky Solechudin", "success");
+    this.colorLog("Currently working at Braincode Solution");
+    this.colorLog("as Scala and Angular Developer", "warning");
+    this.colorLog("For business inquiries you can contact me at");
+    this.colorLog("rizky.solechudin@gmail.com", "info");
   }
 
   initializeApp() {
@@ -155,6 +188,7 @@ export class MyApp {
       });
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+      this.showLog();
     });
   }
 }

@@ -88,7 +88,7 @@ var PostFeedbackPage = (function () {
                 // }
             }
         }
-        console.log("MALE", this.male, "FEMALE", this.female);
+        // console.log("MALE", this.male, "FEMALE", this.female);
     }
     PostFeedbackPage.prototype.navigate = function () {
         var _this = this;
@@ -115,7 +115,7 @@ var PostFeedbackPage = (function () {
                 overall_preference: this.answers[5],
                 time: date.getTime()
             };
-            console.log("params", params_1);
+            // console.log("params", params);
             if (__WEBPACK_IMPORTED_MODULE_4__utils_common_util__["d" /* isFormFilled */](params_1)) {
                 this.loadingService.presentLoading();
                 this.userService.addPostFeedback(params_1).subscribe(function (feedback) {

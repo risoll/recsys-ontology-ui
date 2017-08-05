@@ -99,7 +99,7 @@ export class RecommendationPage {
     private alertService: AlertService,
     private loadingService: LoadingService) {
     this.mode = this.navParams.get("mode");
-    console.log("MODE", this.mode);
+    // console.log("MODE", this.mode);
     this.loadQuestions("tempat wisata");
   }
 

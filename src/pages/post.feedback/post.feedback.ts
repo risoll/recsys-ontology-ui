@@ -167,7 +167,7 @@ export class PostFeedbackPage {
         // }
       }
     }
-    console.log("MALE", this.male, "FEMALE", this.female);
+    // console.log("MALE", this.male, "FEMALE", this.female);
   }
 
 
@@ -194,7 +194,7 @@ export class PostFeedbackPage {
         overall_preference: this.answers[5],
         time: date.getTime()
       };
-      console.log("params", params);
+      // console.log("params", params);
 
       if (isFormFilled(params)) {
         this.loadingService.presentLoading();

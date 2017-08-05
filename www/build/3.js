@@ -269,7 +269,7 @@ var FeedbackPage = (function () {
                 // }
             }
         }
-        console.log("MALE", this.male, "FEMALE", this.female);
+        // console.log("MALE", this.male, "FEMALE", this.female);
     }
     FeedbackPage.prototype.navigate = function () {
         var _this = this;
@@ -288,8 +288,8 @@ var FeedbackPage = (function () {
                 gender: this.gender,
                 age: Number(this.age),
                 profession: this.profession,
-                // rating: this.rating,
-                rating: 0,
+                rating: this.rating,
+                // rating: 0,
                 eou: this.answers[0],
                 eou2: this.answers[1],
                 inf: this.answers[2],
@@ -303,7 +303,7 @@ var FeedbackPage = (function () {
                 mode: this.mode,
                 time: date.getTime()
             };
-            console.log("params", params_1);
+            // console.log("params", params);
             if (__WEBPACK_IMPORTED_MODULE_4__utils_common_util__["d" /* isFormFilled */](params_1)) {
                 this.loadingService.presentLoading();
                 this.userService.addFeedback(params_1).subscribe(function (feedback) {
@@ -671,7 +671,7 @@ var EnhancePage = (function () {
         this.consoleObject = function (str, obj) { return console.log(str, JSON.parse(JSON.stringify(obj))); };
         this.recommendationService.traverseNode(this.navParams.get("recomms")).subscribe(function (data) {
             _this.backtracks = data;
-            console.log("DATA", _this.backtracks);
+            // console.log("DATA", this.backtracks);
             _this.findMinLength();
             for (var i = _this.minLength - 1; i >= 0; i--) {
                 if (_this.needInherit) {
@@ -681,7 +681,7 @@ var EnhancePage = (function () {
                 }
             }
             ;
-            console.log("selectedIdx", _this.selectedIdx);
+            // console.log("selectedIdx", this.selectedIdx)
         });
     }
     // checkDuplicate(target: string, exists: string[]): boolean{
@@ -729,7 +729,7 @@ var EnhancePage = (function () {
         if (this.colsQuestions.length < 2 && this.colsQuestions[0].cols.length < 2)
             this.needInherit = true;
         this.counter += 1;
-        console.log(this.colsQuestions);
+        // console.log(this.colsQuestions)
     };
     EnhancePage.prototype.showAlert = function () {
         var alert = this.alertCtrl.create({
@@ -757,13 +757,13 @@ var EnhancePage = (function () {
         else
             this.removeCurrentSelection();
         this.loadPrevQuestions();
-        console.log("counter", this.counter);
+        // console.log("counter", this.counter);
     };
     EnhancePage.prototype.next = function () {
         var _this = this;
         this.direction = "next";
         var check = __WEBPACK_IMPORTED_MODULE_5__utils_common_util__["d" /* isFormFilled */]({ node: this.selected });
-        console.log("cek", check, this.selected);
+        // console.log("cek", check, this.selected);
         if (!check) {
             this.needAlert = true;
         }
@@ -774,7 +774,7 @@ var EnhancePage = (function () {
         else {
             var places_1 = __WEBPACK_IMPORTED_MODULE_5__utils_common_util__["a" /* captureState */](this.store).recomm.selectedPlaces;
             // let newPlaces: Place[] = [];
-            console.log("PLACE BEFORE", places_1);
+            // console.log("PLACE BEFORE", places);
             var name_2 = "";
             var child_1 = "";
             this.backtracks.forEach(function (backtrack) {
@@ -782,16 +782,16 @@ var EnhancePage = (function () {
                 name_2 = backtrack.name;
                 if (child_1 == _this.selected[0])
                     places_1 = places_1.filter(function (place) {
-                        console.log("compare name", place.name, name_2);
+                        // console.log("compare name", place.name, name)
                         return place.name == name_2;
                     });
             });
-            console.log("PLACE AFTER", places_1);
+            // console.log("PLACE AFTER", places);
             // this.store.dispatch(this.recommActions.selectPlaces(places));
             this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_0__result_selection_result_selection__["a" /* ResultSelectionPage */], { selectedPlaces: places_1 });
             // this.loadBacktrack(this.selectedIdx);
         }
-        console.log("counter", this.counter);
+        // console.log("counter", this.counter);
     };
     EnhancePage.prototype.loadPrevQuestions = function () {
         // console.log("before", this.prevColsQuestions);
@@ -810,25 +810,25 @@ var EnhancePage = (function () {
         this.selected = this.prevSelected[this.prevSelected.length - 1];
         if (!this.selected)
             this.selected = [];
-        console.log("on last remove selected", this.selected);
+        // console.log("on last remove selected", this.selected);
         this.consoleObject("on last remove prevSelected", this.prevSelected);
         // strange behavior, need to remove 2 idx all at once
         // let length = this.prevSelected.length;
         // this.prevSelected.splice(length - 2, length - 1);
         // this.prevSelected.pop();
         this.prevSelected.pop();
-        console.log("after last remove prevSelected", this.prevSelected);
+        // console.log("after last remove prevSelected", this.prevSelected);
     };
     EnhancePage.prototype.removeCurrentSelection = function () {
         this.counter -= 1;
         this.selected = this.prevSelected[this.prevSelected.length - 1];
         if (!this.selected)
             this.selected = [];
-        console.log("on remove selected", this.selected);
+        // console.log("on remove selected", this.selected);
         this.consoleObject("on remove prevSelected", this.prevSelected);
         // strange behavior, need to remove 2 idx all at once
         this.prevSelected.splice(this.prevSelected.length - 1, 2);
-        console.log("after remove prevSelected", this.prevSelected);
+        // console.log("after remove prevSelected", this.prevSelected);
     };
     return EnhancePage;
 }());
