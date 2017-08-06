@@ -9,6 +9,9 @@ import { Storage } from '@ionic/storage';
 import { Store } from "@ngrx/store";
 import { AppState } from "../models/state.model";
 import {RecommActions} from "../actions/recomm.actions";
+import {Location} from "../models/user.model";
+import {GoogleService} from "../services/google.service";
+import {captureState} from "../utils/common.util";
 
 @Component({
   template: `
@@ -47,7 +50,8 @@ export class MyApp {
     public storage: Storage,
     private splashScreen: SplashScreen,
     private recommActions: RecommActions,
-    private statusBar: StatusBar) {
+    private statusBar: StatusBar,
+    private googleService: GoogleService) {
     // this.presentLoading();
     this.userService.ipApi().subscribe(ipApi => {
       this.store.dispatch(this.userActions.setIpApi(ipApi));
@@ -119,10 +123,19 @@ export class MyApp {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(position => {
         // console.log("POSITION", position.coords);
-        this.store.dispatch(this.userActions.setLocation({
+        let defaultLocation = captureState(this.store).user.defaultLocation;
+        let currentLocation = <Location>{
           lat: position.coords.latitude,
           lng: position.coords.longitude
-        }))
+        };
+        //cek apakah user disekitar bandung, jika tidak maka set paksa user ke lokasi titik 0 kota bandung
+        this.googleService.getDistance(defaultLocation, currentLocation).subscribe(data=>{
+          // console.log("distance", data.distance);
+          if(data.distance < 100000){
+            // console.log("yes");
+            this.store.dispatch(this.userActions.setLocation(currentLocation))
+          }
+        });
       }),
       error=>{
         // console.log("ERROR");

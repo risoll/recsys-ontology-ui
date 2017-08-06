@@ -1,94 +1,6 @@
 webpackJsonp([3],{
 
-/***/ 102:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["d"] = isFormFilled;
-/* unused harmony export objStatus */
-/* unused harmony export removeDuplicates */
-/* unused harmony export isEmptyObject */
-/* harmony export (immutable) */ __webpack_exports__["a"] = captureState;
-/* unused harmony export appendState */
-/* harmony export (immutable) */ __webpack_exports__["c"] = findIndex;
-/* harmony export (immutable) */ __webpack_exports__["b"] = filterZero;
-function isFormFilled(obj) {
-    var tmpStatus = true;
-    if (obj instanceof Object) {
-        for (var attr in obj) {
-            tmpStatus = objStatus(obj[attr]);
-            if (!tmpStatus)
-                return false;
-        }
-    }
-    return true;
-}
-function objStatus(obj) {
-    // Handle the 3 simple types, and null or undefined
-    if (obj === undefined) {
-        return false;
-    }
-    if (obj.toString() === "NaN")
-        return false;
-    if (null == obj || "object" != typeof obj) {
-        if (typeof obj == "string") {
-            if (obj.length == 0)
-                return false;
-        }
-        return true;
-    }
-    if (obj instanceof String) {
-        return (obj.length > 0);
-    }
-    if (obj instanceof Number) {
-        return true;
-    }
-    // Handle Array
-    if (obj instanceof Array) {
-        return (obj.length > 0);
-    }
-    // Handle Object
-    if (obj instanceof Object) {
-        return (isEmptyObject(obj) == false);
-    }
-    throw new Error("Unable to copy obj! Its type isn't supported.");
-}
-function removeDuplicates(originalArray, prop) {
-    var newArray = [];
-    var lookupObject = {};
-    for (var i in originalArray) {
-        lookupObject[originalArray[i][prop]] = originalArray[i];
-    }
-    for (i in lookupObject) {
-        newArray.push(lookupObject[i]);
-    }
-    return newArray;
-}
-function isEmptyObject(obj) {
-    return (Object.keys(obj).length === 0);
-}
-function captureState(state$) {
-    var state;
-    var subs = state$.select(function (state) { return state; }).subscribe(function (x) { return state = x; });
-    subs.unsubscribe();
-    return state;
-}
-function appendState(state, data) {
-    var tmp = state.slice();
-    tmp.push(data);
-    return tmp;
-}
-function findIndex(array, colName, value) {
-    return array.findIndex(function (obj) { return obj[colName] == value; });
-}
-function filterZero(array, colName) {
-    return array.filter(function (a) { return a[colName] > 0; });
-}
-//# sourceMappingURL=common.util.js.map
-
-/***/ }),
-
-/***/ 104:
+/***/ 114:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -131,6 +43,8 @@ PlacePage = __decorate([
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ExplanationPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_common_util__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ngrx_store__ = __webpack_require__(23);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -142,13 +56,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+
+
 var ExplanationPage = (function () {
-    function ExplanationPage(platform, params, viewCtrl, loadingCtrl) {
+    function ExplanationPage(platform, params, viewCtrl, loadingCtrl, store) {
         this.platform = platform;
         this.params = params;
         this.viewCtrl = viewCtrl;
         this.loadingCtrl = loadingCtrl;
+        this.store = store;
+        this.zoom = 12;
         this.explanation = params.get("explanation");
+        this.defaultLocation = __WEBPACK_IMPORTED_MODULE_2__utils_common_util__["a" /* captureState */](this.store).user.defaultLocation;
     }
     ExplanationPage.prototype.stopLoading = function () {
         this.loader.dismiss();
@@ -168,19 +87,21 @@ ExplanationPage = __decorate([
     __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* IonicPage */](),
     __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"]({
         selector: 'page-explanation',
-        template: "\n    <ion-header>\n        <ion-toolbar color=\"sky\">\n            <ion-title>\n            Explanation\n            </ion-title>\n            <ion-buttons start>\n            <button ion-button (click)=\"dismiss()\">\n                <span ion-text color=\"primary\" showWhen=\"ios\">Cancel</span>\n                <ion-icon name=\"md-close\" showWhen=\"android, windows\"></ion-icon>\n            </button>\n            </ion-buttons>\n        </ion-toolbar>\n    </ion-header>\n    <ion-content>\n        <p style=\"padding: 4%;\">\n        {{explanation}}\n        </p>\n    </ion-content>\n  ",
+        template: "\n    <ion-header>\n        <ion-toolbar color=\"sky\">\n            <ion-title>\n            Penjelasan\n            </ion-title>\n            <ion-buttons start>\n            <button ion-button (click)=\"dismiss()\">\n                <span ion-text color=\"light\" showWhen=\"ios\">Tutup</span>\n                <ion-icon name=\"md-close\" showWhen=\"android, windows\"></ion-icon>\n            </button>\n            </ion-buttons>\n        </ion-toolbar>\n    </ion-header>\n    <ion-content>\n      <p style=\"padding: 10px\">\n        Sistem akan mendeteksi secara otomatis lokasi anda sekarang. Jika anda tidak sedang berada\n        di sekitar Bandung, maka sistem akan menganggap lokasi anda adalah\n        di pusat kota Bandung. Sehingga sistem akan tetap bisa memberikan rekomendasi.\n      </p>\n      <p style=\"text-align: center\">Titik Pusat Bandung</p>\n      <sebm-google-map [zoom]=\"zoom\" [latitude]=\"defaultLocation.lat\" [longitude]=\"defaultLocation.lng\">\n        <sebm-google-map-marker [latitude]=\"defaultLocation.lat\" [longitude]=\"defaultLocation.lng\"></sebm-google-map-marker>\n      </sebm-google-map>\n    </ion-content>\n  ",
+        styles: ["\n    .sebm-google-map-container {\n      height: 500px;\n      width: 100%;\n    }\n  "]
     }),
     __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* Platform */],
         __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* NavParams */],
         __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["n" /* ViewController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* LoadingController */]])
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* LoadingController */],
+        __WEBPACK_IMPORTED_MODULE_3__ngrx_store__["a" /* Store */]])
 ], ExplanationPage);
 
 //# sourceMappingURL=explanation.js.map
 
 /***/ }),
 
-/***/ 116:
+/***/ 123:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -189,9 +110,9 @@ ExplanationPage = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_user_service__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_common_util__ = __webpack_require__(102);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_alert_service__ = __webpack_require__(40);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_loading_service__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_common_util__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_alert_service__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_loading_service__ = __webpack_require__(42);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ionic_storage__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__actions_recomm_actions__ = __webpack_require__(16);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -355,20 +276,20 @@ FeedbackPage = __decorate([
 
 /***/ }),
 
-/***/ 124:
+/***/ 129:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ResultPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__actions_attractions_actions__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ngrx_store__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__place_place__ = __webpack_require__(104);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__place_place__ = __webpack_require__(114);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__explanation_explanation__ = __webpack_require__(115);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__feedback_feedback__ = __webpack_require__(116);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__feedback_feedback__ = __webpack_require__(123);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_ionic_angular__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__utils_common_util__ = __webpack_require__(102);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__services_alert_service__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__utils_common_util__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__services_alert_service__ = __webpack_require__(41);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -462,16 +383,16 @@ ResultPage = __decorate([
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ResultSelectionPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_ionic_angular__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__actions_recomm_actions__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__result_result__ = __webpack_require__(124);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__place_place__ = __webpack_require__(104);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__result_result__ = __webpack_require__(129);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__place_place__ = __webpack_require__(114);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_recommendation_service__ = __webpack_require__(42);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_common_util__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_recommendation_service__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_common_util__ = __webpack_require__(40);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ngrx_store__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__actions_attractions_actions__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__services_place_service__ = __webpack_require__(43);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__services_loading_service__ = __webpack_require__(41);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__services_alert_service__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__services_place_service__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__services_loading_service__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__services_alert_service__ = __webpack_require__(41);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -625,255 +546,33 @@ ResultSelectionPage = __decorate([
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-
-// CONCATENATED MODULE: ./src/pages/enhance/enhance.ts
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__result_selection_result_selection__ = __webpack_require__(130);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ngrx_store__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_recommendation_service__ = __webpack_require__(42);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_common_util__ = __webpack_require__(102);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ResultSelectionPageModule", function() { return ResultSelectionPageModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__result_selection__ = __webpack_require__(130);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 
 
 
-
-
-
-var EnhancePage = (function () {
-    function EnhancePage(navCtrl, store, alertCtrl, navParams, recommendationService, loadingCtrl) {
-        var _this = this;
-        this.navCtrl = navCtrl;
-        this.store = store;
-        this.alertCtrl = alertCtrl;
-        this.navParams = navParams;
-        this.recommendationService = recommendationService;
-        this.loadingCtrl = loadingCtrl;
-        this.questions = [];
-        this.colsQuestions = [];
-        this.prevColsQuestions = [];
-        this.needInherit = true;
-        this.needAlert = false;
-        this.divider = 2;
-        this.counter = 0;
-        this.prevSelected = [];
-        this.selected = [];
-        this.selectedIdx = 0;
-        this.lastPage = false;
-        this.consoleObject = function (str, obj) { return console.log(str, JSON.parse(JSON.stringify(obj))); };
-        this.recommendationService.traverseNode(this.navParams.get("recomms")).subscribe(function (data) {
-            _this.backtracks = data;
-            // console.log("DATA", this.backtracks);
-            _this.findMinLength();
-            for (var i = _this.minLength - 1; i >= 0; i--) {
-                if (_this.needInherit) {
-                    _this.loadBacktrack(i);
-                    // this.next();
-                    _this.selectedIdx = i;
-                }
-            }
-            ;
-            // console.log("selectedIdx", this.selectedIdx)
-        });
+var ResultSelectionPageModule = (function () {
+    function ResultSelectionPageModule() {
     }
-    // checkDuplicate(target: string, exists: string[]): boolean{
-    //   let duplicated = false;
-    //   for(let i = 0; i < exists.length; i++){
-    //     if(exists)
-    //   }
-    //   return duplicated;
-    // }
-    EnhancePage.prototype.findMinLength = function () {
-        var _this = this;
-        this.minLength = this.backtracks[0].parents.length;
-        this.backtracks.forEach(function (backtrack) {
-            if (_this.minLength > backtrack.parents.length)
-                _this.minLength = backtrack.parents.length;
-        });
-    };
-    EnhancePage.prototype.loadBacktrack = function (idx) {
-        var _this = this;
-        this.needInherit = false;
-        var i = 0;
-        var existQuestions = [];
-        this.questions = [];
-        this.colsQuestions = [];
-        this.backtracks.forEach(function (backtrack) {
-            if (i % _this.divider == 0) {
-                _this.questions = [];
-                for (var j = i; j < i + _this.divider; j++) {
-                    if (_this.backtracks[j]) {
-                        var name_1 = _this.backtracks[j].parents[idx].child;
-                        var image = _this.backtracks[j].parents[idx].image;
-                        var question = {
-                            name: name_1,
-                            image: image
-                        };
-                        if (existQuestions.indexOf(name_1) == -1)
-                            _this.questions.push(question);
-                        existQuestions.push(name_1);
-                    }
-                }
-                _this.colsQuestions.push({ cols: _this.questions });
-            }
-            i += 1;
-        });
-        if (this.colsQuestions.length < 2 && this.colsQuestions[0].cols.length < 2)
-            this.needInherit = true;
-        this.counter += 1;
-        // console.log(this.colsQuestions)
-    };
-    EnhancePage.prototype.showAlert = function () {
-        var alert = this.alertCtrl.create({
-            title: 'Failed',
-            message: 'Please at least select one type',
-            buttons: ['OK']
-        });
-        alert.present();
-    };
-    EnhancePage.prototype.selectClass = function (value) {
-        // let idx = this.selected.indexOf(value);
-        // if(idx > -1) this.selected.splice(idx, 1);
-        // else this.selected.push(value);
-        if (this.selected.length > 0) {
-            this.selected.pop();
-            this.selected.push(value);
-        }
-        else
-            this.selected.push(value);
-    };
-    EnhancePage.prototype.back = function () {
-        this.direction = "back";
-        if (this.lastPage)
-            this.removeLastSelection();
-        else
-            this.removeCurrentSelection();
-        this.loadPrevQuestions();
-        // console.log("counter", this.counter);
-    };
-    EnhancePage.prototype.next = function () {
-        var _this = this;
-        this.direction = "next";
-        var check = __WEBPACK_IMPORTED_MODULE_5__utils_common_util__["d" /* isFormFilled */]({ node: this.selected });
-        // console.log("cek", check, this.selected);
-        if (!check) {
-            this.needAlert = true;
-        }
-        else
-            this.needAlert = false;
-        if (this.needAlert)
-            this.showAlert();
-        else {
-            var places_1 = __WEBPACK_IMPORTED_MODULE_5__utils_common_util__["a" /* captureState */](this.store).recomm.selectedPlaces;
-            // let newPlaces: Place[] = [];
-            // console.log("PLACE BEFORE", places);
-            var name_2 = "";
-            var child_1 = "";
-            this.backtracks.forEach(function (backtrack) {
-                child_1 = backtrack.parents[_this.selectedIdx].child;
-                name_2 = backtrack.name;
-                if (child_1 == _this.selected[0])
-                    places_1 = places_1.filter(function (place) {
-                        // console.log("compare name", place.name, name)
-                        return place.name == name_2;
-                    });
-            });
-            // console.log("PLACE AFTER", places);
-            // this.store.dispatch(this.recommActions.selectPlaces(places));
-            this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_0__result_selection_result_selection__["a" /* ResultSelectionPage */], { selectedPlaces: places_1 });
-            // this.loadBacktrack(this.selectedIdx);
-        }
-        // console.log("counter", this.counter);
-    };
-    EnhancePage.prototype.loadPrevQuestions = function () {
-        // console.log("before", this.prevColsQuestions);
-        var idx = this.prevColsQuestions.indexOf(this.colsQuestions);
-        if (idx > -1)
-            this.prevColsQuestions.splice(idx, 1);
-        // console.log("after", this.prevColsQuestions);
-        var length = this.prevColsQuestions.length;
-        if (length <= 1)
-            this.navCtrl.pop();
-        this.colsQuestions = this.prevColsQuestions[length - 1];
-        // this.selected = [];
-    };
-    EnhancePage.prototype.removeLastSelection = function () {
-        this.counter -= 2;
-        this.selected = this.prevSelected[this.prevSelected.length - 1];
-        if (!this.selected)
-            this.selected = [];
-        // console.log("on last remove selected", this.selected);
-        this.consoleObject("on last remove prevSelected", this.prevSelected);
-        // strange behavior, need to remove 2 idx all at once
-        // let length = this.prevSelected.length;
-        // this.prevSelected.splice(length - 2, length - 1);
-        // this.prevSelected.pop();
-        this.prevSelected.pop();
-        // console.log("after last remove prevSelected", this.prevSelected);
-    };
-    EnhancePage.prototype.removeCurrentSelection = function () {
-        this.counter -= 1;
-        this.selected = this.prevSelected[this.prevSelected.length - 1];
-        if (!this.selected)
-            this.selected = [];
-        // console.log("on remove selected", this.selected);
-        this.consoleObject("on remove prevSelected", this.prevSelected);
-        // strange behavior, need to remove 2 idx all at once
-        this.prevSelected.splice(this.prevSelected.length - 1, 2);
-        // console.log("after remove prevSelected", this.prevSelected);
-    };
-    return EnhancePage;
+    return ResultSelectionPageModule;
 }());
-EnhancePage = __decorate([
-    __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["f" /* IonicPage */](),
-    __WEBPACK_IMPORTED_MODULE_2__angular_core__["Component"]({
-        selector: 'page-enhance',
-        template: "\n    <ion-header>\n      <ion-navbar color=\"sky\">\n        <button ion-button menuToggle>\n          <ion-icon name=\"menu\"></ion-icon>\n        </button>\n        <ion-title>Enchance</ion-title>\n      </ion-navbar>\n    </ion-header>\n    <ion-content *ngIf=\"questions\" class=\"card-background-page\">\n      <ion-grid>\n        <ion-row *ngFor=\"let cols of colsQuestions\">\n          <ion-col col-6 *ngFor=\"let col of cols.cols\">\n            <ion-card\n              [ngClass]=\"{'selected': selected.indexOf(col.name) > -1}\"\n              (click)=selectClass(col.name)>\n              <img [src]=\"col.image\">\n              <div class=\"card-title\">{{col.name}}</div>\n            </ion-card>\n          </ion-col>\n        </ion-row>\n      </ion-grid>\n    </ion-content>\n    <ion-footer>\n      <ion-grid>\n        <ion-row>\n          <ion-col col-6>        \n            <button ion-button block outline color=\"fire\" (click)=back()>\n              <ion-icon name=\"arrow-back\"></ion-icon>\n              &nbsp;Previous\n            </button> \n          </ion-col>\n          <ion-col col-6>\n            <button full ion-button color=\"fire\" (click)=next()>\n              Next&nbsp;\n              <ion-icon name=\"arrow-forward\"></ion-icon>\n            </button> \n          </ion-col>\n        </ion-row>\n      </ion-grid>\n    </ion-footer>\n\n  "
-    }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["k" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_1__ngrx_store__["a" /* Store */],
-        __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["a" /* AlertController */],
-        __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["l" /* NavParams */],
-        __WEBPACK_IMPORTED_MODULE_4__services_recommendation_service__["a" /* RecommendationService */],
-        __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["h" /* LoadingController */]])
-], EnhancePage);
-
-//# sourceMappingURL=enhance.js.map
-// CONCATENATED MODULE: ./src/pages/enhance/enhance.module.ts
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EnhancePageModule", function() { return EnhancePageModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(9);
-var enhance_module___decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-
-
-var EnhancePageModule = (function () {
-    function EnhancePageModule() {
-    }
-    return EnhancePageModule;
-}());
-EnhancePageModule = enhance_module___decorate([
-    __WEBPACK_IMPORTED_MODULE_1__angular_core__["NgModule"]({
-        declarations: [EnhancePage],
-        imports: [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["g" /* IonicPageModule */].forChild(EnhancePage)],
-        entryComponents: [EnhancePage]
+ResultSelectionPageModule = __decorate([
+    __WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"]({
+        declarations: [__WEBPACK_IMPORTED_MODULE_2__result_selection__["a" /* ResultSelectionPage */]],
+        imports: [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__result_selection__["a" /* ResultSelectionPage */])],
+        entryComponents: [__WEBPACK_IMPORTED_MODULE_2__result_selection__["a" /* ResultSelectionPage */]]
     })
-], EnhancePageModule);
+], ResultSelectionPageModule);
 
-//# sourceMappingURL=enhance.module.js.map
+//# sourceMappingURL=result.selection.module.js.map
 
 /***/ })
 

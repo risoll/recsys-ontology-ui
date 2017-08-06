@@ -52,7 +52,7 @@ export class IntroPage {
     },
     {
       title: "Selamat datang!",
-      description: "Aplikasi ini merupakan Sistem Rekomendasi Tempat Wisata yang ada di Bandung Raya, sistem ini dibuat sebagai implementasi dari <b>Tugas Akhir</b> yang saya kerjakan.",
+      description: "Aplikasi ini merupakan Sistem Rekomendasi Tempat Wisata yang ada di Bandung Raya",
       image: "assets/images/intro/2.jpg",
     },
     {

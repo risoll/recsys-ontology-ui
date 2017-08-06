@@ -1,16 +1,20 @@
-import { RecommActions } from './../../actions/recomm.actions';
-import { Question, ColsQuestion, NodeValues } from './../../models/recommendation.model';
-import { Store } from '@ngrx/store';
-import { Component, AfterViewInit } from '@angular/core';
+import {RecommActions} from './../../actions/recomm.actions';
+import {Question, ColsQuestion, NodeValues} from './../../models/recommendation.model';
+import {Store} from '@ngrx/store';
+import {Component, AfterViewInit} from '@angular/core';
 
-import {NavController, LoadingController, Loading, AlertController, IonicPage, NavParams} from 'ionic-angular';
-import { RecommendationService } from "../../services/recommendation.service";
+import {
+  NavController, LoadingController, Loading, AlertController, IonicPage, NavParams,
+  ModalController
+} from 'ionic-angular';
+import {RecommendationService} from "../../services/recommendation.service";
 
-import { BeginPage } from "../begin/begin";
-import { filterZero, findIndex, isFormFilled, captureState } from '../../utils/common.util';
-import { AppState } from "../../models/state.model";
-import { AlertService } from '../../services/alert.service';
-import { LoadingService } from "../../services/loading.service";
+import {BeginPage} from "../begin/begin";
+import {filterZero, findIndex, isFormFilled, captureState} from '../../utils/common.util';
+import {AppState} from "../../models/state.model";
+import {AlertService} from '../../services/alert.service';
+import {LoadingService} from "../../services/loading.service";
+import {ExplanationPage} from "../explanation/explanation";
 
 @IonicPage()
 @Component({
@@ -35,16 +39,20 @@ import { LoadingService } from "../../services/loading.service";
             <ion-card>
               <img style="width: 100%;" [src]="col.image">
               <div class="card-title">{{col.name}}</div>
-              <div class="card-subtitle" *ngIf="findIndex(col.name) != -1 && questionsValue[findIndex(col.name)].pref > 0">{{questionsValue[findIndex(col.name)].pref * 100}}</div>
-              <ion-range 
-                step="10" 
-                style="top: 15% !important" 
-                class="card-title" 
-                (ionChange)="changeValue(col.name, $event)" 
-                color="danger" 
+              <div class="card-subtitle"
+                   *ngIf="findIndex(col.name) != -1 && questionsValue[findIndex(col.name)].pref > 0">
+                {{questionsValue[findIndex(col.name)].pref * 100}}
+              </div>
+              <ion-range
+                step="10"
+                style="top: 15% !important"
+                class="card-title"
+                (ionChange)="changeValue(col.name, $event)"
+                color="danger"
                 pin="true">
               </ion-range>
-              <button style="font-size: smaller" (click)="col.showDesc = !col.showDesc" ion-button clear small color="fire" icon-start>
+              <button style="font-size: smaller" (click)="col.showDesc = !col.showDesc" ion-button clear small
+                      color="fire" icon-start>
                 <ion-icon *ngIf="!col.showDesc" name='arrow-dropdown'></ion-icon>
                 <ion-icon *ngIf="col.showDesc" name='arrow-dropup'></ion-icon>
                 Deskripsi
@@ -59,8 +67,24 @@ import { LoadingService } from "../../services/loading.service";
         </ion-row>
         <ion-row>
           <ion-col col-12>
+            <!--<ion-card>-->
+              <!--<ion-card-content>-->
+                <!--<p style="text-align: center">-->
+                  <!--Sistem akan mendeteksi apakah anda berada di area sekitar Bandung atau tidak,-->
+                  <!--<button ion-button color="fire" clear>selengkapnya</button>-->
+                <!--</p>-->
+              <!--</ion-card-content>-->
+            <!--</ion-card>-->
             <ion-item>
-              <p style="text-align: center">Jarak maksimal anda dengan tempat wisata <br> {{distance}} Km</p>
+              <p style="text-align: center">
+                Jarak maksimal anda dengan tempat wisata
+                <button (click)="explain()" clear ion-button color="fire" icon-only>
+                  <ion-icon name="help-circle"></ion-icon>
+                </button>
+                <br> {{distance}} Km
+
+              </p>
+
             </ion-item>
             <ion-item>
               <ion-range step="5" min="5" [(ngModel)]="distance">
@@ -69,14 +93,14 @@ import { LoadingService } from "../../services/loading.service";
               </ion-range>
             </ion-item>
             <!--<ion-item>-->
-              <!--<p style="text-align: center">{{distance}} Km</p>-->
+            <!--<p style="text-align: center">{{distance}} Km</p>-->
             <!--</ion-item>-->
           </ion-col>
         </ion-row>
-      </ion-grid>   
-    </ion-content> 
-    <ion-footer style="height: 10%;">        
-      <button color="fire" style="height: 100%;" ion-button block (click)="navigate()">Lanjut</button> 
+      </ion-grid>
+    </ion-content>
+    <ion-footer style="height: 10%;">
+      <button color="fire" style="height: 100%;" ion-button block (click)="navigate()">Lanjut</button>
     </ion-footer>
 
   `
@@ -92,12 +116,13 @@ export class RecommendationPage {
   selected: string[] = [];
 
   constructor(public navCtrl: NavController,
-    private store: Store<AppState>,
-    private recommActions: RecommActions,
-    private navParams: NavParams,
-    private recommendationService: RecommendationService,
-    private alertService: AlertService,
-    private loadingService: LoadingService) {
+              private store: Store<AppState>,
+              private recommActions: RecommActions,
+              private navParams: NavParams,
+              private recommendationService: RecommendationService,
+              private alertService: AlertService,
+              private loadingService: LoadingService,
+              public modalCtrl: ModalController,) {
     this.mode = this.navParams.get("mode");
     // console.log("MODE", this.mode);
     this.loadQuestions("tempat wisata");
@@ -105,6 +130,14 @@ export class RecommendationPage {
 
   findIndex(name: string): number {
     return this.questionsValue.findIndex(obj => obj.name == name);
+  }
+
+
+  explain(){
+    let modal = this.modalCtrl.create(ExplanationPage, {
+      explanation: {}
+    });
+    modal.present();
   }
 
 
@@ -140,7 +173,7 @@ export class RecommendationPage {
                 showDesc: false
               })
           }
-          this.colsQuestions.push({ cols: this.questions })
+          this.colsQuestions.push({cols: this.questions})
         }
         i += 1;
       });
@@ -155,7 +188,7 @@ export class RecommendationPage {
   navigate() {
     let passed = false;
     let questionsValue: NodeValues[] = filterZero(this.questionsValue, "pref");
-    if (isFormFilled({ selected: questionsValue })) {
+    if (isFormFilled({selected: questionsValue})) {
       let value = 0;
       questionsValue.forEach(node => {
         value += node.pref
@@ -165,7 +198,7 @@ export class RecommendationPage {
         let names = questionsValue.map(q => q.name);
         this.store.dispatch(this.recommActions.setDistance(this.distance));
         let page = '';
-        if(this.mode == 1) page = 'BeginPage';
+        if (this.mode == 1) page = 'BeginPage';
         else page = 'Begin2Page';
         this.navCtrl.push(page, {
           selected: questionsValue,

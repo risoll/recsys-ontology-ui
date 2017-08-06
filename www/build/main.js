@@ -1,6 +1,15 @@
-webpackJsonp([16],{
-
-/***/ 10:
+webpackJsonp([16],[
+/* 0 */,
+/* 1 */,
+/* 2 */,
+/* 3 */,
+/* 4 */,
+/* 5 */,
+/* 6 */,
+/* 7 */,
+/* 8 */,
+/* 9 */,
+/* 10 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28,8 +37,12 @@ var API_URL = "" + API_BASE_URL + API_BASE_PORT;
 //# sourceMappingURL=constants.js.map
 
 /***/ }),
-
-/***/ 16:
+/* 11 */,
+/* 12 */,
+/* 13 */,
+/* 14 */,
+/* 15 */,
+/* 16 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -132,8 +145,14 @@ var RecommActions_1;
 //# sourceMappingURL=recomm.actions.js.map
 
 /***/ }),
-
-/***/ 24:
+/* 17 */,
+/* 18 */,
+/* 19 */,
+/* 20 */,
+/* 21 */,
+/* 22 */,
+/* 23 */,
+/* 24 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -173,8 +192,7 @@ var AttractionsActions_1;
 //# sourceMappingURL=attractions.actions.js.map
 
 /***/ }),
-
-/***/ 25:
+/* 25 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -237,8 +255,15 @@ UserService = __decorate([
 //# sourceMappingURL=user.service.js.map
 
 /***/ }),
-
-/***/ 34:
+/* 26 */,
+/* 27 */,
+/* 28 */,
+/* 29 */,
+/* 30 */,
+/* 31 */,
+/* 32 */,
+/* 33 */,
+/* 34 */
 /***/ (function(module, exports) {
 
 function webpackEmptyAsyncContext(req) {
@@ -250,74 +275,74 @@ module.exports = webpackEmptyAsyncContext;
 webpackEmptyAsyncContext.id = 34;
 
 /***/ }),
-
-/***/ 36:
+/* 35 */,
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
 	"../pages/about/about.module": [
-		98,
+		99,
 		15
 	],
 	"../pages/attractions/attractions.module": [
-		97,
-		12
-	],
-	"../pages/begin/begin.module": [
-		90,
-		10
-	],
-	"../pages/begin2/begin2.module": [
-		99,
-		11
-	],
-	"../pages/details/details.module": [
-		86,
-		9
-	],
-	"../pages/enhance/enhance.module": [
-		95,
-		3
-	],
-	"../pages/explanation/explanation.module": [
-		89,
+		98,
 		8
 	],
-	"../pages/feedback/feedback.module": [
-		92,
-		5
-	],
-	"../pages/intro/intro.module": [
-		96,
-		14
-	],
-	"../pages/maps/maps.module": [
-		87,
-		1
-	],
-	"../pages/method.selection/method.selection.module": [
-		100,
+	"../pages/begin/begin.module": [
+		91,
 		13
 	],
-	"../pages/place/place.module": [
+	"../pages/begin2/begin2.module": [
+		100,
+		14
+	],
+	"../pages/details/details.module": [
+		87,
+		12
+	],
+	"../pages/enhance/enhance.module": [
+		96,
+		4
+	],
+	"../pages/explanation/explanation.module": [
+		90,
+		1
+	],
+	"../pages/feedback/feedback.module": [
+		93,
+		6
+	],
+	"../pages/intro/intro.module": [
+		97,
+		11
+	],
+	"../pages/maps/maps.module": [
 		88,
+		2
+	],
+	"../pages/method.selection/method.selection.module": [
+		101,
+		10
+	],
+	"../pages/place/place.module": [
+		89,
 		0
 	],
 	"../pages/post.feedback/post.feedback.module": [
-		101,
-		7
+		102,
+		9
 	],
 	"../pages/recommendation/recommendation.module": [
-		91,
-		6
+		92,
+		7
 	],
 	"../pages/result.selection/result.selection.module": [
-		94,
-		2
+		95,
+		3
 	],
 	"../pages/result/result.module": [
-		93,
-		4
+		94,
+		5
 	]
 };
 function webpackAsyncContext(req) {
@@ -335,8 +360,97 @@ module.exports = webpackAsyncContext;
 webpackAsyncContext.id = 36;
 
 /***/ }),
+/* 37 */,
+/* 38 */,
+/* 39 */,
+/* 40 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-/***/ 40:
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["d"] = isFormFilled;
+/* unused harmony export objStatus */
+/* unused harmony export removeDuplicates */
+/* unused harmony export isEmptyObject */
+/* harmony export (immutable) */ __webpack_exports__["a"] = captureState;
+/* unused harmony export appendState */
+/* harmony export (immutable) */ __webpack_exports__["c"] = findIndex;
+/* harmony export (immutable) */ __webpack_exports__["b"] = filterZero;
+function isFormFilled(obj) {
+    var tmpStatus = true;
+    if (obj instanceof Object) {
+        for (var attr in obj) {
+            tmpStatus = objStatus(obj[attr]);
+            if (!tmpStatus)
+                return false;
+        }
+    }
+    return true;
+}
+function objStatus(obj) {
+    // Handle the 3 simple types, and null or undefined
+    if (obj === undefined) {
+        return false;
+    }
+    if (obj.toString() === "NaN")
+        return false;
+    if (null == obj || "object" != typeof obj) {
+        if (typeof obj == "string") {
+            if (obj.length == 0)
+                return false;
+        }
+        return true;
+    }
+    if (obj instanceof String) {
+        return (obj.length > 0);
+    }
+    if (obj instanceof Number) {
+        return true;
+    }
+    // Handle Array
+    if (obj instanceof Array) {
+        return (obj.length > 0);
+    }
+    // Handle Object
+    if (obj instanceof Object) {
+        return (isEmptyObject(obj) == false);
+    }
+    throw new Error("Unable to copy obj! Its type isn't supported.");
+}
+function removeDuplicates(originalArray, prop) {
+    var newArray = [];
+    var lookupObject = {};
+    for (var i in originalArray) {
+        lookupObject[originalArray[i][prop]] = originalArray[i];
+    }
+    for (i in lookupObject) {
+        newArray.push(lookupObject[i]);
+    }
+    return newArray;
+}
+function isEmptyObject(obj) {
+    return (Object.keys(obj).length === 0);
+}
+function captureState(state$) {
+    var state;
+    var subs = state$.select(function (state) { return state; }).subscribe(function (x) { return state = x; });
+    subs.unsubscribe();
+    return state;
+}
+function appendState(state, data) {
+    var tmp = state.slice();
+    tmp.push(data);
+    return tmp;
+}
+function findIndex(array, colName, value) {
+    return array.findIndex(function (obj) { return obj[colName] == value; });
+}
+function filterZero(array, colName) {
+    return array.filter(function (a) { return a[colName] > 0; });
+}
+//# sourceMappingURL=common.util.js.map
+
+/***/ }),
+/* 41 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -411,8 +525,7 @@ AlertService = __decorate([
 //# sourceMappingURL=alert.service.js.map
 
 /***/ }),
-
-/***/ 41:
+/* 42 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -454,8 +567,7 @@ LoadingService = __decorate([
 //# sourceMappingURL=loading.service.js.map
 
 /***/ }),
-
-/***/ 42:
+/* 43 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -573,8 +685,7 @@ RecommendationService = __decorate([
 //# sourceMappingURL=recommendation.service.js.map
 
 /***/ }),
-
-/***/ 43:
+/* 44 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -628,8 +739,7 @@ PlaceService = __decorate([
 //# sourceMappingURL=place.service.js.map
 
 /***/ }),
-
-/***/ 44:
+/* 45 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -712,6 +822,10 @@ var UserActions_1;
 var user_reducer_initialState = {
     ipApi: {},
     location: {
+        lat: -6.917464,
+        lng: 107.619123
+    },
+    defaultLocation: {
         lat: -6.917464,
         lng: 107.619123
     }
@@ -798,16 +912,13 @@ var APP_ACTIONS = [
     app_actions___WEBPACK_IMPORTED_MODULE_0__actions_recomm_actions__["a" /* RecommActions */]
 ];
 //# sourceMappingURL=app.actions.js.map
-// CONCATENATED MODULE: ./src/app/app.component.ts
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_user_service__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_status_bar__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_splash_screen__ = __webpack_require__(39);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_storage__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ngrx_store__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__actions_recomm_actions__ = __webpack_require__(16);
-var app_component___decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+// CONCATENATED MODULE: ./src/services/google.service.ts
+/* harmony import */ var google_service___WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_constants__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__);
+var google_service___decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -820,13 +931,61 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+/**
+ * Created by solehuddien on 26/04/17.
+ */
+var GoogleService = (function () {
+    function GoogleService(http) {
+        this.http = http;
+    }
+    GoogleService.prototype.getPhotos = function (params) {
+        var url = __WEBPACK_IMPORTED_MODULE_2__utils_constants__["a" /* API_URL */] + "/google/photos?lat=" + params.lat + "&lng=" + params.lng + "&radius=" + params.radius + "&maxWidth=" + params.maxWidth + "&maxHeight=" + params.maxHeight;
+        return this.http.get(url).map(function (res) { return res.json(); });
+    };
+    GoogleService.prototype.getDistance = function (origins, destinations) {
+        var url = __WEBPACK_IMPORTED_MODULE_2__utils_constants__["a" /* API_URL */] + "/google/distance?defaultLat=" + origins.lat + "&defaultLng=" + origins.lng + "&lat=" + destinations.lat + "&lng=" + destinations.lng;
+        return this.http.get(url).map(function (res) { return res.json(); });
+    };
+    return GoogleService;
+}());
+GoogleService = google_service___decorate([
+    google_service___WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"](),
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Http */]])
+], GoogleService);
+
+//# sourceMappingURL=google.service.js.map
+// CONCATENATED MODULE: ./src/app/app.component.ts
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_user_service__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_status_bar__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_splash_screen__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_storage__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ngrx_store__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__actions_recomm_actions__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__utils_common_util__ = __webpack_require__(40);
+var app_component___decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var app_component___metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
 
 
 
 
 
 var MyApp = (function () {
-    function MyApp(store, userActions, userService, platform, loadingCtrl, storage, splashScreen, recommActions, statusBar) {
+    function MyApp(store, userActions, userService, platform, loadingCtrl, storage, splashScreen, recommActions, statusBar, googleService) {
         var _this = this;
         this.store = store;
         this.userActions = userActions;
@@ -837,6 +996,7 @@ var MyApp = (function () {
         this.splashScreen = splashScreen;
         this.recommActions = recommActions;
         this.statusBar = statusBar;
+        this.googleService = googleService;
         this.rootPage = 'IntroPage';
         // this.presentLoading();
         this.userService.ipApi().subscribe(function (ipApi) {
@@ -906,10 +1066,19 @@ var MyApp = (function () {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function (position) {
                 // console.log("POSITION", position.coords);
-                _this.store.dispatch(_this.userActions.setLocation({
+                var defaultLocation = __WEBPACK_IMPORTED_MODULE_10__utils_common_util__["a" /* captureState */](_this.store).user.defaultLocation;
+                var currentLocation = {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
-                }));
+                };
+                //cek apakah user disekitar bandung, jika tidak maka set paksa user ke lokasi titik 0 kota bandung
+                _this.googleService.getDistance(defaultLocation, currentLocation).subscribe(function (data) {
+                    // console.log("distance", data.distance);
+                    if (data.distance < 100000) {
+                        // console.log("yes");
+                        _this.store.dispatch(_this.userActions.setLocation(currentLocation));
+                    }
+                });
             }),
                 function (error) {
                     // console.log("ERROR");
@@ -978,13 +1147,13 @@ var MyApp = (function () {
 }());
 app_component___decorate([
     __WEBPACK_IMPORTED_MODULE_2__angular_core__["ViewChild"](__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["j" /* Nav */]),
-    __metadata("design:type", __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["j" /* Nav */])
+    app_component___metadata("design:type", __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["j" /* Nav */])
 ], MyApp.prototype, "nav", void 0);
 MyApp = app_component___decorate([
     __WEBPACK_IMPORTED_MODULE_2__angular_core__["Component"]({
         template: "\n    <ion-menu [content]=\"content\">\n      <ion-header>\n        <ion-toolbar color=\"sky\">\n          <ion-title>Jalan-Jalan</ion-title>\n        </ion-toolbar>\n      </ion-header>\n\n      <ion-content>\n        <ion-list>\n          <button menuClose ion-item *ngFor=\"let p of pages\" (click)=\"openPage(p)\">\n            {{p.title}}\n          </button>\n        </ion-list>\n      </ion-content>\n    </ion-menu>\n\n    <!-- Disable swipe-to-go-back because it's poor UX to combine STGB with side menus -->\n    <ion-nav [root]=\"rootPage\" #content swipeBackEnabled=\"false\"></ion-nav>\n  "
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_7__ngrx_store__["a" /* Store */],
+    app_component___metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_7__ngrx_store__["a" /* Store */],
         UserActions,
         __WEBPACK_IMPORTED_MODULE_0__services_user_service__["a" /* UserService */],
         __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["m" /* Platform */],
@@ -992,54 +1161,17 @@ MyApp = app_component___decorate([
         __WEBPACK_IMPORTED_MODULE_6__ionic_storage__["b" /* Storage */],
         __WEBPACK_IMPORTED_MODULE_5__ionic_native_splash_screen__["a" /* SplashScreen */],
         __WEBPACK_IMPORTED_MODULE_8__actions_recomm_actions__["a" /* RecommActions */],
-        __WEBPACK_IMPORTED_MODULE_4__ionic_native_status_bar__["a" /* StatusBar */]])
+        __WEBPACK_IMPORTED_MODULE_4__ionic_native_status_bar__["a" /* StatusBar */],
+        GoogleService])
 ], MyApp);
 
 //# sourceMappingURL=app.component.js.map
-// CONCATENATED MODULE: ./src/services/google.service.ts
-/* harmony import */ var google_service___WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_constants__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__);
-var google_service___decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var google_service___metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-/**
- * Created by solehuddien on 26/04/17.
- */
-var GoogleService = (function () {
-    function GoogleService(http) {
-        this.http = http;
-    }
-    GoogleService.prototype.getPhotos = function (params) {
-        var url = __WEBPACK_IMPORTED_MODULE_2__utils_constants__["a" /* API_URL */] + "/google/photos?lat=" + params.lat + "&lng=" + params.lng + "&radius=" + params.radius + "&maxWidth=" + params.maxWidth + "&maxHeight=" + params.maxHeight;
-        return this.http.get(url).map(function (res) { return res.json(); });
-    };
-    return GoogleService;
-}());
-GoogleService = google_service___decorate([
-    google_service___WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"](),
-    google_service___metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Http */]])
-], GoogleService);
-
-//# sourceMappingURL=google.service.js.map
 // CONCATENATED MODULE: ./src/app/app.services.ts
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_loading_service__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_loading_service__ = __webpack_require__(42);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_user_service__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_recommendation_service__ = __webpack_require__(42);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_place_service__ = __webpack_require__(43);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_alert_service__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_recommendation_service__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_place_service__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_alert_service__ = __webpack_require__(41);
 
 
 
@@ -1133,13 +1265,12 @@ AppModule = app_module___decorate([
 
 //# sourceMappingURL=app.module.js.map
 // CONCATENATED MODULE: ./src/app/main.ts
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(46);
 
 
 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* platformBrowserDynamic */]().bootstrapModule(AppModule);
 //# sourceMappingURL=main.js.map
 
 /***/ })
-
-},[44]);
+],[45]);
 //# sourceMappingURL=main.js.map

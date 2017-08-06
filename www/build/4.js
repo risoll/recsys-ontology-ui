@@ -1,94 +1,6 @@
 webpackJsonp([4],{
 
-/***/ 102:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["d"] = isFormFilled;
-/* unused harmony export objStatus */
-/* unused harmony export removeDuplicates */
-/* unused harmony export isEmptyObject */
-/* harmony export (immutable) */ __webpack_exports__["a"] = captureState;
-/* unused harmony export appendState */
-/* harmony export (immutable) */ __webpack_exports__["c"] = findIndex;
-/* harmony export (immutable) */ __webpack_exports__["b"] = filterZero;
-function isFormFilled(obj) {
-    var tmpStatus = true;
-    if (obj instanceof Object) {
-        for (var attr in obj) {
-            tmpStatus = objStatus(obj[attr]);
-            if (!tmpStatus)
-                return false;
-        }
-    }
-    return true;
-}
-function objStatus(obj) {
-    // Handle the 3 simple types, and null or undefined
-    if (obj === undefined) {
-        return false;
-    }
-    if (obj.toString() === "NaN")
-        return false;
-    if (null == obj || "object" != typeof obj) {
-        if (typeof obj == "string") {
-            if (obj.length == 0)
-                return false;
-        }
-        return true;
-    }
-    if (obj instanceof String) {
-        return (obj.length > 0);
-    }
-    if (obj instanceof Number) {
-        return true;
-    }
-    // Handle Array
-    if (obj instanceof Array) {
-        return (obj.length > 0);
-    }
-    // Handle Object
-    if (obj instanceof Object) {
-        return (isEmptyObject(obj) == false);
-    }
-    throw new Error("Unable to copy obj! Its type isn't supported.");
-}
-function removeDuplicates(originalArray, prop) {
-    var newArray = [];
-    var lookupObject = {};
-    for (var i in originalArray) {
-        lookupObject[originalArray[i][prop]] = originalArray[i];
-    }
-    for (i in lookupObject) {
-        newArray.push(lookupObject[i]);
-    }
-    return newArray;
-}
-function isEmptyObject(obj) {
-    return (Object.keys(obj).length === 0);
-}
-function captureState(state$) {
-    var state;
-    var subs = state$.select(function (state) { return state; }).subscribe(function (x) { return state = x; });
-    subs.unsubscribe();
-    return state;
-}
-function appendState(state, data) {
-    var tmp = state.slice();
-    tmp.push(data);
-    return tmp;
-}
-function findIndex(array, colName, value) {
-    return array.findIndex(function (obj) { return obj[colName] == value; });
-}
-function filterZero(array, colName) {
-    return array.filter(function (a) { return a[colName] > 0; });
-}
-//# sourceMappingURL=common.util.js.map
-
-/***/ }),
-
-/***/ 104:
+/***/ 114:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -131,6 +43,8 @@ PlacePage = __decorate([
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ExplanationPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_common_util__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ngrx_store__ = __webpack_require__(23);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -142,13 +56,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+
+
 var ExplanationPage = (function () {
-    function ExplanationPage(platform, params, viewCtrl, loadingCtrl) {
+    function ExplanationPage(platform, params, viewCtrl, loadingCtrl, store) {
         this.platform = platform;
         this.params = params;
         this.viewCtrl = viewCtrl;
         this.loadingCtrl = loadingCtrl;
+        this.store = store;
+        this.zoom = 12;
         this.explanation = params.get("explanation");
+        this.defaultLocation = __WEBPACK_IMPORTED_MODULE_2__utils_common_util__["a" /* captureState */](this.store).user.defaultLocation;
     }
     ExplanationPage.prototype.stopLoading = function () {
         this.loader.dismiss();
@@ -168,19 +87,21 @@ ExplanationPage = __decorate([
     __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* IonicPage */](),
     __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"]({
         selector: 'page-explanation',
-        template: "\n    <ion-header>\n        <ion-toolbar color=\"sky\">\n            <ion-title>\n            Explanation\n            </ion-title>\n            <ion-buttons start>\n            <button ion-button (click)=\"dismiss()\">\n                <span ion-text color=\"primary\" showWhen=\"ios\">Cancel</span>\n                <ion-icon name=\"md-close\" showWhen=\"android, windows\"></ion-icon>\n            </button>\n            </ion-buttons>\n        </ion-toolbar>\n    </ion-header>\n    <ion-content>\n        <p style=\"padding: 4%;\">\n        {{explanation}}\n        </p>\n    </ion-content>\n  ",
+        template: "\n    <ion-header>\n        <ion-toolbar color=\"sky\">\n            <ion-title>\n            Penjelasan\n            </ion-title>\n            <ion-buttons start>\n            <button ion-button (click)=\"dismiss()\">\n                <span ion-text color=\"light\" showWhen=\"ios\">Tutup</span>\n                <ion-icon name=\"md-close\" showWhen=\"android, windows\"></ion-icon>\n            </button>\n            </ion-buttons>\n        </ion-toolbar>\n    </ion-header>\n    <ion-content>\n      <p style=\"padding: 10px\">\n        Sistem akan mendeteksi secara otomatis lokasi anda sekarang. Jika anda tidak sedang berada\n        di sekitar Bandung, maka sistem akan menganggap lokasi anda adalah\n        di pusat kota Bandung. Sehingga sistem akan tetap bisa memberikan rekomendasi.\n      </p>\n      <p style=\"text-align: center\">Titik Pusat Bandung</p>\n      <sebm-google-map [zoom]=\"zoom\" [latitude]=\"defaultLocation.lat\" [longitude]=\"defaultLocation.lng\">\n        <sebm-google-map-marker [latitude]=\"defaultLocation.lat\" [longitude]=\"defaultLocation.lng\"></sebm-google-map-marker>\n      </sebm-google-map>\n    </ion-content>\n  ",
+        styles: ["\n    .sebm-google-map-container {\n      height: 500px;\n      width: 100%;\n    }\n  "]
     }),
     __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* Platform */],
         __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* NavParams */],
         __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["n" /* ViewController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* LoadingController */]])
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* LoadingController */],
+        __WEBPACK_IMPORTED_MODULE_3__ngrx_store__["a" /* Store */]])
 ], ExplanationPage);
 
 //# sourceMappingURL=explanation.js.map
 
 /***/ }),
 
-/***/ 116:
+/***/ 123:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -189,9 +110,9 @@ ExplanationPage = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_user_service__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_common_util__ = __webpack_require__(102);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_alert_service__ = __webpack_require__(40);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_loading_service__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_common_util__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_alert_service__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_loading_service__ = __webpack_require__(42);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ionic_storage__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__actions_recomm_actions__ = __webpack_require__(16);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -355,20 +276,20 @@ FeedbackPage = __decorate([
 
 /***/ }),
 
-/***/ 124:
+/***/ 129:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ResultPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__actions_attractions_actions__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ngrx_store__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__place_place__ = __webpack_require__(104);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__place_place__ = __webpack_require__(114);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__explanation_explanation__ = __webpack_require__(115);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__feedback_feedback__ = __webpack_require__(116);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__feedback_feedback__ = __webpack_require__(123);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_ionic_angular__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__utils_common_util__ = __webpack_require__(102);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__services_alert_service__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__utils_common_util__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__services_alert_service__ = __webpack_require__(41);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -455,231 +376,403 @@ ResultPage = __decorate([
 
 /***/ }),
 
-/***/ 93:
+/***/ 130:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ResultSelectionPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_ionic_angular__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__actions_recomm_actions__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__result_result__ = __webpack_require__(129);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__place_place__ = __webpack_require__(114);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_recommendation_service__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_common_util__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ngrx_store__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__actions_attractions_actions__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__services_place_service__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__services_loading_service__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__services_alert_service__ = __webpack_require__(41);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+var ResultSelectionPage = (function () {
+    function ResultSelectionPage(attractionsActions, store, navCtrl, placeService, app, navParams, recommActions, recommService, loadingService, alertService) {
+        var _this = this;
+        this.attractionsActions = attractionsActions;
+        this.store = store;
+        this.navCtrl = navCtrl;
+        this.placeService = placeService;
+        this.app = app;
+        this.navParams = navParams;
+        this.recommActions = recommActions;
+        this.recommService = recommService;
+        this.loadingService = loadingService;
+        this.alertService = alertService;
+        this.selectedClasses = [];
+        this.selectedPlaces = [];
+        this.storedPlaces = [];
+        this.mode = 0;
+        this.submitText = "";
+        this.selectedRecomms = [];
+        this.staticTitle = "";
+        this.title = "Hasil Rekomendasi";
+        this.places = [];
+        this.limit = 15;
+        this.offset = 0;
+        this.loadingService.presentLoading();
+        this.params = this.navParams.get("params");
+        console.log("PARAMS", this.params);
+        var places = this.navParams.get("places");
+        console.log("selected", this.places);
+        if (places) {
+            this.selectedPlaces = places;
+            this.mode = 2;
+            this.submitText = "Selesai";
+            this.title = this.selectedPlaces.length + " Hasil Rekomendasi";
+            this.staticTitle = this.title;
+            this.loadingService.stopLoading();
+        }
+        else if (this.params)
+            if (this.params.assigned)
+                // if (this.params.assigned.length > 0)
+                this.recommService.upPropagation(this.params).subscribe(function (data) {
+                    _this.mode = 2;
+                    _this.submitText = "Lanjut";
+                    console.log("data", data);
+                    _this.selectedPlaces = data;
+                    _this.title = _this.selectedPlaces.length + " Hasil Rekomendasi";
+                    _this.staticTitle = _this.title;
+                    _this.loadingService.stopLoading();
+                });
+    }
+    ResultSelectionPage.prototype.reset = function () {
+        this.navCtrl.setRoot('MethodSelectionPage');
+    };
+    ResultSelectionPage.prototype.check = function (data, value) {
+        if (data.checked) {
+            this.selectedRecomms.push(value.name);
+            this.storedPlaces.push(value);
+        }
+        else {
+            var idx = this.selectedRecomms.indexOf(value.name);
+            if (idx > -1)
+                this.selectedRecomms.splice(idx, 1);
+            var idx2 = this.storedPlaces.indexOf(value);
+            if (idx2 > -1)
+                this.storedPlaces.splice(idx2, 1);
+        }
+        if (this.selectedRecomms.length > 0)
+            this.title = this.selectedRecomms.length + " Rekomendasi Terpilih";
+        else
+            this.title = this.staticTitle;
+        console.log("recomms", this.selectedRecomms);
+        console.log("stored places", this.storedPlaces);
+    };
+    ResultSelectionPage.prototype.navigate = function () {
+        var _this = this;
+        var check = __WEBPACK_IMPORTED_MODULE_6__utils_common_util__["d" /* isFormFilled */]({ recomms: this.selectedRecomms });
+        if (check) {
+            // if (this.selectedRecomms.length > 0) {
+            // 	let recomms: Place[];
+            // 	for (let i = 0; i < this.selectedPlaces.length; i++) {
+            // 		if (this.selectedRecomms[i] == this.selectedPlaces[i].name) {
+            // 			recomms.push(this.selectedPlaces[i]);
+            // 		}
+            // 	}
+            // 	this.navCtrl.push(ResultPage, { recomm: recomm });
+            // }
+            var filtered = this.selectedPlaces.filter(function (place) {
+                return _this.selectedRecomms.indexOf(place.name) > -1;
+            });
+            console.log("FILTERED", filtered);
+            this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_2__result_result__["a" /* ResultPage */], { recomms: filtered });
+        }
+        else {
+            this.alertService.presentAlertWithCallback("", "Anda tidak memilih rekomendasi, apakah anda ingin mengulangi proses rekomendasi dari awal?", "Tidak", "Iya, ulangi").then(function (status) {
+                if (status)
+                    _this.navCtrl.setRoot('MethodSelectionPage');
+            });
+        }
+    };
+    ResultSelectionPage.prototype.details = function (place) {
+        this.store.dispatch(this.attractionsActions.selectPlace(place));
+        this.app.getRootNav().push(__WEBPACK_IMPORTED_MODULE_3__place_place__["a" /* PlacePage */]);
+        // this.navCtrl.push(PlacePage);
+    };
+    return ResultSelectionPage;
+}());
+ResultSelectionPage = __decorate([
+    __WEBPACK_IMPORTED_MODULE_0_ionic_angular__["f" /* IonicPage */](),
+    __WEBPACK_IMPORTED_MODULE_4__angular_core__["Component"]({
+        selector: 'page-result-selection',
+        template: "\n    <ion-header>\n      <ion-navbar color=\"sky\">\n        <button ion-button menuToggle>\n          <ion-icon name=\"menu\"></ion-icon>\n        </button>\n        <ion-title>{{title}}</ion-title>\n      </ion-navbar>\n    </ion-header>\n    <ion-content padding>\n      <ion-list style=\"padding-bottom: 10%\">\n\n        <ion-item (click)=\"details(place)\" *ngFor=\"let place of selectedPlaces\">\n          <ion-avatar item-start>\n            <img [src]=\"place.photo\">\n          </ion-avatar>\n          <ion-label item-inner>\n            <h2>{{place.name}}</h2>\n            <p>{{place.formatted_address}}</p>\n            <p *ngIf=\"place.utilization\">Utilisasi: {{place.utilization}}</p>\n          </ion-label>\n          <ion-checkbox item-end (ionChange)=\"check($event, place)\" color=\"sky\" checked=\"false\"></ion-checkbox>\n\n        </ion-item>\n\n      </ion-list>\n      <div *ngIf=\"selectedPlaces.length == 0\" style=\"text-align: center\">\n        <p>Tidak ditemukan rekomendasi dalam preferensi anda, ingin mengulangi proses rekomendasi dari awal?</p>\n        <button (click)=\"reset()\" color=\"fire\" ion-button icon-left>\n          <ion-icon name=\"refresh\"></ion-icon>\n          Ulangi Proses Rekomendasi\n        </button>\n      </div>\n      <!--<p style=\"text-align: center\" *ngIf=\"mode == 2\">-->\n        <!--Dengan menekan tombol selesai, anda akan mengakhiri proses rekomendasi <br>-->\n        <!--dan dianggap puas dengan hasil rekomendasi yang ada.-->\n      <!--</p>-->\n    </ion-content>\n    <ion-footer *ngIf=\"selectedPlaces.length > 0\" style=\"height: 10%;\">\n      <button color=\"fire\" style=\"height: 100%;\" ion-button block (click)=\"navigate()\">{{submitText}}</button>\n    </ion-footer>\n\n  "
+    }),
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_8__actions_attractions_actions__["a" /* AttractionsActions */],
+        __WEBPACK_IMPORTED_MODULE_7__ngrx_store__["a" /* Store */],
+        __WEBPACK_IMPORTED_MODULE_0_ionic_angular__["k" /* NavController */], __WEBPACK_IMPORTED_MODULE_9__services_place_service__["a" /* PlaceService */],
+        __WEBPACK_IMPORTED_MODULE_0_ionic_angular__["b" /* App */], __WEBPACK_IMPORTED_MODULE_0_ionic_angular__["l" /* NavParams */],
+        __WEBPACK_IMPORTED_MODULE_1__actions_recomm_actions__["a" /* RecommActions */],
+        __WEBPACK_IMPORTED_MODULE_5__services_recommendation_service__["a" /* RecommendationService */],
+        __WEBPACK_IMPORTED_MODULE_10__services_loading_service__["a" /* LoadingService */],
+        __WEBPACK_IMPORTED_MODULE_11__services_alert_service__["a" /* AlertService */]])
+], ResultSelectionPage);
+
+//# sourceMappingURL=result.selection.js.map
+
+/***/ }),
+
+/***/ 96:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
-// CONCATENATED MODULE: ./node_modules/ionic2-rating/dist/ionic2-rating.js
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_forms__ = __webpack_require__(3);
-
-
-var noop = function () {
-};
-var RATING_CONTROL_VALUE_ACCESSOR = {
-    provide: __WEBPACK_IMPORTED_MODULE_1__angular_forms__["b" /* NG_VALUE_ACCESSOR */],
-    useExisting: __WEBPACK_IMPORTED_MODULE_0__angular_core__["forwardRef"](function () { return Ionic2Rating; }),
-    multi: true
-};
-var Ionic2Rating = (function () {
-    function Ionic2Rating() {
-        this._max = 5;
-        this._readOnly = false;
-        this._emptyStarIconName = 'star-outline';
-        this._halfStarIconName = 'star-half';
-        this._starIconName = 'star';
-        this._nullable = false;
-        this.onChangeCallback = noop;
-    }
-    Object.defineProperty(Ionic2Rating.prototype, "max", {
-        get: function () {
-            return this._max;
-        },
-        set: function (val) {
-            this._max = this.getNumberPropertyValue(val);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Ionic2Rating.prototype, "readOnly", {
-        get: function () {
-            return this._readOnly;
-        },
-        set: function (val) {
-            this._readOnly = this.isTrueProperty(val);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Ionic2Rating.prototype, "emptyStarIconName", {
-        get: function () {
-            return this._emptyStarIconName;
-        },
-        set: function (val) {
-            this._emptyStarIconName = val;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Ionic2Rating.prototype, "halfStarIconName", {
-        get: function () {
-            return this._halfStarIconName;
-        },
-        set: function (val) {
-            this._halfStarIconName = val;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Ionic2Rating.prototype, "starIconName", {
-        get: function () {
-            return this._starIconName;
-        },
-        set: function (val) {
-            this._starIconName = val;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Ionic2Rating.prototype, "nullable", {
-        get: function () {
-            return this._nullable;
-        },
-        set: function (val) {
-            this._nullable = this.isTrueProperty(val);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Ionic2Rating.prototype.ngOnInit = function () {
-        // ngFor needs an array
-        this.starIndexes = Array(this.max).fill(1).map(function (x, i) { return i; });
-    };
-    Ionic2Rating.prototype.getStarIconName = function (starIndex) {
-        if (this.value === undefined) {
-            return this.emptyStarIconName;
-        }
-        if (this.value > starIndex) {
-            if (this.value < starIndex + 1) {
-                return this.halfStarIconName;
-            }
-            else {
-                return this.starIconName;
-            }
-        }
-        else {
-            return this.emptyStarIconName;
-        }
-    };
-    Object.defineProperty(Ionic2Rating.prototype, "value", {
-        get: function () {
-            return this.innerValue;
-        },
-        set: function (value) {
-            if (value !== this.innerValue) {
-                this.innerValue = value;
-                this.onChangeCallback(value);
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Ionic2Rating.prototype.writeValue = function (value) {
-        if (value !== this.innerValue) {
-            this.innerValue = value;
-        }
-    };
-    Ionic2Rating.prototype.registerOnChange = function (fn) {
-        this.onChangeCallback = fn;
-    };
-    Ionic2Rating.prototype.registerOnTouched = function (fn) {
-    };
-    Ionic2Rating.prototype.onKeyDown = function (event) {
-        if (/(37|38|39|40)/.test(event.which)) {
-            event.preventDefault();
-            event.stopPropagation();
-            var newValue = this.value + ((event.which == 38 || event.which == 39) ? 1 : -1);
-            return this.rate(newValue);
-        }
-    };
-    Ionic2Rating.prototype.rate = function (value) {
-        if (this.readOnly || value < 0 || value > this.max) {
-            return;
-        }
-        if (value === this.value && this.nullable) {
-            value = null;
-        }
-        this.value = value;
-    };
-    Ionic2Rating.prototype.isTrueProperty = function (val) {
-        if (typeof val === 'string') {
-            val = val.toLowerCase().trim();
-            return (val === 'true' || val === 'on');
-        }
-        return !!val;
-    };
-    Ionic2Rating.prototype.getNumberPropertyValue = function (val) {
-        if (typeof val === 'string') {
-            return parseInt(val.trim());
-        }
-        return val;
-    };
-    Ionic2Rating.decorators = [
-        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
-                    selector: 'rating',
-                    styles: ["\n    ul.rating li {\n      display: inline;\n      border: 0px;\n      background: none;\n      padding: 5px 10px;\n    }\n    ul.rating li i {\n      font-size: 30px;\n    }\n  "],
-                    template: "\n    <ul class=\"rating\" (keydown)=\"onKeyDown($event)\">\n      <li *ngFor=\"let starIndex of starIndexes\" tappable (click)=\"rate(starIndex + 1)\">\n        <ion-icon [name]=\"getStarIconName(starIndex)\">\n        </ion-icon>\n      </li>\n    </ul>",
-                    providers: [RATING_CONTROL_VALUE_ACCESSOR]
-                },] },
-    ];
-    /** @nocollapse */
-    Ionic2Rating.ctorParameters = [];
-    Ionic2Rating.propDecorators = {
-        'max': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
-        'readOnly': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
-        'emptyStarIconName': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
-        'halfStarIconName': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
-        'starIconName': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
-        'nullable': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
-    };
-    return Ionic2Rating;
-}());
-//# sourceMappingURL=ionic2-rating.js.map
-// CONCATENATED MODULE: ./node_modules/ionic2-rating/dist/ionic2-rating.module.js
-/* harmony import */ var ionic2_rating_module___WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(9);
-
-
-
-
-var ionic2_rating_module_Ionic2RatingModule = (function () {
-    function Ionic2RatingModule() {
-    }
-    Ionic2RatingModule.decorators = [
-        { type: ionic2_rating_module___WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"], args: [{
-                    declarations: [
-                        Ionic2Rating
-                    ],
-                    exports: [
-                        Ionic2Rating
-                    ],
-                    imports: [
-                        __WEBPACK_IMPORTED_MODULE_1__angular_common__["b" /* CommonModule */],
-                        __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["e" /* IonicModule */]
-                    ],
-                    schemas: [
-                        ionic2_rating_module___WEBPACK_IMPORTED_MODULE_0__angular_core__["CUSTOM_ELEMENTS_SCHEMA"]
-                    ]
-                },] },
-    ];
-    /** @nocollapse */
-    Ionic2RatingModule.ctorParameters = [];
-    return Ionic2RatingModule;
-}());
-//# sourceMappingURL=ionic2-rating.module.js.map
-// CONCATENATED MODULE: ./node_modules/ionic2-rating/dist/index.js
-
-
-//# sourceMappingURL=index.js.map
-// CONCATENATED MODULE: ./src/pages/result/result.module.ts
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ResultPageModule", function() { return ResultPageModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__result__ = __webpack_require__(124);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
-/* harmony import */ var result_module___WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(9);
+// CONCATENATED MODULE: ./src/pages/enhance/enhance.ts
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__result_selection_result_selection__ = __webpack_require__(130);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ngrx_store__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_recommendation_service__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_common_util__ = __webpack_require__(40);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+var EnhancePage = (function () {
+    function EnhancePage(navCtrl, store, alertCtrl, navParams, recommendationService, loadingCtrl) {
+        var _this = this;
+        this.navCtrl = navCtrl;
+        this.store = store;
+        this.alertCtrl = alertCtrl;
+        this.navParams = navParams;
+        this.recommendationService = recommendationService;
+        this.loadingCtrl = loadingCtrl;
+        this.questions = [];
+        this.colsQuestions = [];
+        this.prevColsQuestions = [];
+        this.needInherit = true;
+        this.needAlert = false;
+        this.divider = 2;
+        this.counter = 0;
+        this.prevSelected = [];
+        this.selected = [];
+        this.selectedIdx = 0;
+        this.lastPage = false;
+        this.consoleObject = function (str, obj) { return console.log(str, JSON.parse(JSON.stringify(obj))); };
+        this.recommendationService.traverseNode(this.navParams.get("recomms")).subscribe(function (data) {
+            _this.backtracks = data;
+            // console.log("DATA", this.backtracks);
+            _this.findMinLength();
+            for (var i = _this.minLength - 1; i >= 0; i--) {
+                if (_this.needInherit) {
+                    _this.loadBacktrack(i);
+                    // this.next();
+                    _this.selectedIdx = i;
+                }
+            }
+            ;
+            // console.log("selectedIdx", this.selectedIdx)
+        });
+    }
+    // checkDuplicate(target: string, exists: string[]): boolean{
+    //   let duplicated = false;
+    //   for(let i = 0; i < exists.length; i++){
+    //     if(exists)
+    //   }
+    //   return duplicated;
+    // }
+    EnhancePage.prototype.findMinLength = function () {
+        var _this = this;
+        this.minLength = this.backtracks[0].parents.length;
+        this.backtracks.forEach(function (backtrack) {
+            if (_this.minLength > backtrack.parents.length)
+                _this.minLength = backtrack.parents.length;
+        });
+    };
+    EnhancePage.prototype.loadBacktrack = function (idx) {
+        var _this = this;
+        this.needInherit = false;
+        var i = 0;
+        var existQuestions = [];
+        this.questions = [];
+        this.colsQuestions = [];
+        this.backtracks.forEach(function (backtrack) {
+            if (i % _this.divider == 0) {
+                _this.questions = [];
+                for (var j = i; j < i + _this.divider; j++) {
+                    if (_this.backtracks[j]) {
+                        var name_1 = _this.backtracks[j].parents[idx].child;
+                        var image = _this.backtracks[j].parents[idx].image;
+                        var question = {
+                            name: name_1,
+                            image: image
+                        };
+                        if (existQuestions.indexOf(name_1) == -1)
+                            _this.questions.push(question);
+                        existQuestions.push(name_1);
+                    }
+                }
+                _this.colsQuestions.push({ cols: _this.questions });
+            }
+            i += 1;
+        });
+        if (this.colsQuestions.length < 2 && this.colsQuestions[0].cols.length < 2)
+            this.needInherit = true;
+        this.counter += 1;
+        // console.log(this.colsQuestions)
+    };
+    EnhancePage.prototype.showAlert = function () {
+        var alert = this.alertCtrl.create({
+            title: 'Failed',
+            message: 'Please at least select one type',
+            buttons: ['OK']
+        });
+        alert.present();
+    };
+    EnhancePage.prototype.selectClass = function (value) {
+        // let idx = this.selected.indexOf(value);
+        // if(idx > -1) this.selected.splice(idx, 1);
+        // else this.selected.push(value);
+        if (this.selected.length > 0) {
+            this.selected.pop();
+            this.selected.push(value);
+        }
+        else
+            this.selected.push(value);
+    };
+    EnhancePage.prototype.back = function () {
+        this.direction = "back";
+        if (this.lastPage)
+            this.removeLastSelection();
+        else
+            this.removeCurrentSelection();
+        this.loadPrevQuestions();
+        // console.log("counter", this.counter);
+    };
+    EnhancePage.prototype.next = function () {
+        var _this = this;
+        this.direction = "next";
+        var check = __WEBPACK_IMPORTED_MODULE_5__utils_common_util__["d" /* isFormFilled */]({ node: this.selected });
+        // console.log("cek", check, this.selected);
+        if (!check) {
+            this.needAlert = true;
+        }
+        else
+            this.needAlert = false;
+        if (this.needAlert)
+            this.showAlert();
+        else {
+            var places_1 = __WEBPACK_IMPORTED_MODULE_5__utils_common_util__["a" /* captureState */](this.store).recomm.selectedPlaces;
+            // let newPlaces: Place[] = [];
+            // console.log("PLACE BEFORE", places);
+            var name_2 = "";
+            var child_1 = "";
+            this.backtracks.forEach(function (backtrack) {
+                child_1 = backtrack.parents[_this.selectedIdx].child;
+                name_2 = backtrack.name;
+                if (child_1 == _this.selected[0])
+                    places_1 = places_1.filter(function (place) {
+                        // console.log("compare name", place.name, name)
+                        return place.name == name_2;
+                    });
+            });
+            // console.log("PLACE AFTER", places);
+            // this.store.dispatch(this.recommActions.selectPlaces(places));
+            this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_0__result_selection_result_selection__["a" /* ResultSelectionPage */], { selectedPlaces: places_1 });
+            // this.loadBacktrack(this.selectedIdx);
+        }
+        // console.log("counter", this.counter);
+    };
+    EnhancePage.prototype.loadPrevQuestions = function () {
+        // console.log("before", this.prevColsQuestions);
+        var idx = this.prevColsQuestions.indexOf(this.colsQuestions);
+        if (idx > -1)
+            this.prevColsQuestions.splice(idx, 1);
+        // console.log("after", this.prevColsQuestions);
+        var length = this.prevColsQuestions.length;
+        if (length <= 1)
+            this.navCtrl.pop();
+        this.colsQuestions = this.prevColsQuestions[length - 1];
+        // this.selected = [];
+    };
+    EnhancePage.prototype.removeLastSelection = function () {
+        this.counter -= 2;
+        this.selected = this.prevSelected[this.prevSelected.length - 1];
+        if (!this.selected)
+            this.selected = [];
+        // console.log("on last remove selected", this.selected);
+        this.consoleObject("on last remove prevSelected", this.prevSelected);
+        // strange behavior, need to remove 2 idx all at once
+        // let length = this.prevSelected.length;
+        // this.prevSelected.splice(length - 2, length - 1);
+        // this.prevSelected.pop();
+        this.prevSelected.pop();
+        // console.log("after last remove prevSelected", this.prevSelected);
+    };
+    EnhancePage.prototype.removeCurrentSelection = function () {
+        this.counter -= 1;
+        this.selected = this.prevSelected[this.prevSelected.length - 1];
+        if (!this.selected)
+            this.selected = [];
+        // console.log("on remove selected", this.selected);
+        this.consoleObject("on remove prevSelected", this.prevSelected);
+        // strange behavior, need to remove 2 idx all at once
+        this.prevSelected.splice(this.prevSelected.length - 1, 2);
+        // console.log("after remove prevSelected", this.prevSelected);
+    };
+    return EnhancePage;
+}());
+EnhancePage = __decorate([
+    __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["f" /* IonicPage */](),
+    __WEBPACK_IMPORTED_MODULE_2__angular_core__["Component"]({
+        selector: 'page-enhance',
+        template: "\n    <ion-header>\n      <ion-navbar color=\"sky\">\n        <button ion-button menuToggle>\n          <ion-icon name=\"menu\"></ion-icon>\n        </button>\n        <ion-title>Enchance</ion-title>\n      </ion-navbar>\n    </ion-header>\n    <ion-content *ngIf=\"questions\" class=\"card-background-page\">\n      <ion-grid>\n        <ion-row *ngFor=\"let cols of colsQuestions\">\n          <ion-col col-6 *ngFor=\"let col of cols.cols\">\n            <ion-card\n              [ngClass]=\"{'selected': selected.indexOf(col.name) > -1}\"\n              (click)=selectClass(col.name)>\n              <img [src]=\"col.image\">\n              <div class=\"card-title\">{{col.name}}</div>\n            </ion-card>\n          </ion-col>\n        </ion-row>\n      </ion-grid>\n    </ion-content>\n    <ion-footer>\n      <ion-grid>\n        <ion-row>\n          <ion-col col-6>        \n            <button ion-button block outline color=\"fire\" (click)=back()>\n              <ion-icon name=\"arrow-back\"></ion-icon>\n              &nbsp;Previous\n            </button> \n          </ion-col>\n          <ion-col col-6>\n            <button full ion-button color=\"fire\" (click)=next()>\n              Next&nbsp;\n              <ion-icon name=\"arrow-forward\"></ion-icon>\n            </button> \n          </ion-col>\n        </ion-row>\n      </ion-grid>\n    </ion-footer>\n\n  "
+    }),
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["k" /* NavController */],
+        __WEBPACK_IMPORTED_MODULE_1__ngrx_store__["a" /* Store */],
+        __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["a" /* AlertController */],
+        __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["l" /* NavParams */],
+        __WEBPACK_IMPORTED_MODULE_4__services_recommendation_service__["a" /* RecommendationService */],
+        __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["h" /* LoadingController */]])
+], EnhancePage);
+
+//# sourceMappingURL=enhance.js.map
+// CONCATENATED MODULE: ./src/pages/enhance/enhance.module.ts
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EnhancePageModule", function() { return EnhancePageModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(9);
+var enhance_module___decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -688,21 +781,20 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-
-var ResultPageModule = (function () {
-    function ResultPageModule() {
+var EnhancePageModule = (function () {
+    function EnhancePageModule() {
     }
-    return ResultPageModule;
+    return EnhancePageModule;
 }());
-ResultPageModule = __decorate([
+EnhancePageModule = enhance_module___decorate([
     __WEBPACK_IMPORTED_MODULE_1__angular_core__["NgModule"]({
-        declarations: [__WEBPACK_IMPORTED_MODULE_0__result__["a" /* ResultPage */]],
-        imports: [result_module___WEBPACK_IMPORTED_MODULE_2_ionic_angular__["g" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_0__result__["a" /* ResultPage */]), ionic2_rating_module_Ionic2RatingModule],
-        entryComponents: [__WEBPACK_IMPORTED_MODULE_0__result__["a" /* ResultPage */]]
+        declarations: [EnhancePage],
+        imports: [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["g" /* IonicPageModule */].forChild(EnhancePage)],
+        entryComponents: [EnhancePage]
     })
-], ResultPageModule);
+], EnhancePageModule);
 
-//# sourceMappingURL=result.module.js.map
+//# sourceMappingURL=enhance.module.js.map
 
 /***/ })
 

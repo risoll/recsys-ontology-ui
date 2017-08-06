@@ -1,635 +1,2478 @@
 webpackJsonp([2],{
 
-/***/ 102:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ 103:
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["d"] = isFormFilled;
-/* unused harmony export objStatus */
-/* unused harmony export removeDuplicates */
-/* unused harmony export isEmptyObject */
-/* harmony export (immutable) */ __webpack_exports__["a"] = captureState;
-/* unused harmony export appendState */
-/* harmony export (immutable) */ __webpack_exports__["c"] = findIndex;
-/* harmony export (immutable) */ __webpack_exports__["b"] = filterZero;
-function isFormFilled(obj) {
-    var tmpStatus = true;
-    if (obj instanceof Object) {
-        for (var attr in obj) {
-            tmpStatus = objStatus(obj[attr]);
-            if (!tmpStatus)
-                return false;
-        }
+
+var core_1 = __webpack_require__(0);
+var Observable_1 = __webpack_require__(1);
+var maps_api_loader_1 = __webpack_require__(104);
+/**
+ * Wrapper class that handles the communication with the Google Maps Javascript
+ * API v3
+ */
+var GoogleMapsAPIWrapper = (function () {
+    function GoogleMapsAPIWrapper(_loader, _zone) {
+        var _this = this;
+        this._loader = _loader;
+        this._zone = _zone;
+        this._map =
+            new Promise(function (resolve) { _this._mapResolver = resolve; });
     }
-    return true;
-}
-function objStatus(obj) {
-    // Handle the 3 simple types, and null or undefined
-    if (obj === undefined) {
-        return false;
-    }
-    if (obj.toString() === "NaN")
-        return false;
-    if (null == obj || "object" != typeof obj) {
-        if (typeof obj == "string") {
-            if (obj.length == 0)
-                return false;
-        }
-        return true;
-    }
-    if (obj instanceof String) {
-        return (obj.length > 0);
-    }
-    if (obj instanceof Number) {
-        return true;
-    }
-    // Handle Array
-    if (obj instanceof Array) {
-        return (obj.length > 0);
-    }
-    // Handle Object
-    if (obj instanceof Object) {
-        return (isEmptyObject(obj) == false);
-    }
-    throw new Error("Unable to copy obj! Its type isn't supported.");
-}
-function removeDuplicates(originalArray, prop) {
-    var newArray = [];
-    var lookupObject = {};
-    for (var i in originalArray) {
-        lookupObject[originalArray[i][prop]] = originalArray[i];
-    }
-    for (i in lookupObject) {
-        newArray.push(lookupObject[i]);
-    }
-    return newArray;
-}
-function isEmptyObject(obj) {
-    return (Object.keys(obj).length === 0);
-}
-function captureState(state$) {
-    var state;
-    var subs = state$.select(function (state) { return state; }).subscribe(function (x) { return state = x; });
-    subs.unsubscribe();
-    return state;
-}
-function appendState(state, data) {
-    var tmp = state.slice();
-    tmp.push(data);
-    return tmp;
-}
-function findIndex(array, colName, value) {
-    return array.findIndex(function (obj) { return obj[colName] == value; });
-}
-function filterZero(array, colName) {
-    return array.filter(function (a) { return a[colName] > 0; });
-}
-//# sourceMappingURL=common.util.js.map
+    GoogleMapsAPIWrapper.prototype.createMap = function (el, mapOptions) {
+        var _this = this;
+        return this._loader.load().then(function () {
+            var map = new google.maps.Map(el, mapOptions);
+            _this._mapResolver(map);
+            return;
+        });
+    };
+    GoogleMapsAPIWrapper.prototype.setMapOptions = function (options) {
+        this._map.then(function (m) { m.setOptions(options); });
+    };
+    /**
+     * Creates a google map marker with the map context
+     */
+    GoogleMapsAPIWrapper.prototype.createMarker = function (options) {
+        if (options === void 0) { options = {}; }
+        return this._map.then(function (map) {
+            options.map = map;
+            return new google.maps.Marker(options);
+        });
+    };
+    GoogleMapsAPIWrapper.prototype.createInfoWindow = function (options) {
+        return this._map.then(function () { return new google.maps.InfoWindow(options); });
+    };
+    /**
+     * Creates a google.map.Circle for the current map.
+     */
+    GoogleMapsAPIWrapper.prototype.createCircle = function (options) {
+        return this._map.then(function (map) {
+            options.map = map;
+            return new google.maps.Circle(options);
+        });
+    };
+    GoogleMapsAPIWrapper.prototype.createPolyline = function (options) {
+        return this.getNativeMap().then(function (map) {
+            var line = new google.maps.Polyline(options);
+            line.setMap(map);
+            return line;
+        });
+    };
+    GoogleMapsAPIWrapper.prototype.createPolygon = function (options) {
+        return this.getNativeMap().then(function (map) {
+            var polygon = new google.maps.Polygon(options);
+            polygon.setMap(map);
+            return polygon;
+        });
+    };
+    /**
+     * Determines if given coordinates are insite a Polygon path.
+     */
+    GoogleMapsAPIWrapper.prototype.containsLocation = function (latLng, polygon) {
+        return google.maps.geometry.poly.containsLocation(latLng, polygon);
+    };
+    GoogleMapsAPIWrapper.prototype.subscribeToMapEvent = function (eventName) {
+        var _this = this;
+        return Observable_1.Observable.create(function (observer) {
+            _this._map.then(function (m) {
+                m.addListener(eventName, function (arg) { _this._zone.run(function () { return observer.next(arg); }); });
+            });
+        });
+    };
+    GoogleMapsAPIWrapper.prototype.setCenter = function (latLng) {
+        return this._map.then(function (map) { return map.setCenter(latLng); });
+    };
+    GoogleMapsAPIWrapper.prototype.getZoom = function () { return this._map.then(function (map) { return map.getZoom(); }); };
+    GoogleMapsAPIWrapper.prototype.getBounds = function () {
+        return this._map.then(function (map) { return map.getBounds(); });
+    };
+    GoogleMapsAPIWrapper.prototype.setZoom = function (zoom) {
+        return this._map.then(function (map) { return map.setZoom(zoom); });
+    };
+    GoogleMapsAPIWrapper.prototype.getCenter = function () {
+        return this._map.then(function (map) { return map.getCenter(); });
+    };
+    GoogleMapsAPIWrapper.prototype.panTo = function (latLng) {
+        return this._map.then(function (map) { return map.panTo(latLng); });
+    };
+    GoogleMapsAPIWrapper.prototype.fitBounds = function (latLng) {
+        return this._map.then(function (map) { return map.fitBounds(latLng); });
+    };
+    GoogleMapsAPIWrapper.prototype.panToBounds = function (latLng) {
+        return this._map.then(function (map) { return map.panToBounds(latLng); });
+    };
+    /**
+     * Returns the native Google Maps Map instance. Be careful when using this instance directly.
+     */
+    GoogleMapsAPIWrapper.prototype.getNativeMap = function () { return this._map; };
+    /**
+     * Triggers the given event name on the map instance.
+     */
+    GoogleMapsAPIWrapper.prototype.triggerMapEvent = function (eventName) {
+        return this._map.then(function (m) { return google.maps.event.trigger(m, eventName); });
+    };
+    GoogleMapsAPIWrapper.decorators = [
+        { type: core_1.Injectable },
+    ];
+    /** @nocollapse */
+    GoogleMapsAPIWrapper.ctorParameters = function () { return [
+        { type: maps_api_loader_1.MapsAPILoader, },
+        { type: core_1.NgZone, },
+    ]; };
+    return GoogleMapsAPIWrapper;
+}());
+exports.GoogleMapsAPIWrapper = GoogleMapsAPIWrapper;
+//# sourceMappingURL=google-maps-api-wrapper.js.map
 
 /***/ }),
 
 /***/ 104:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PlacePage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 
-
-var PlacePage = (function () {
-    function PlacePage() {
-        this.type = "details";
+var core_1 = __webpack_require__(0);
+var MapsAPILoader = (function () {
+    function MapsAPILoader() {
     }
-    return PlacePage;
+    MapsAPILoader.decorators = [
+        { type: core_1.Injectable },
+    ];
+    /** @nocollapse */
+    MapsAPILoader.ctorParameters = function () { return []; };
+    return MapsAPILoader;
 }());
-PlacePage = __decorate([
-    __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* IonicPage */](),
-    __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"]({
-        template: "\n    <ion-header>\n        <ion-navbar color=\"sky\">\n          <button ion-button menuToggle>\n            <ion-icon name=\"menu\"></ion-icon>\n          </button>\n          <ion-title>Tempat Wisata</ion-title>\n        </ion-navbar>\n        <ion-toolbar no-border-top>\n          <ion-segment [(ngModel)]=\"type\">\n            <ion-segment-button value=\"details\">\n              Rincian\n            </ion-segment-button>\n            <ion-segment-button value=\"maps\">\n              Peta\n            </ion-segment-button>\n          </ion-segment>\n      </ion-toolbar>\n    </ion-header>\n    <ion-content>\n      <div [ngSwitch]=\"type\">\n        <page-details *ngSwitchCase=\"'details'\"></page-details>\n        <page-maps *ngSwitchCase=\"'maps'\"></page-maps>\n      </div>\n    </ion-content>\n  "
-    }),
-    __metadata("design:paramtypes", [])
-], PlacePage);
-
-//# sourceMappingURL=place.js.map
+exports.MapsAPILoader = MapsAPILoader;
+//# sourceMappingURL=maps-api-loader.js.map
 
 /***/ }),
 
-/***/ 115:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ 105:
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ExplanationPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 
-
-var ExplanationPage = (function () {
-    function ExplanationPage(platform, params, viewCtrl, loadingCtrl) {
-        this.platform = platform;
-        this.params = params;
-        this.viewCtrl = viewCtrl;
-        this.loadingCtrl = loadingCtrl;
-        this.explanation = params.get("explanation");
+var core_1 = __webpack_require__(0);
+var Observable_1 = __webpack_require__(1);
+var google_maps_api_wrapper_1 = __webpack_require__(103);
+var MarkerManager = (function () {
+    function MarkerManager(_mapsWrapper, _zone) {
+        this._mapsWrapper = _mapsWrapper;
+        this._zone = _zone;
+        this._markers = new Map();
     }
-    ExplanationPage.prototype.stopLoading = function () {
-        this.loader.dismiss();
-    };
-    ExplanationPage.prototype.presentLoading = function () {
-        this.loader = this.loadingCtrl.create({
-            content: "Please wait..."
+    MarkerManager.prototype.deleteMarker = function (marker) {
+        var _this = this;
+        var m = this._markers.get(marker);
+        if (m == null) {
+            // marker already deleted
+            return Promise.resolve();
+        }
+        return m.then(function (m) {
+            return _this._zone.run(function () {
+                m.setMap(null);
+                _this._markers.delete(marker);
+            });
         });
-        this.loader.present();
     };
-    ExplanationPage.prototype.dismiss = function () {
-        this.viewCtrl.dismiss();
+    MarkerManager.prototype.updateMarkerPosition = function (marker) {
+        return this._markers.get(marker).then(function (m) { return m.setPosition({ lat: marker.latitude, lng: marker.longitude }); });
     };
-    return ExplanationPage;
+    MarkerManager.prototype.updateTitle = function (marker) {
+        return this._markers.get(marker).then(function (m) { return m.setTitle(marker.title); });
+    };
+    MarkerManager.prototype.updateLabel = function (marker) {
+        return this._markers.get(marker).then(function (m) { m.setLabel(marker.label); });
+    };
+    MarkerManager.prototype.updateDraggable = function (marker) {
+        return this._markers.get(marker).then(function (m) { return m.setDraggable(marker.draggable); });
+    };
+    MarkerManager.prototype.updateIcon = function (marker) {
+        return this._markers.get(marker).then(function (m) { return m.setIcon(marker.iconUrl); });
+    };
+    MarkerManager.prototype.updateOpacity = function (marker) {
+        return this._markers.get(marker).then(function (m) { return m.setOpacity(marker.opacity); });
+    };
+    MarkerManager.prototype.updateVisible = function (marker) {
+        return this._markers.get(marker).then(function (m) { return m.setVisible(marker.visible); });
+    };
+    MarkerManager.prototype.updateZIndex = function (marker) {
+        return this._markers.get(marker).then(function (m) { return m.setZIndex(marker.zIndex); });
+    };
+    MarkerManager.prototype.addMarker = function (marker) {
+        var markerPromise = this._mapsWrapper.createMarker({
+            position: { lat: marker.latitude, lng: marker.longitude },
+            label: marker.label,
+            draggable: marker.draggable,
+            icon: marker.iconUrl,
+            opacity: marker.opacity,
+            visible: marker.visible,
+            zIndex: marker.zIndex,
+            title: marker.title
+        });
+        this._markers.set(marker, markerPromise);
+    };
+    MarkerManager.prototype.getNativeMarker = function (marker) {
+        return this._markers.get(marker);
+    };
+    MarkerManager.prototype.createEventObservable = function (eventName, marker) {
+        var _this = this;
+        return Observable_1.Observable.create(function (observer) {
+            _this._markers.get(marker).then(function (m) {
+                m.addListener(eventName, function (e) { return _this._zone.run(function () { return observer.next(e); }); });
+            });
+        });
+    };
+    MarkerManager.decorators = [
+        { type: core_1.Injectable },
+    ];
+    /** @nocollapse */
+    MarkerManager.ctorParameters = function () { return [
+        { type: google_maps_api_wrapper_1.GoogleMapsAPIWrapper, },
+        { type: core_1.NgZone, },
+    ]; };
+    return MarkerManager;
 }());
-ExplanationPage = __decorate([
-    __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* IonicPage */](),
-    __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"]({
-        selector: 'page-explanation',
-        template: "\n    <ion-header>\n        <ion-toolbar color=\"sky\">\n            <ion-title>\n            Explanation\n            </ion-title>\n            <ion-buttons start>\n            <button ion-button (click)=\"dismiss()\">\n                <span ion-text color=\"primary\" showWhen=\"ios\">Cancel</span>\n                <ion-icon name=\"md-close\" showWhen=\"android, windows\"></ion-icon>\n            </button>\n            </ion-buttons>\n        </ion-toolbar>\n    </ion-header>\n    <ion-content>\n        <p style=\"padding: 4%;\">\n        {{explanation}}\n        </p>\n    </ion-content>\n  ",
-    }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* Platform */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* NavParams */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["n" /* ViewController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* LoadingController */]])
-], ExplanationPage);
+exports.MarkerManager = MarkerManager;
+//# sourceMappingURL=marker-manager.js.map
 
-//# sourceMappingURL=explanation.js.map
+/***/ }),
+
+/***/ 106:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var core_1 = __webpack_require__(0);
+var Observable_1 = __webpack_require__(1);
+var google_maps_api_wrapper_1 = __webpack_require__(103);
+var CircleManager = (function () {
+    function CircleManager(_apiWrapper, _zone) {
+        this._apiWrapper = _apiWrapper;
+        this._zone = _zone;
+        this._circles = new Map();
+    }
+    CircleManager.prototype.addCircle = function (circle) {
+        this._circles.set(circle, this._apiWrapper.createCircle({
+            center: { lat: circle.latitude, lng: circle.longitude },
+            clickable: circle.clickable,
+            draggable: circle.draggable,
+            editable: circle.editable,
+            fillColor: circle.fillColor,
+            fillOpacity: circle.fillOpacity,
+            radius: circle.radius,
+            strokeColor: circle.strokeColor,
+            strokeOpacity: circle.strokeOpacity,
+            strokePosition: circle.strokePosition,
+            strokeWeight: circle.strokeWeight,
+            visible: circle.visible,
+            zIndex: circle.zIndex
+        }));
+    };
+    ;
+    /**
+     * Removes the given circle from the map.
+     */
+    CircleManager.prototype.removeCircle = function (circle) {
+        var _this = this;
+        return this._circles.get(circle).then(function (c) {
+            c.setMap(null);
+            _this._circles.delete(circle);
+        });
+    };
+    CircleManager.prototype.setOptions = function (circle, options) {
+        return this._circles.get(circle).then(function (c) { return c.setOptions(options); });
+    };
+    ;
+    CircleManager.prototype.getBounds = function (circle) {
+        return this._circles.get(circle).then(function (c) { return c.getBounds(); });
+    };
+    ;
+    CircleManager.prototype.getCenter = function (circle) {
+        return this._circles.get(circle).then(function (c) { return c.getCenter(); });
+    };
+    ;
+    CircleManager.prototype.getRadius = function (circle) {
+        return this._circles.get(circle).then(function (c) { return c.getRadius(); });
+    };
+    CircleManager.prototype.setCenter = function (circle) {
+        return this._circles.get(circle).then(function (c) { return c.setCenter({ lat: circle.latitude, lng: circle.longitude }); });
+    };
+    ;
+    CircleManager.prototype.setEditable = function (circle) {
+        return this._circles.get(circle).then(function (c) { return c.setEditable(circle.editable); });
+    };
+    ;
+    CircleManager.prototype.setDraggable = function (circle) {
+        return this._circles.get(circle).then(function (c) { return c.setDraggable(circle.draggable); });
+    };
+    ;
+    CircleManager.prototype.setVisible = function (circle) {
+        return this._circles.get(circle).then(function (c) { return c.setVisible(circle.visible); });
+    };
+    ;
+    CircleManager.prototype.setRadius = function (circle) {
+        return this._circles.get(circle).then(function (c) { return c.setRadius(circle.radius); });
+    };
+    ;
+    CircleManager.prototype.createEventObservable = function (eventName, circle) {
+        var _this = this;
+        return Observable_1.Observable.create(function (observer) {
+            var listener = null;
+            _this._circles.get(circle).then(function (c) {
+                listener = c.addListener(eventName, function (e) { return _this._zone.run(function () { return observer.next(e); }); });
+            });
+            return function () {
+                if (listener !== null) {
+                    listener.remove();
+                }
+            };
+        });
+    };
+    CircleManager.decorators = [
+        { type: core_1.Injectable },
+    ];
+    /** @nocollapse */
+    CircleManager.ctorParameters = function () { return [
+        { type: google_maps_api_wrapper_1.GoogleMapsAPIWrapper, },
+        { type: core_1.NgZone, },
+    ]; };
+    return CircleManager;
+}());
+exports.CircleManager = CircleManager;
+//# sourceMappingURL=circle-manager.js.map
+
+/***/ }),
+
+/***/ 107:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var Observable_1 = __webpack_require__(1);
+var core_1 = __webpack_require__(0);
+var google_maps_api_wrapper_1 = __webpack_require__(103);
+var marker_manager_1 = __webpack_require__(105);
+var InfoWindowManager = (function () {
+    function InfoWindowManager(_mapsWrapper, _zone, _markerManager) {
+        this._mapsWrapper = _mapsWrapper;
+        this._zone = _zone;
+        this._markerManager = _markerManager;
+        this._infoWindows = new Map();
+    }
+    InfoWindowManager.prototype.deleteInfoWindow = function (infoWindow) {
+        var _this = this;
+        var iWindow = this._infoWindows.get(infoWindow);
+        if (iWindow == null) {
+            // info window already deleted
+            return Promise.resolve();
+        }
+        return iWindow.then(function (i) {
+            return _this._zone.run(function () {
+                i.close();
+                _this._infoWindows.delete(infoWindow);
+            });
+        });
+    };
+    InfoWindowManager.prototype.setPosition = function (infoWindow) {
+        return this._infoWindows.get(infoWindow).then(function (i) { return i.setPosition({
+            lat: infoWindow.latitude,
+            lng: infoWindow.longitude
+        }); });
+    };
+    InfoWindowManager.prototype.setZIndex = function (infoWindow) {
+        return this._infoWindows.get(infoWindow)
+            .then(function (i) { return i.setZIndex(infoWindow.zIndex); });
+    };
+    InfoWindowManager.prototype.open = function (infoWindow) {
+        var _this = this;
+        return this._infoWindows.get(infoWindow).then(function (w) {
+            if (infoWindow.hostMarker != null) {
+                return _this._markerManager.getNativeMarker(infoWindow.hostMarker).then(function (marker) {
+                    return _this._mapsWrapper.getNativeMap().then(function (map) { return w.open(map, marker); });
+                });
+            }
+            return _this._mapsWrapper.getNativeMap().then(function (map) { return w.open(map); });
+        });
+    };
+    InfoWindowManager.prototype.close = function (infoWindow) {
+        return this._infoWindows.get(infoWindow).then(function (w) { return w.close(); });
+    };
+    InfoWindowManager.prototype.setOptions = function (infoWindow, options) {
+        return this._infoWindows.get(infoWindow).then(function (i) { return i.setOptions(options); });
+    };
+    InfoWindowManager.prototype.addInfoWindow = function (infoWindow) {
+        var options = {
+            content: infoWindow.content,
+            maxWidth: infoWindow.maxWidth,
+            zIndex: infoWindow.zIndex,
+        };
+        if (typeof infoWindow.latitude === 'number' && typeof infoWindow.longitude === 'number') {
+            options.position = { lat: infoWindow.latitude, lng: infoWindow.longitude };
+        }
+        var infoWindowPromise = this._mapsWrapper.createInfoWindow(options);
+        this._infoWindows.set(infoWindow, infoWindowPromise);
+    };
+    /**
+     * Creates a Google Maps event listener for the given InfoWindow as an Observable
+     */
+    InfoWindowManager.prototype.createEventObservable = function (eventName, infoWindow) {
+        var _this = this;
+        return Observable_1.Observable.create(function (observer) {
+            _this._infoWindows.get(infoWindow).then(function (i) {
+                i.addListener(eventName, function (e) { return _this._zone.run(function () { return observer.next(e); }); });
+            });
+        });
+    };
+    InfoWindowManager.decorators = [
+        { type: core_1.Injectable },
+    ];
+    /** @nocollapse */
+    InfoWindowManager.ctorParameters = function () { return [
+        { type: google_maps_api_wrapper_1.GoogleMapsAPIWrapper, },
+        { type: core_1.NgZone, },
+        { type: marker_manager_1.MarkerManager, },
+    ]; };
+    return InfoWindowManager;
+}());
+exports.InfoWindowManager = InfoWindowManager;
+//# sourceMappingURL=info-window-manager.js.map
+
+/***/ }),
+
+/***/ 108:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var core_1 = __webpack_require__(0);
+var Observable_1 = __webpack_require__(1);
+var google_maps_api_wrapper_1 = __webpack_require__(103);
+var PolygonManager = (function () {
+    function PolygonManager(_mapsWrapper, _zone) {
+        this._mapsWrapper = _mapsWrapper;
+        this._zone = _zone;
+        this._polygons = new Map();
+    }
+    PolygonManager.prototype.addPolygon = function (path) {
+        var polygonPromise = this._mapsWrapper.createPolygon({
+            clickable: path.clickable,
+            draggable: path.draggable,
+            editable: path.editable,
+            fillColor: path.fillColor,
+            fillOpacity: path.fillOpacity,
+            geodesic: path.geodesic,
+            paths: path.paths,
+            strokeColor: path.strokeColor,
+            strokeOpacity: path.strokeOpacity,
+            strokeWeight: path.strokeWeight,
+            visible: path.visible,
+            zIndex: path.zIndex,
+        });
+        this._polygons.set(path, polygonPromise);
+    };
+    PolygonManager.prototype.updatePolygon = function (polygon) {
+        var _this = this;
+        var m = this._polygons.get(polygon);
+        if (m == null) {
+            return Promise.resolve();
+        }
+        return m.then(function (l) { return _this._zone.run(function () { l.setPaths(polygon.paths); }); });
+    };
+    PolygonManager.prototype.setPolygonOptions = function (path, options) {
+        return this._polygons.get(path).then(function (l) { l.setOptions(options); });
+    };
+    PolygonManager.prototype.deletePolygon = function (paths) {
+        var _this = this;
+        var m = this._polygons.get(paths);
+        if (m == null) {
+            return Promise.resolve();
+        }
+        return m.then(function (l) {
+            return _this._zone.run(function () {
+                l.setMap(null);
+                _this._polygons.delete(paths);
+            });
+        });
+    };
+    PolygonManager.prototype.createEventObservable = function (eventName, path) {
+        var _this = this;
+        return Observable_1.Observable.create(function (observer) {
+            _this._polygons.get(path).then(function (l) {
+                l.addListener(eventName, function (e) { return _this._zone.run(function () { return observer.next(e); }); });
+            });
+        });
+    };
+    PolygonManager.decorators = [
+        { type: core_1.Injectable },
+    ];
+    /** @nocollapse */
+    PolygonManager.ctorParameters = function () { return [
+        { type: google_maps_api_wrapper_1.GoogleMapsAPIWrapper, },
+        { type: core_1.NgZone, },
+    ]; };
+    return PolygonManager;
+}());
+exports.PolygonManager = PolygonManager;
+//# sourceMappingURL=polygon-manager.js.map
+
+/***/ }),
+
+/***/ 109:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var core_1 = __webpack_require__(0);
+var Observable_1 = __webpack_require__(1);
+var google_maps_api_wrapper_1 = __webpack_require__(103);
+var PolylineManager = (function () {
+    function PolylineManager(_mapsWrapper, _zone) {
+        this._mapsWrapper = _mapsWrapper;
+        this._zone = _zone;
+        this._polylines = new Map();
+    }
+    PolylineManager._convertPoints = function (line) {
+        var path = line._getPoints().map(function (point) {
+            return { lat: point.latitude, lng: point.longitude };
+        });
+        return path;
+    };
+    PolylineManager.prototype.addPolyline = function (line) {
+        var path = PolylineManager._convertPoints(line);
+        var polylinePromise = this._mapsWrapper.createPolyline({
+            clickable: line.clickable,
+            draggable: line.draggable,
+            editable: line.editable,
+            geodesic: line.geodesic,
+            strokeColor: line.strokeColor,
+            strokeOpacity: line.strokeOpacity,
+            strokeWeight: line.strokeWeight,
+            visible: line.visible,
+            zIndex: line.zIndex,
+            path: path
+        });
+        this._polylines.set(line, polylinePromise);
+    };
+    PolylineManager.prototype.updatePolylinePoints = function (line) {
+        var _this = this;
+        var path = PolylineManager._convertPoints(line);
+        var m = this._polylines.get(line);
+        if (m == null) {
+            return Promise.resolve();
+        }
+        return m.then(function (l) { return _this._zone.run(function () { l.setPath(path); }); });
+    };
+    PolylineManager.prototype.setPolylineOptions = function (line, options) {
+        return this._polylines.get(line).then(function (l) { l.setOptions(options); });
+    };
+    PolylineManager.prototype.deletePolyline = function (line) {
+        var _this = this;
+        var m = this._polylines.get(line);
+        if (m == null) {
+            return Promise.resolve();
+        }
+        return m.then(function (l) {
+            return _this._zone.run(function () {
+                l.setMap(null);
+                _this._polylines.delete(line);
+            });
+        });
+    };
+    PolylineManager.prototype.createEventObservable = function (eventName, line) {
+        var _this = this;
+        return Observable_1.Observable.create(function (observer) {
+            _this._polylines.get(line).then(function (l) {
+                l.addListener(eventName, function (e) { return _this._zone.run(function () { return observer.next(e); }); });
+            });
+        });
+    };
+    PolylineManager.decorators = [
+        { type: core_1.Injectable },
+    ];
+    /** @nocollapse */
+    PolylineManager.ctorParameters = function () { return [
+        { type: google_maps_api_wrapper_1.GoogleMapsAPIWrapper, },
+        { type: core_1.NgZone, },
+    ]; };
+    return PolylineManager;
+}());
+exports.PolylineManager = PolylineManager;
+//# sourceMappingURL=polyline-manager.js.map
+
+/***/ }),
+
+/***/ 110:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var core_1 = __webpack_require__(0);
+var Observable_1 = __webpack_require__(1);
+var google_maps_api_wrapper_1 = __webpack_require__(103);
+/**
+ * Manages all KML Layers for a Google Map instance.
+ */
+var KmlLayerManager = (function () {
+    function KmlLayerManager(_wrapper, _zone) {
+        this._wrapper = _wrapper;
+        this._zone = _zone;
+        this._layers = new Map();
+    }
+    /**
+     * Adds a new KML Layer to the map.
+     */
+    KmlLayerManager.prototype.addKmlLayer = function (layer) {
+        var newLayer = this._wrapper.getNativeMap().then(function (m) {
+            return new google.maps.KmlLayer({
+                clickable: layer.clickable,
+                map: m,
+                preserveViewport: layer.preserveViewport,
+                screenOverlays: layer.screenOverlays,
+                suppressInfoWindows: layer.suppressInfoWindows,
+                url: layer.url,
+                zIndex: layer.zIndex
+            });
+        });
+        this._layers.set(layer, newLayer);
+    };
+    KmlLayerManager.prototype.setOptions = function (layer, options) {
+        this._layers.get(layer).then(function (l) { return l.setOptions(options); });
+    };
+    KmlLayerManager.prototype.deleteKmlLayer = function (layer) {
+        var _this = this;
+        this._layers.get(layer).then(function (l) {
+            l.setMap(null);
+            _this._layers.delete(layer);
+        });
+    };
+    /**
+     * Creates a Google Maps event listener for the given KmlLayer as an Observable
+     */
+    KmlLayerManager.prototype.createEventObservable = function (eventName, layer) {
+        var _this = this;
+        return Observable_1.Observable.create(function (observer) {
+            _this._layers.get(layer).then(function (m) {
+                m.addListener(eventName, function (e) { return _this._zone.run(function () { return observer.next(e); }); });
+            });
+        });
+    };
+    KmlLayerManager.decorators = [
+        { type: core_1.Injectable },
+    ];
+    /** @nocollapse */
+    KmlLayerManager.ctorParameters = function () { return [
+        { type: google_maps_api_wrapper_1.GoogleMapsAPIWrapper, },
+        { type: core_1.NgZone, },
+    ]; };
+    return KmlLayerManager;
+}());
+exports.KmlLayerManager = KmlLayerManager;
+//# sourceMappingURL=kml-layer-manager.js.map
+
+/***/ }),
+
+/***/ 111:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var core_1 = __webpack_require__(0);
+var info_window_manager_1 = __webpack_require__(107);
+var infoWindowId = 0;
+/**
+ * SebmGoogleMapInfoWindow renders a info window inside a {@link SebmGoogleMapMarker} or standalone.
+ *
+ * ### Example
+ * ```typescript
+ * import { Component } from 'angular2/core';
+ * import { SebmGoogleMap, SebmGoogleMapMarker, SebmGoogleMapInfoWindow } from
+ * 'angular2-google-maps/core';
+ *
+ * @Component({
+ *  selector: 'my-map-cmp',
+ *  directives: [SebmGoogleMap, SebmGoogleMapMarker, SebmGoogleMapInfoWindow],
+ *  styles: [`
+ *    .sebm-google-map-container {
+ *      height: 300px;
+ *    }
+ * `],
+ *  template: `
+ *    <sebm-google-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
+ *      <sebm-google-map-marker [latitude]="lat" [longitude]="lng" [label]="'M'">
+ *        <sebm-google-map-info-window [disableAutoPan]="true">
+ *          Hi, this is the content of the <strong>info window</strong>
+ *        </sebm-google-map-info-window>
+ *      </sebm-google-map-marker>
+ *    </sebm-google-map>
+ *  `
+ * })
+ * ```
+ */
+var SebmGoogleMapInfoWindow = (function () {
+    function SebmGoogleMapInfoWindow(_infoWindowManager, _el) {
+        this._infoWindowManager = _infoWindowManager;
+        this._el = _el;
+        /**
+         * Sets the open state for the InfoWindow. You can also call the open() and close() methods.
+         */
+        this.isOpen = false;
+        /**
+         * Emits an event when the info window is closed.
+         */
+        this.infoWindowClose = new core_1.EventEmitter();
+        this._infoWindowAddedToManager = false;
+        this._id = (infoWindowId++).toString();
+    }
+    SebmGoogleMapInfoWindow.prototype.ngOnInit = function () {
+        this.content = this._el.nativeElement.querySelector('.sebm-google-map-info-window-content');
+        this._infoWindowManager.addInfoWindow(this);
+        this._infoWindowAddedToManager = true;
+        this._updateOpenState();
+        this._registerEventListeners();
+    };
+    /** @internal */
+    SebmGoogleMapInfoWindow.prototype.ngOnChanges = function (changes) {
+        if (!this._infoWindowAddedToManager) {
+            return;
+        }
+        if ((changes['latitude'] || changes['longitude']) && typeof this.latitude === 'number' &&
+            typeof this.longitude === 'number') {
+            this._infoWindowManager.setPosition(this);
+        }
+        if (changes['zIndex']) {
+            this._infoWindowManager.setZIndex(this);
+        }
+        if (changes['isOpen']) {
+            this._updateOpenState();
+        }
+        this._setInfoWindowOptions(changes);
+    };
+    SebmGoogleMapInfoWindow.prototype._registerEventListeners = function () {
+        var _this = this;
+        this._infoWindowManager.createEventObservable('closeclick', this).subscribe(function () {
+            _this.isOpen = false;
+            _this.infoWindowClose.emit();
+        });
+    };
+    SebmGoogleMapInfoWindow.prototype._updateOpenState = function () {
+        this.isOpen ? this.open() : this.close();
+    };
+    SebmGoogleMapInfoWindow.prototype._setInfoWindowOptions = function (changes) {
+        var options = {};
+        var optionKeys = Object.keys(changes).filter(function (k) { return SebmGoogleMapInfoWindow._infoWindowOptionsInputs.indexOf(k) !== -1; });
+        optionKeys.forEach(function (k) { options[k] = changes[k].currentValue; });
+        this._infoWindowManager.setOptions(this, options);
+    };
+    /**
+     * Opens the info window.
+     */
+    SebmGoogleMapInfoWindow.prototype.open = function () { return this._infoWindowManager.open(this); };
+    /**
+     * Closes the info window.
+     */
+    SebmGoogleMapInfoWindow.prototype.close = function () {
+        var _this = this;
+        return this._infoWindowManager.close(this).then(function () { _this.infoWindowClose.emit(); });
+    };
+    /** @internal */
+    SebmGoogleMapInfoWindow.prototype.id = function () { return this._id; };
+    /** @internal */
+    SebmGoogleMapInfoWindow.prototype.toString = function () { return 'SebmGoogleMapInfoWindow-' + this._id.toString(); };
+    /** @internal */
+    SebmGoogleMapInfoWindow.prototype.ngOnDestroy = function () { this._infoWindowManager.deleteInfoWindow(this); };
+    SebmGoogleMapInfoWindow._infoWindowOptionsInputs = ['disableAutoPan', 'maxWidth'];
+    SebmGoogleMapInfoWindow.decorators = [
+        { type: core_1.Component, args: [{
+                    selector: 'sebm-google-map-info-window',
+                    inputs: ['latitude', 'longitude', 'disableAutoPan', 'isOpen', 'zIndex', 'maxWidth'],
+                    outputs: ['infoWindowClose'],
+                    template: "<div class='sebm-google-map-info-window-content'>\n      <ng-content></ng-content>\n    </div>\n  "
+                },] },
+    ];
+    /** @nocollapse */
+    SebmGoogleMapInfoWindow.ctorParameters = function () { return [
+        { type: info_window_manager_1.InfoWindowManager, },
+        { type: core_1.ElementRef, },
+    ]; };
+    return SebmGoogleMapInfoWindow;
+}());
+exports.SebmGoogleMapInfoWindow = SebmGoogleMapInfoWindow;
+//# sourceMappingURL=google-map-info-window.js.map
+
+/***/ }),
+
+/***/ 112:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var core_1 = __webpack_require__(0);
+/**
+ * SebmGoogleMapPolylinePoint represents one element of a polyline within a  {@link
+ * SembGoogleMapPolyline}
+ */
+var SebmGoogleMapPolylinePoint = (function () {
+    function SebmGoogleMapPolylinePoint() {
+        /**
+         * This event emitter gets emitted when the position of the point changed.
+         */
+        this.positionChanged = new core_1.EventEmitter();
+    }
+    SebmGoogleMapPolylinePoint.prototype.ngOnChanges = function (changes) {
+        if (changes['latitude'] || changes['longitude']) {
+            var position = {
+                lat: changes['latitude'].currentValue,
+                lng: changes['longitude'].currentValue
+            };
+            this.positionChanged.emit(position);
+        }
+    };
+    SebmGoogleMapPolylinePoint.decorators = [
+        { type: core_1.Directive, args: [{ selector: 'sebm-google-map-polyline-point' },] },
+    ];
+    /** @nocollapse */
+    SebmGoogleMapPolylinePoint.ctorParameters = function () { return []; };
+    SebmGoogleMapPolylinePoint.propDecorators = {
+        'latitude': [{ type: core_1.Input },],
+        'longitude': [{ type: core_1.Input },],
+        'positionChanged': [{ type: core_1.Output },],
+    };
+    return SebmGoogleMapPolylinePoint;
+}());
+exports.SebmGoogleMapPolylinePoint = SebmGoogleMapPolylinePoint;
+//# sourceMappingURL=google-map-polyline-point.js.map
+
+/***/ }),
+
+/***/ 113:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var core_1 = __webpack_require__(0);
+var browser_globals_1 = __webpack_require__(122);
+var maps_api_loader_1 = __webpack_require__(104);
+(function (GoogleMapsScriptProtocol) {
+    GoogleMapsScriptProtocol[GoogleMapsScriptProtocol["HTTP"] = 1] = "HTTP";
+    GoogleMapsScriptProtocol[GoogleMapsScriptProtocol["HTTPS"] = 2] = "HTTPS";
+    GoogleMapsScriptProtocol[GoogleMapsScriptProtocol["AUTO"] = 3] = "AUTO";
+})(exports.GoogleMapsScriptProtocol || (exports.GoogleMapsScriptProtocol = {}));
+var GoogleMapsScriptProtocol = exports.GoogleMapsScriptProtocol;
+/**
+ * Token for the config of the LazyMapsAPILoader. Please provide an object of type {@link
+ * LazyMapsAPILoaderConfig}.
+ */
+exports.LAZY_MAPS_API_CONFIG = new core_1.OpaqueToken('angular2-google-maps LAZY_MAPS_API_CONFIG');
+var LazyMapsAPILoader = (function (_super) {
+    __extends(LazyMapsAPILoader, _super);
+    function LazyMapsAPILoader(config, w, d) {
+        _super.call(this);
+        this._config = config || {};
+        this._windowRef = w;
+        this._documentRef = d;
+    }
+    LazyMapsAPILoader.prototype.load = function () {
+        var _this = this;
+        if (this._scriptLoadingPromise) {
+            return this._scriptLoadingPromise;
+        }
+        var script = this._documentRef.getNativeDocument().createElement('script');
+        script.type = 'text/javascript';
+        script.async = true;
+        script.defer = true;
+        var callbackName = "angular2GoogleMapsLazyMapsAPILoader";
+        script.src = this._getScriptSrc(callbackName);
+        this._scriptLoadingPromise = new Promise(function (resolve, reject) {
+            _this._windowRef.getNativeWindow()[callbackName] = function () { resolve(); };
+            script.onerror = function (error) { reject(error); };
+        });
+        this._documentRef.getNativeDocument().body.appendChild(script);
+        return this._scriptLoadingPromise;
+    };
+    LazyMapsAPILoader.prototype._getScriptSrc = function (callbackName) {
+        var protocolType = (this._config && this._config.protocol) || GoogleMapsScriptProtocol.HTTPS;
+        var protocol;
+        switch (protocolType) {
+            case GoogleMapsScriptProtocol.AUTO:
+                protocol = '';
+                break;
+            case GoogleMapsScriptProtocol.HTTP:
+                protocol = 'http:';
+                break;
+            case GoogleMapsScriptProtocol.HTTPS:
+                protocol = 'https:';
+                break;
+        }
+        var hostAndPath = this._config.hostAndPath || 'maps.googleapis.com/maps/api/js';
+        var queryParams = {
+            v: this._config.apiVersion || '3',
+            callback: callbackName,
+            key: this._config.apiKey,
+            client: this._config.clientId,
+            channel: this._config.channel,
+            libraries: this._config.libraries,
+            region: this._config.region,
+            language: this._config.language
+        };
+        var params = Object.keys(queryParams)
+            .filter(function (k) { return queryParams[k] != null; })
+            .filter(function (k) {
+            // remove empty arrays
+            return !Array.isArray(queryParams[k]) ||
+                (Array.isArray(queryParams[k]) && queryParams[k].length > 0);
+        })
+            .map(function (k) {
+            // join arrays as comma seperated strings
+            var i = queryParams[k];
+            if (Array.isArray(i)) {
+                return { key: k, value: i.join(',') };
+            }
+            return { key: k, value: queryParams[k] };
+        })
+            .map(function (entry) { return entry.key + "=" + entry.value; })
+            .join('&');
+        return protocol + "//" + hostAndPath + "?" + params;
+    };
+    LazyMapsAPILoader.decorators = [
+        { type: core_1.Injectable },
+    ];
+    /** @nocollapse */
+    LazyMapsAPILoader.ctorParameters = function () { return [
+        { type: undefined, decorators: [{ type: core_1.Inject, args: [exports.LAZY_MAPS_API_CONFIG,] },] },
+        { type: browser_globals_1.WindowRef, },
+        { type: browser_globals_1.DocumentRef, },
+    ]; };
+    return LazyMapsAPILoader;
+}(maps_api_loader_1.MapsAPILoader));
+exports.LazyMapsAPILoader = LazyMapsAPILoader;
+//# sourceMappingURL=lazy-maps-api-loader.js.map
 
 /***/ }),
 
 /***/ 116:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FeedbackPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ngrx_store__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_user_service__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_common_util__ = __webpack_require__(102);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_alert_service__ = __webpack_require__(40);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_loading_service__ = __webpack_require__(41);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ionic_storage__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__actions_recomm_actions__ = __webpack_require__(16);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 
-
-
-
-
-
-
-
-
-var FeedbackPage = (function () {
-    function FeedbackPage(navCtrl, userService, navParams, alertService, loadingService, store, storage, recommActions) {
-        this.navCtrl = navCtrl;
-        this.userService = userService;
-        this.navParams = navParams;
-        this.alertService = alertService;
-        this.loadingService = loadingService;
-        this.store = store;
-        this.storage = storage;
-        this.recommActions = recommActions;
-        this.questions = [
-            "Petunjuk (kalimat dalam model ini) yang diberikan mudah dimengerti",
-            "Saya mengerti dengan baik semua petunjuk yang diberikan",
-            "Saya dapat melihat rincian informasi suatu destinasi wisata dengan mudah",
-            "Secara umum saya kesulitan menemukan destinasi wisata yang saya inginkan",
-            "Saya dapat menemukan destinasi wisata yang saya inginkan dengan cepat",
-            "Saya sangat menyukai destinasi wisata yang saya pilih",
-            "Saya ingin mengunjungi destinasi wisata yang saya pilih suatu saat nanti",
-            "Saya tidak suka cara berinteraksi model ini",
-            "Saya tidak mempunyai kesulitan menggunakan model ini",
-            "Saya akan menggunakan model ini kembali jika suatu saat saya ingin berwisata"
-        ];
-        this.professions = [
-            "Mahasiswa", "Dosen", "Karyawan", "Wiraswasta", "Lainnya"
-        ];
-        this.answerTypes = [
-            { label: "Setuju", color: "secondary", value: 1 },
-            { label: "Tidak Setuju", color: "danger", value: 0 }
-        ];
-        this.answers = [];
-        this.male = false;
-        this.female = false;
-        this.likertScales = [
-            { label: "Sangat setuju", value: 5 },
-            { label: "Setuju", value: 4 },
-            { label: "Netral", value: 3 },
-            { label: "Tidak setuju", value: 2 },
-            { label: "Sangat tidak setuju", value: 1 },
-        ];
-        this.mode = __WEBPACK_IMPORTED_MODULE_4__utils_common_util__["a" /* captureState */](this.store).recomm.mode;
-        this.rating = navParams.get("rate");
-        this.staticData = __WEBPACK_IMPORTED_MODULE_4__utils_common_util__["a" /* captureState */](this.store).recomm.staticData;
-        if (this.staticData) {
-            this.name = this.staticData.name;
-            this.age = this.staticData.age;
-            this.city = this.staticData.city;
-            this.profession = this.staticData.profession;
-            if (this.staticData.gender) {
-                this.gender = this.staticData.gender;
-                // if (this.staticData.gender == "male") {
-                //   this.male = true;
-                // }
-                // else {
-                //   this.female = true;
-                // }
-            }
-        }
-        // console.log("MALE", this.male, "FEMALE", this.female);
+var core_1 = __webpack_require__(0);
+var google_maps_api_wrapper_1 = __webpack_require__(103);
+var circle_manager_1 = __webpack_require__(106);
+var info_window_manager_1 = __webpack_require__(107);
+var marker_manager_1 = __webpack_require__(105);
+var polygon_manager_1 = __webpack_require__(108);
+var polyline_manager_1 = __webpack_require__(109);
+var kml_layer_manager_1 = __webpack_require__(110);
+/**
+ * SebMGoogleMap renders a Google Map.
+ * **Important note**: To be able see a map in the browser, you have to define a height for the CSS
+ * class `sebm-google-map-container`.
+ *
+ * ### Example
+ * ```typescript
+ * import { Component } from '@angular/core';
+ * import { SebmGoogleMap } from 'angular2-google-maps/core';
+ *
+ * @Component({
+ *  selector: 'my-map-cmp',
+ *  directives: [SebmGoogleMap],
+ *  styles: [`
+ *    .sebm-google-map-container {
+ *      height: 300px;
+ *    }
+ * `],
+ *  template: `
+ *    <sebm-google-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
+ *    </sebm-google-map>
+ *  `
+ * })
+ * ```
+ */
+var SebmGoogleMap = (function () {
+    function SebmGoogleMap(_elem, _mapsWrapper) {
+        this._elem = _elem;
+        this._mapsWrapper = _mapsWrapper;
+        /**
+         * The longitude that defines the center of the map.
+         */
+        this.longitude = 0;
+        /**
+         * The latitude that defines the center of the map.
+         */
+        this.latitude = 0;
+        /**
+         * The zoom level of the map. The default zoom level is 8.
+         */
+        this.zoom = 8;
+        /**
+         * Enables/disables if map is draggable.
+         */
+        this.draggable = true;
+        /**
+         * Enables/disables zoom and center on double click. Enabled by default.
+         */
+        this.disableDoubleClickZoom = false;
+        /**
+         * Enables/disables all default UI of the Google map. Please note: When the map is created, this
+         * value cannot get updated.
+         */
+        this.disableDefaultUI = false;
+        /**
+         * If false, disables scrollwheel zooming on the map. The scrollwheel is enabled by default.
+         */
+        this.scrollwheel = true;
+        /**
+         * If false, prevents the map from being controlled by the keyboard. Keyboard shortcuts are
+         * enabled by default.
+         */
+        this.keyboardShortcuts = true;
+        /**
+         * The enabled/disabled state of the Zoom control.
+         */
+        this.zoomControl = true;
+        /**
+         * Styles to apply to each of the default map types. Note that for Satellite/Hybrid and Terrain
+         * modes, these styles will only apply to labels and geometry.
+         */
+        this.styles = [];
+        /**
+         * When true and the latitude and/or longitude values changes, the Google Maps panTo method is
+         * used to
+         * center the map. See: https://developers.google.com/maps/documentation/javascript/reference#Map
+         */
+        this.usePanning = false;
+        /**
+         * The initial enabled/disabled state of the Street View Pegman control.
+         * This control is part of the default UI, and should be set to false when displaying a map type
+         * on which the Street View road overlay should not appear (e.g. a non-Earth map type).
+         */
+        this.streetViewControl = true;
+        /**
+         * Sets the viewport to contain the given bounds.
+         */
+        this.fitBounds = null;
+        /**
+         * The initial enabled/disabled state of the Scale control. This is disabled by default.
+         */
+        this.scaleControl = false;
+        /**
+         * The initial enabled/disabled state of the Map type control.
+         */
+        this.mapTypeControl = false;
+        this._observableSubscriptions = [];
+        /**
+         * This event emitter gets emitted when the user clicks on the map (but not when they click on a
+         * marker or infoWindow).
+         */
+        this.mapClick = new core_1.EventEmitter();
+        /**
+         * This event emitter gets emitted when the user right-clicks on the map (but not when they click
+         * on a marker or infoWindow).
+         */
+        this.mapRightClick = new core_1.EventEmitter();
+        /**
+         * This event emitter gets emitted when the user double-clicks on the map (but not when they click
+         * on a marker or infoWindow).
+         */
+        this.mapDblClick = new core_1.EventEmitter();
+        /**
+         * This event emitter is fired when the map center changes.
+         */
+        this.centerChange = new core_1.EventEmitter();
+        /**
+         * This event is fired when the viewport bounds have changed.
+         */
+        this.boundsChange = new core_1.EventEmitter();
+        /**
+         * This event is fired when the map becomes idle after panning or zooming.
+         */
+        this.idle = new core_1.EventEmitter();
+        /**
+         * This event is fired when the zoom level has changed.
+         */
+        this.zoomChange = new core_1.EventEmitter();
     }
-    FeedbackPage.prototype.navigate = function () {
-        var _this = this;
-        var date = new Date();
-        if (this.answers.length == this.questions.length) {
-            this.ip = __WEBPACK_IMPORTED_MODULE_4__utils_common_util__["a" /* captureState */](this.store).user.ipApi.ip;
-            if (!this.ip)
-                this.ip = "-";
-            var params_1 = {
-                id: 0,
-                user_agent: navigator.userAgent,
-                platform: navigator.platform,
-                ip: this.ip,
-                city: this.city,
-                name: this.name,
-                gender: this.gender,
-                age: Number(this.age),
-                profession: this.profession,
-                rating: this.rating,
-                // rating: 0,
-                eou: this.answers[0],
-                eou2: this.answers[1],
-                inf: this.answers[2],
-                etu: this.answers[3],
-                pe: this.answers[4],
-                prq: this.answers[5],
-                tr: this.answers[6],
-                prq2: this.answers[7],
-                etu2: this.answers[8],
-                tr2: this.answers[9],
-                mode: this.mode,
-                time: date.getTime()
-            };
-            // console.log("params", params);
-            if (__WEBPACK_IMPORTED_MODULE_4__utils_common_util__["d" /* isFormFilled */](params_1)) {
-                this.loadingService.presentLoading();
-                this.userService.addFeedback(params_1).subscribe(function (feedback) {
-                    _this.loadingService.stopLoading();
-                    _this.alertService.presentAlert("Terimakasih", params_1.name + ", \n        saya sangat berterimakasih karena anda sudah berpartisipasi dalam survey tugas akhir ini");
-                    var currentMode = __WEBPACK_IMPORTED_MODULE_4__utils_common_util__["a" /* captureState */](_this.store).recomm.mode;
-                    var staticData = {
-                        name: _this.name,
-                        city: _this.city,
-                        gender: _this.gender,
-                        age: _this.age,
-                        profession: _this.profession
-                    };
-                    _this.store.dispatch(_this.recommActions.setStatic(staticData));
-                    _this.storage.set("staticData", staticData);
-                    _this.storage.set("mode" + currentMode + "Status", 'completed');
-                    if (currentMode == 1)
-                        _this.store.dispatch(_this.recommActions.setMode1Status("completed"));
-                    else
-                        _this.store.dispatch(_this.recommActions.setMode2Status("completed"));
-                    _this.navCtrl.setRoot('MethodSelectionPage');
-                });
-            }
-            else
-                this.alertService.presentAlert("", "Mohon isi data dengan lengkap terlebih dahulu");
-        }
-        else
-            this.alertService.presentAlert("", "Mohon isi data dengan lengkap terlebih dahulu");
+    /** @internal */
+    SebmGoogleMap.prototype.ngOnInit = function () {
+        // todo: this should be solved with a new component and a viewChild decorator
+        var container = this._elem.nativeElement.querySelector('.sebm-google-map-container-inner');
+        this._initMapInstance(container);
     };
-    return FeedbackPage;
+    SebmGoogleMap.prototype._initMapInstance = function (el) {
+        this._mapsWrapper.createMap(el, {
+            center: { lat: this.latitude || 0, lng: this.longitude || 0 },
+            zoom: this.zoom,
+            minZoom: this.minZoom,
+            maxZoom: this.maxZoom,
+            disableDefaultUI: this.disableDefaultUI,
+            backgroundColor: this.backgroundColor,
+            draggable: this.draggable,
+            draggableCursor: this.draggableCursor,
+            draggingCursor: this.draggingCursor,
+            keyboardShortcuts: this.keyboardShortcuts,
+            zoomControl: this.zoomControl,
+            styles: this.styles,
+            streetViewControl: this.streetViewControl,
+            scaleControl: this.scaleControl,
+            mapTypeControl: this.mapTypeControl
+        });
+        // register event listeners
+        this._handleMapCenterChange();
+        this._handleMapZoomChange();
+        this._handleMapMouseEvents();
+        this._handleBoundsChange();
+        this._handleIdleEvent();
+    };
+    /** @internal */
+    SebmGoogleMap.prototype.ngOnDestroy = function () {
+        // unsubscribe all registered observable subscriptions
+        this._observableSubscriptions.forEach(function (s) { return s.unsubscribe(); });
+    };
+    /* @internal */
+    SebmGoogleMap.prototype.ngOnChanges = function (changes) {
+        this._updateMapOptionsChanges(changes);
+        this._updatePosition(changes);
+    };
+    SebmGoogleMap.prototype._updateMapOptionsChanges = function (changes) {
+        var options = {};
+        var optionKeys = Object.keys(changes).filter(function (k) { return SebmGoogleMap._mapOptionsAttributes.indexOf(k) !== -1; });
+        optionKeys.forEach(function (k) { options[k] = changes[k].currentValue; });
+        this._mapsWrapper.setMapOptions(options);
+    };
+    /**
+     * Triggers a resize event on the google map instance.
+     * Returns a promise that gets resolved after the event was triggered.
+     */
+    SebmGoogleMap.prototype.triggerResize = function () {
+        var _this = this;
+        // Note: When we would trigger the resize event and show the map in the same turn (which is a
+        // common case for triggering a resize event), then the resize event would not
+        // work (to show the map), so we trigger the event in a timeout.
+        return new Promise(function (resolve) {
+            setTimeout(function () { return _this._mapsWrapper.triggerMapEvent('resize').then(function () { return resolve(); }); });
+        });
+    };
+    SebmGoogleMap.prototype._updatePosition = function (changes) {
+        if (changes['latitude'] == null && changes['longitude'] == null &&
+            changes['fitBounds'] == null) {
+            // no position update needed
+            return;
+        }
+        // we prefer fitBounds in changes
+        if (changes['fitBounds'] && this.fitBounds != null) {
+            this._fitBounds();
+            return;
+        }
+        if (typeof this.latitude !== 'number' || typeof this.longitude !== 'number') {
+            return;
+        }
+        var newCenter = {
+            lat: this.latitude,
+            lng: this.longitude,
+        };
+        if (this.usePanning) {
+            this._mapsWrapper.panTo(newCenter);
+        }
+        else {
+            this._mapsWrapper.setCenter(newCenter);
+        }
+    };
+    SebmGoogleMap.prototype._fitBounds = function () {
+        if (this.usePanning) {
+            this._mapsWrapper.panToBounds(this.fitBounds);
+            return;
+        }
+        this._mapsWrapper.fitBounds(this.fitBounds);
+    };
+    SebmGoogleMap.prototype._handleMapCenterChange = function () {
+        var _this = this;
+        var s = this._mapsWrapper.subscribeToMapEvent('center_changed').subscribe(function () {
+            _this._mapsWrapper.getCenter().then(function (center) {
+                _this.latitude = center.lat();
+                _this.longitude = center.lng();
+                _this.centerChange.emit({ lat: _this.latitude, lng: _this.longitude });
+            });
+        });
+        this._observableSubscriptions.push(s);
+    };
+    SebmGoogleMap.prototype._handleBoundsChange = function () {
+        var _this = this;
+        var s = this._mapsWrapper.subscribeToMapEvent('bounds_changed').subscribe(function () {
+            _this._mapsWrapper.getBounds().then(function (bounds) { _this.boundsChange.emit(bounds); });
+        });
+        this._observableSubscriptions.push(s);
+    };
+    SebmGoogleMap.prototype._handleMapZoomChange = function () {
+        var _this = this;
+        var s = this._mapsWrapper.subscribeToMapEvent('zoom_changed').subscribe(function () {
+            _this._mapsWrapper.getZoom().then(function (z) {
+                _this.zoom = z;
+                _this.zoomChange.emit(z);
+            });
+        });
+        this._observableSubscriptions.push(s);
+    };
+    SebmGoogleMap.prototype._handleIdleEvent = function () {
+        var _this = this;
+        var s = this._mapsWrapper.subscribeToMapEvent('idle').subscribe(function () { _this.idle.emit(void 0); });
+        this._observableSubscriptions.push(s);
+    };
+    SebmGoogleMap.prototype._handleMapMouseEvents = function () {
+        var _this = this;
+        var events = [
+            { name: 'click', emitter: this.mapClick },
+            { name: 'rightclick', emitter: this.mapRightClick },
+        ];
+        events.forEach(function (e) {
+            var s = _this._mapsWrapper.subscribeToMapEvent(e.name).subscribe(function (event) {
+                var value = { coords: { lat: event.latLng.lat(), lng: event.latLng.lng() } };
+                e.emitter.emit(value);
+            });
+            _this._observableSubscriptions.push(s);
+        });
+    };
+    /**
+     * Map option attributes that can change over time
+     */
+    SebmGoogleMap._mapOptionsAttributes = [
+        'disableDoubleClickZoom', 'scrollwheel', 'draggable', 'draggableCursor', 'draggingCursor',
+        'keyboardShortcuts', 'zoomControl', 'styles', 'streetViewControl', 'zoom', 'mapTypeControl',
+        'minZoom', 'maxZoom'
+    ];
+    SebmGoogleMap.decorators = [
+        { type: core_1.Component, args: [{
+                    selector: 'sebm-google-map',
+                    providers: [
+                        google_maps_api_wrapper_1.GoogleMapsAPIWrapper, marker_manager_1.MarkerManager, info_window_manager_1.InfoWindowManager, circle_manager_1.CircleManager, polyline_manager_1.PolylineManager,
+                        polygon_manager_1.PolygonManager, kml_layer_manager_1.KmlLayerManager
+                    ],
+                    inputs: [
+                        'longitude', 'latitude', 'zoom', 'minZoom', 'maxZoom', 'draggable: mapDraggable',
+                        'disableDoubleClickZoom', 'disableDefaultUI', 'scrollwheel', 'backgroundColor', 'draggableCursor',
+                        'draggingCursor', 'keyboardShortcuts', 'zoomControl', 'styles', 'usePanning', 'streetViewControl',
+                        'fitBounds', 'scaleControl', 'mapTypeControl'
+                    ],
+                    outputs: [
+                        'mapClick', 'mapRightClick', 'mapDblClick', 'centerChange', 'idle', 'boundsChange', 'zoomChange'
+                    ],
+                    host: { '[class.sebm-google-map-container]': 'true' },
+                    styles: ["\n    .sebm-google-map-container-inner {\n      width: inherit;\n      height: inherit;\n    }\n    .sebm-google-map-content {\n      display:none;\n    }\n  "],
+                    template: "\n    <div class='sebm-google-map-container-inner'></div>\n    <div class='sebm-google-map-content'>\n      <ng-content></ng-content>\n    </div>\n  "
+                },] },
+    ];
+    /** @nocollapse */
+    SebmGoogleMap.ctorParameters = function () { return [
+        { type: core_1.ElementRef, },
+        { type: google_maps_api_wrapper_1.GoogleMapsAPIWrapper, },
+    ]; };
+    return SebmGoogleMap;
 }());
-FeedbackPage = __decorate([
-    __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["f" /* IonicPage */](),
-    __WEBPACK_IMPORTED_MODULE_2__angular_core__["Component"]({
-        selector: 'page-feedback',
-        template: "\n    <ion-header>\n      <ion-navbar color=\"sky\">\n        <button ion-button menuToggle>\n          <ion-icon name=\"menu\"></ion-icon>\n        </button>\n        <ion-title>Survei Model {{mode}}</ion-title>\n      </ion-navbar>\n    </ion-header>\n    <ion-content>\n      <ion-list>\n        <ion-item [(ngModel)]=\"name\">\n          <ion-label color=\"primary\" stacked>Nama</ion-label>\n          <ion-input placeholder=\"Nama Lengkap\"></ion-input>\n        </ion-item>\n      </ion-list>\n      <ion-card>\n        <ion-list radio-group [(ngModel)]=\"gender\">\n          <ion-list-header>\n            Jenis Kelamin\n          </ion-list-header>\n          <ion-item>\n            <ion-label>Laki-laki</ion-label>\n            <ion-radio value=\"male\"></ion-radio>\n          </ion-item>\n          <ion-item>\n            <ion-label>Perempuan</ion-label>\n            <ion-radio value=\"female\"></ion-radio>\n          </ion-item>\n        </ion-list>\n      </ion-card>\n      <ion-card>\n        <ion-list radio-group [(ngModel)]=\"profession\">\n          <ion-list-header>\n            Pekerjaan\n          </ion-list-header>\n          <ion-item *ngFor=\"let p of professions\">\n            <ion-label>{{p}}</ion-label>\n            <ion-radio [value]=\"p\"></ion-radio>\n          </ion-item>\n        </ion-list>\n      </ion-card>\n      <ion-list>\n        <ion-item [(ngModel)]=\"age\">\n          <ion-label color=\"primary\" stacked>Umur</ion-label>\n          <ion-input type=\"number\" placeholder=\"contoh: 17\"></ion-input>\n        </ion-item>\n        <ion-item [(ngModel)]=\"city\">\n          <ion-label color=\"primary\" stacked>Kota Domisili</ion-label>\n          <ion-input placeholder=\"contoh: Bandung\"></ion-input>\n        </ion-item>\n      </ion-list>\n      <ion-card *ngFor=\"let q of questions; let index = index\">\n        <ion-list radio-group [(ngModel)]=\"answers[index]\">\n          <ion-list-header [innerHTML]=\"q\">\n          </ion-list-header>\n          <ion-item *ngFor=\"let a of answerTypes\">\n            <ion-label>{{a.label}}</ion-label>\n            <ion-radio [value]=\"a.value\"></ion-radio>\n          </ion-item>\n        </ion-list>\n      </ion-card>\n    </ion-content>\n    <ion-footer style=\"height: 10%;\">\n      <button style=\"height: 100%;\" ion-button block color=\"fire\" (click)=\"navigate()\">Submit</button>\n    </ion-footer>\n\n\n  "
-    }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["k" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_1__services_user_service__["a" /* UserService */],
-        __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["l" /* NavParams */],
-        __WEBPACK_IMPORTED_MODULE_5__services_alert_service__["a" /* AlertService */],
-        __WEBPACK_IMPORTED_MODULE_6__services_loading_service__["a" /* LoadingService */],
-        __WEBPACK_IMPORTED_MODULE_0__ngrx_store__["a" /* Store */],
-        __WEBPACK_IMPORTED_MODULE_7__ionic_storage__["b" /* Storage */],
-        __WEBPACK_IMPORTED_MODULE_8__actions_recomm_actions__["a" /* RecommActions */]])
-], FeedbackPage);
+exports.SebmGoogleMap = SebmGoogleMap;
+//# sourceMappingURL=google-map.js.map
 
-//# sourceMappingURL=feedback.js.map
+/***/ }),
+
+/***/ 117:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var core_1 = __webpack_require__(0);
+var circle_manager_1 = __webpack_require__(106);
+var SebmGoogleMapCircle = (function () {
+    function SebmGoogleMapCircle(_manager) {
+        this._manager = _manager;
+        /**
+         * Indicates whether this Circle handles mouse events. Defaults to true.
+         */
+        this.clickable = true;
+        /**
+         * If set to true, the user can drag this circle over the map. Defaults to false.
+         */
+        this.draggable = false;
+        /**
+         * If set to true, the user can edit this circle by dragging the control points shown at
+         * the center and around the circumference of the circle. Defaults to false.
+         */
+        this.editable = false;
+        /**
+         * The radius in meters on the Earth's surface.
+         */
+        this.radius = 0;
+        /**
+         * The stroke position. Defaults to CENTER.
+         * This property is not supported on Internet Explorer 8 and earlier.
+         */
+        this.strokePosition = 'CENTER';
+        /**
+         * The stroke width in pixels.
+         */
+        this.strokeWeight = 0;
+        /**
+         * Whether this circle is visible on the map. Defaults to true.
+         */
+        this.visible = true;
+        /**
+         * This event is fired when the circle's center is changed.
+         */
+        this.centerChange = new core_1.EventEmitter();
+        /**
+         * This event emitter gets emitted when the user clicks on the circle.
+         */
+        this.circleClick = new core_1.EventEmitter();
+        /**
+         * This event emitter gets emitted when the user clicks on the circle.
+         */
+        this.circleDblClick = new core_1.EventEmitter();
+        /**
+         * This event is repeatedly fired while the user drags the circle.
+         */
+        this.drag = new core_1.EventEmitter();
+        /**
+         * This event is fired when the user stops dragging the circle.
+         */
+        this.dragEnd = new core_1.EventEmitter();
+        /**
+         * This event is fired when the user starts dragging the circle.
+         */
+        this.dragStart = new core_1.EventEmitter();
+        /**
+         * This event is fired when the DOM mousedown event is fired on the circle.
+         */
+        this.mouseDown = new core_1.EventEmitter();
+        /**
+         * This event is fired when the DOM mousemove event is fired on the circle.
+         */
+        this.mouseMove = new core_1.EventEmitter();
+        /**
+         * This event is fired on circle mouseout.
+         */
+        this.mouseOut = new core_1.EventEmitter();
+        /**
+         * This event is fired on circle mouseover.
+         */
+        this.mouseOver = new core_1.EventEmitter();
+        /**
+         * This event is fired when the DOM mouseup event is fired on the circle.
+         */
+        this.mouseUp = new core_1.EventEmitter();
+        /**
+         * This event is fired when the circle's radius is changed.
+         */
+        this.radiusChange = new core_1.EventEmitter();
+        /**
+         * This event is fired when the circle is right-clicked on.
+         */
+        this.rightClick = new core_1.EventEmitter();
+        this._circleAddedToManager = false;
+        this._eventSubscriptions = [];
+    }
+    /** @internal */
+    SebmGoogleMapCircle.prototype.ngOnInit = function () {
+        this._manager.addCircle(this);
+        this._circleAddedToManager = true;
+        this._registerEventListeners();
+    };
+    /** @internal */
+    SebmGoogleMapCircle.prototype.ngOnChanges = function (changes) {
+        if (!this._circleAddedToManager) {
+            return;
+        }
+        if (changes['latitude'] || changes['longitude']) {
+            this._manager.setCenter(this);
+        }
+        if (changes['editable']) {
+            this._manager.setEditable(this);
+        }
+        if (changes['draggable']) {
+            this._manager.setDraggable(this);
+        }
+        if (changes['visible']) {
+            this._manager.setVisible(this);
+        }
+        if (changes['radius']) {
+            this._manager.setRadius(this);
+        }
+        this._updateCircleOptionsChanges(changes);
+    };
+    SebmGoogleMapCircle.prototype._updateCircleOptionsChanges = function (changes) {
+        var options = {};
+        var optionKeys = Object.keys(changes).filter(function (k) { return SebmGoogleMapCircle._mapOptions.indexOf(k) !== -1; });
+        optionKeys.forEach(function (k) { options[k] = changes[k].currentValue; });
+        if (optionKeys.length > 0) {
+            this._manager.setOptions(this, options);
+        }
+    };
+    SebmGoogleMapCircle.prototype._registerEventListeners = function () {
+        var _this = this;
+        var events = new Map();
+        events.set('center_changed', this.centerChange);
+        events.set('click', this.circleClick);
+        events.set('dblclick', this.circleDblClick);
+        events.set('drag', this.drag);
+        events.set('dragend', this.dragEnd);
+        events.set('dragStart', this.dragStart);
+        events.set('mousedown', this.mouseDown);
+        events.set('mousemove', this.mouseMove);
+        events.set('mouseout', this.mouseOut);
+        events.set('mouseover', this.mouseOver);
+        events.set('mouseup', this.mouseUp);
+        events.set('radius_changed', this.radiusChange);
+        events.set('rightclick', this.rightClick);
+        events.forEach(function (eventEmitter, eventName) {
+            _this._eventSubscriptions.push(_this._manager.createEventObservable(eventName, _this).subscribe(function (value) {
+                switch (eventName) {
+                    case 'radius_changed':
+                        _this._manager.getRadius(_this).then(function (radius) { return eventEmitter.emit(radius); });
+                        break;
+                    case 'center_changed':
+                        _this._manager.getCenter(_this).then(function (center) {
+                            return eventEmitter.emit({ lat: center.lat(), lng: center.lng() });
+                        });
+                        break;
+                    default:
+                        eventEmitter.emit({ coords: { lat: value.latLng.lat(), lng: value.latLng.lng() } });
+                }
+            }));
+        });
+    };
+    /** @internal */
+    SebmGoogleMapCircle.prototype.ngOnDestroy = function () {
+        this._eventSubscriptions.forEach(function (s) { s.unsubscribe(); });
+        this._eventSubscriptions = null;
+        this._manager.removeCircle(this);
+    };
+    /**
+     * Gets the LatLngBounds of this Circle.
+     */
+    SebmGoogleMapCircle.prototype.getBounds = function () { return this._manager.getBounds(this); };
+    SebmGoogleMapCircle.prototype.getCenter = function () { return this._manager.getCenter(this); };
+    SebmGoogleMapCircle._mapOptions = [
+        'fillColor', 'fillOpacity', 'strokeColor', 'strokeOpacity', 'strokePosition', 'strokeWeight',
+        'visible', 'zIndex'
+    ];
+    SebmGoogleMapCircle.decorators = [
+        { type: core_1.Directive, args: [{
+                    selector: 'sebm-google-map-circle',
+                    inputs: [
+                        'latitude', 'longitude', 'clickable', 'draggable: circleDraggable', 'editable', 'fillColor',
+                        'fillOpacity', 'radius', 'strokeColor', 'strokeOpacity', 'strokePosition', 'strokeWeight',
+                        'visible', 'zIndex'
+                    ],
+                    outputs: [
+                        'centerChange', 'circleClick', 'circleDblClick', 'drag', 'dragEnd', 'dragStart', 'mouseDown',
+                        'mouseMove', 'mouseOut', 'mouseOver', 'mouseUp', 'radiusChange', 'rightClick'
+                    ]
+                },] },
+    ];
+    /** @nocollapse */
+    SebmGoogleMapCircle.ctorParameters = function () { return [
+        { type: circle_manager_1.CircleManager, },
+    ]; };
+    return SebmGoogleMapCircle;
+}());
+exports.SebmGoogleMapCircle = SebmGoogleMapCircle;
+//# sourceMappingURL=google-map-circle.js.map
+
+/***/ }),
+
+/***/ 118:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var core_1 = __webpack_require__(0);
+var kml_layer_manager_1 = __webpack_require__(110);
+var layerId = 0;
+var SebmGoogleMapKmlLayer = (function () {
+    function SebmGoogleMapKmlLayer(_manager) {
+        this._manager = _manager;
+        this._addedToManager = false;
+        this._id = (layerId++).toString();
+        this._subscriptions = [];
+        /**
+         * If true, the layer receives mouse events. Default value is true.
+         */
+        this.clickable = true;
+        /**
+         * By default, the input map is centered and zoomed to the bounding box of the contents of the
+         * layer.
+         * If this option is set to true, the viewport is left unchanged, unless the map's center and zoom
+         * were never set.
+         */
+        this.preserveViewport = false;
+        /**
+         * Whether to render the screen overlays. Default true.
+         */
+        this.screenOverlays = true;
+        /**
+         * Suppress the rendering of info windows when layer features are clicked.
+         */
+        this.suppressInfoWindows = false;
+        /**
+         * The URL of the KML document to display.
+         */
+        this.url = null;
+        /**
+         * The z-index of the layer.
+         */
+        this.zIndex = null;
+        /**
+         * This event is fired when a feature in the layer is clicked.
+         */
+        this.layerClick = new core_1.EventEmitter();
+        /**
+         * This event is fired when the KML layers default viewport has changed.
+         */
+        this.defaultViewportChange = new core_1.EventEmitter();
+        /**
+         * This event is fired when the KML layer has finished loading.
+         * At this point it is safe to read the status property to determine if the layer loaded
+         * successfully.
+         */
+        this.statusChange = new core_1.EventEmitter();
+    }
+    SebmGoogleMapKmlLayer.prototype.ngOnInit = function () {
+        if (this._addedToManager) {
+            return;
+        }
+        this._manager.addKmlLayer(this);
+        this._addedToManager = true;
+        this._addEventListeners();
+    };
+    SebmGoogleMapKmlLayer.prototype.ngOnChanges = function (changes) {
+        if (!this._addedToManager) {
+            return;
+        }
+        this._updatePolygonOptions(changes);
+    };
+    SebmGoogleMapKmlLayer.prototype._updatePolygonOptions = function (changes) {
+        var options = Object.keys(changes)
+            .filter(function (k) { return SebmGoogleMapKmlLayer._kmlLayerOptions.indexOf(k) !== -1; })
+            .reduce(function (obj, k) {
+            obj[k] = changes[k].currentValue;
+            return obj;
+        }, {});
+        if (Object.keys(options).length > 0) {
+            this._manager.setOptions(this, options);
+        }
+    };
+    SebmGoogleMapKmlLayer.prototype._addEventListeners = function () {
+        var _this = this;
+        var listeners = [
+            { name: 'click', handler: function (ev) { return _this.layerClick.emit(ev); } },
+            { name: 'defaultviewport_changed', handler: function () { return _this.defaultViewportChange.emit(); } },
+            { name: 'status_changed', handler: function () { return _this.statusChange.emit(); } },
+        ];
+        listeners.forEach(function (obj) {
+            var os = _this._manager.createEventObservable(obj.name, _this).subscribe(obj.handler);
+            _this._subscriptions.push(os);
+        });
+    };
+    /** @internal */
+    SebmGoogleMapKmlLayer.prototype.id = function () { return this._id; };
+    /** @internal */
+    SebmGoogleMapKmlLayer.prototype.toString = function () { return "SebmGoogleMapKmlLayer-" + this._id.toString(); };
+    /** @internal */
+    SebmGoogleMapKmlLayer.prototype.ngOnDestroy = function () {
+        this._manager.deleteKmlLayer(this);
+        // unsubscribe all registered observable subscriptions
+        this._subscriptions.forEach(function (s) { return s.unsubscribe(); });
+    };
+    SebmGoogleMapKmlLayer._kmlLayerOptions = ['clickable', 'preserveViewport', 'screenOverlays', 'suppressInfoWindows', 'url', 'zIndex'];
+    SebmGoogleMapKmlLayer.decorators = [
+        { type: core_1.Directive, args: [{
+                    selector: 'sebm-google-map-kml-layer',
+                    inputs: ['clickable', 'preserveViewport', 'screenOverlays', 'suppressInfoWindows', 'url', 'zIndex'],
+                    outputs: ['layerClick', 'defaultViewportChange', 'statusChange']
+                },] },
+    ];
+    /** @nocollapse */
+    SebmGoogleMapKmlLayer.ctorParameters = function () { return [
+        { type: kml_layer_manager_1.KmlLayerManager, },
+    ]; };
+    return SebmGoogleMapKmlLayer;
+}());
+exports.SebmGoogleMapKmlLayer = SebmGoogleMapKmlLayer;
+//# sourceMappingURL=google-map-kml-layer.js.map
+
+/***/ }),
+
+/***/ 119:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var core_1 = __webpack_require__(0);
+var marker_manager_1 = __webpack_require__(105);
+var google_map_info_window_1 = __webpack_require__(111);
+var markerId = 0;
+/**
+ * SebmGoogleMapMarker renders a map marker inside a {@link SebmGoogleMap}.
+ *
+ * ### Example
+ * ```typescript
+ * import { Component } from 'angular2/core';
+ * import { SebmGoogleMap, SebmGoogleMapMarker } from 'angular2-google-maps/core';
+ *
+ * @Component({
+ *  selector: 'my-map-cmp',
+ *  directives: [SebmGoogleMap, SebmGoogleMapMarker],
+ *  styles: [`
+ *    .sebm-google-map-container {
+ *      height: 300px;
+ *    }
+ * `],
+ *  template: `
+ *    <sebm-google-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
+ *      <sebm-google-map-marker [latitude]="lat" [longitude]="lng" [label]="'M'">
+ *      </sebm-google-map-marker>
+ *    </sebm-google-map>
+ *  `
+ * })
+ * ```
+ */
+var SebmGoogleMapMarker = (function () {
+    function SebmGoogleMapMarker(_markerManager) {
+        this._markerManager = _markerManager;
+        /**
+         * If true, the marker can be dragged. Default value is false.
+         */
+        this.draggable = false;
+        /**
+         * If true, the marker is visible
+         */
+        this.visible = true;
+        /**
+         * Whether to automatically open the child info window when the marker is clicked.
+         */
+        this.openInfoWindow = true;
+        /**
+         * The marker's opacity between 0.0 and 1.0.
+         */
+        this.opacity = 1;
+        /**
+         * All markers are displayed on the map in order of their zIndex, with higher values displaying in
+         * front of markers with lower values. By default, markers are displayed according to their
+         * vertical position on screen, with lower markers appearing in front of markers further up the
+         * screen.
+         */
+        this.zIndex = 1;
+        /**
+         * This event emitter gets emitted when the user clicks on the marker.
+         */
+        this.markerClick = new core_1.EventEmitter();
+        /**
+         * This event is fired when the user stops dragging the marker.
+         */
+        this.dragEnd = new core_1.EventEmitter();
+        /**
+         * This event is fired when the user mouses over the marker.
+         */
+        this.mouseOver = new core_1.EventEmitter();
+        /**
+         * This event is fired when the user mouses outside the marker.
+         */
+        this.mouseOut = new core_1.EventEmitter();
+        this._markerAddedToManger = false;
+        this._observableSubscriptions = [];
+        this._id = (markerId++).toString();
+    }
+    /* @internal */
+    SebmGoogleMapMarker.prototype.ngAfterContentInit = function () {
+        if (this.infoWindow != null) {
+            this.infoWindow.hostMarker = this;
+        }
+    };
+    /** @internal */
+    SebmGoogleMapMarker.prototype.ngOnChanges = function (changes) {
+        if (typeof this.latitude !== 'number' || typeof this.longitude !== 'number') {
+            return;
+        }
+        if (!this._markerAddedToManger) {
+            this._markerManager.addMarker(this);
+            this._markerAddedToManger = true;
+            this._addEventListeners();
+            return;
+        }
+        if (changes['latitude'] || changes['longitude']) {
+            this._markerManager.updateMarkerPosition(this);
+        }
+        if (changes['title']) {
+            this._markerManager.updateTitle(this);
+        }
+        if (changes['label']) {
+            this._markerManager.updateLabel(this);
+        }
+        if (changes['draggable']) {
+            this._markerManager.updateDraggable(this);
+        }
+        if (changes['iconUrl']) {
+            this._markerManager.updateIcon(this);
+        }
+        if (changes['opacity']) {
+            this._markerManager.updateOpacity(this);
+        }
+        if (changes['visible']) {
+            this._markerManager.updateVisible(this);
+        }
+        if (changes['zIndex']) {
+            this._markerManager.updateZIndex(this);
+        }
+    };
+    SebmGoogleMapMarker.prototype._addEventListeners = function () {
+        var _this = this;
+        var cs = this._markerManager.createEventObservable('click', this).subscribe(function () {
+            if (_this.openInfoWindow && _this.infoWindow != null) {
+                _this.infoWindow.open();
+            }
+            _this.markerClick.emit(null);
+        });
+        this._observableSubscriptions.push(cs);
+        var ds = this._markerManager.createEventObservable('dragend', this)
+            .subscribe(function (e) {
+            _this.dragEnd.emit({ coords: { lat: e.latLng.lat(), lng: e.latLng.lng() } });
+        });
+        this._observableSubscriptions.push(ds);
+        var mover = this._markerManager.createEventObservable('mouseover', this)
+            .subscribe(function (e) {
+            _this.mouseOver.emit({ coords: { lat: e.latLng.lat(), lng: e.latLng.lng() } });
+        });
+        this._observableSubscriptions.push(mover);
+        var mout = this._markerManager.createEventObservable('mouseout', this)
+            .subscribe(function (e) {
+            _this.mouseOut.emit({ coords: { lat: e.latLng.lat(), lng: e.latLng.lng() } });
+        });
+        this._observableSubscriptions.push(mout);
+    };
+    /** @internal */
+    SebmGoogleMapMarker.prototype.id = function () { return this._id; };
+    /** @internal */
+    SebmGoogleMapMarker.prototype.toString = function () { return 'SebmGoogleMapMarker-' + this._id.toString(); };
+    /** @internal */
+    SebmGoogleMapMarker.prototype.ngOnDestroy = function () {
+        this._markerManager.deleteMarker(this);
+        // unsubscribe all registered observable subscriptions
+        this._observableSubscriptions.forEach(function (s) { return s.unsubscribe(); });
+    };
+    SebmGoogleMapMarker.decorators = [
+        { type: core_1.Directive, args: [{
+                    selector: 'sebm-google-map-marker',
+                    inputs: [
+                        'latitude', 'longitude', 'title', 'label', 'draggable: markerDraggable', 'iconUrl',
+                        'openInfoWindow', 'opacity', 'visible', 'zIndex'
+                    ],
+                    outputs: ['markerClick', 'dragEnd', 'mouseOver', 'mouseOut']
+                },] },
+    ];
+    /** @nocollapse */
+    SebmGoogleMapMarker.ctorParameters = function () { return [
+        { type: marker_manager_1.MarkerManager, },
+    ]; };
+    SebmGoogleMapMarker.propDecorators = {
+        'infoWindow': [{ type: core_1.ContentChild, args: [google_map_info_window_1.SebmGoogleMapInfoWindow,] },],
+    };
+    return SebmGoogleMapMarker;
+}());
+exports.SebmGoogleMapMarker = SebmGoogleMapMarker;
+//# sourceMappingURL=google-map-marker.js.map
+
+/***/ }),
+
+/***/ 120:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var core_1 = __webpack_require__(0);
+var polygon_manager_1 = __webpack_require__(108);
+/**
+ * SebmGoogleMapPolygon renders a polygon on a {@link SebmGoogleMap}
+ *
+ * ### Example
+ * ```typescript
+ * import { Component } from '@angular/core';
+ * import { SebmGoogleMap, SebmGooglePolygon, LatLngLiteral } from 'angular2-maps/core';
+ *
+ * @Component({
+ *  selector: 'my-map-cmp',
+ *  styles: [`
+ *    .semb-map-container {
+ *      height: 300px;
+ *    }
+ * `],
+ *  template: `
+ *    <semb-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
+ *      <semb-map-polygon [paths]="paths">
+ *      </semb-map-polygon>
+ *    </semb-map>
+ *  `
+ * })
+ * export class MyMapCmp {
+ *   lat: number = 0;
+ *   lng: number = 0;
+ *   zoom: number = 10;
+ *   paths: Array<LatLngLiteral> = [
+ *     { lat: 0,  lng: 10 },
+ *     { lat: 0,  lng: 20 },
+ *     { lat: 10, lng: 20 },
+ *     { lat: 10, lng: 10 },
+ *     { lat: 0,  lng: 10 }
+ *   ]
+ *   // Nesting paths will create a hole where they overlap;
+ *   nestedPaths: Array<Array<LatLngLiteral>> = [[
+ *     { lat: 0,  lng: 10 },
+ *     { lat: 0,  lng: 20 },
+ *     { lat: 10, lng: 20 },
+ *     { lat: 10, lng: 10 },
+ *     { lat: 0,  lng: 10 }
+ *   ], [
+ *     { lat: 0, lng: 15 },
+ *     { lat: 0, lng: 20 },
+ *     { lat: 5, lng: 20 },
+ *     { lat: 5, lng: 15 },
+ *     { lat: 0, lng: 15 }
+ *   ]]
+ * }
+ * ```
+ */
+var SebmGoogleMapPolygon = (function () {
+    function SebmGoogleMapPolygon(_polygonManager) {
+        this._polygonManager = _polygonManager;
+        /**
+         * Indicates whether this Polygon handles mouse events. Defaults to true.
+         */
+        this.clickable = true;
+        /**
+         * If set to true, the user can drag this shape over the map. The geodesic
+         * property defines the mode of dragging. Defaults to false.
+         */
+        this.draggable = false;
+        /**
+         * If set to true, the user can edit this shape by dragging the control
+         * points shown at the vertices and on each segment. Defaults to false.
+         */
+        this.editable = false;
+        /**
+         * When true, edges of the polygon are interpreted as geodesic and will
+         * follow the curvature of the Earth. When false, edges of the polygon are
+         * rendered as straight lines in screen space. Note that the shape of a
+         * geodesic polygon may appear to change when dragged, as the dimensions
+         * are maintained relative to the surface of the earth. Defaults to false.
+         */
+        this.geodesic = false;
+        /**
+         * The ordered sequence of coordinates that designates a closed loop.
+         * Unlike polylines, a polygon may consist of one or more paths.
+         *  As a result, the paths property may specify one or more arrays of
+         * LatLng coordinates. Paths are closed automatically; do not repeat the
+         * first vertex of the path as the last vertex. Simple polygons may be
+         * defined using a single array of LatLngs. More complex polygons may
+         * specify an array of arrays. Any simple arrays are converted into Arrays.
+         * Inserting or removing LatLngs from the Array will automatically update
+         * the polygon on the map.
+         */
+        this.paths = [];
+        /**
+         * This event is fired when the DOM click event is fired on the Polygon.
+         */
+        this.polyClick = new core_1.EventEmitter();
+        /**
+         * This event is fired when the DOM dblclick event is fired on the Polygon.
+         */
+        this.polyDblClick = new core_1.EventEmitter();
+        /**
+         * This event is repeatedly fired while the user drags the polygon.
+         */
+        this.polyDrag = new core_1.EventEmitter();
+        /**
+         * This event is fired when the user stops dragging the polygon.
+         */
+        this.polyDragEnd = new core_1.EventEmitter();
+        /**
+         * This event is fired when the user starts dragging the polygon.
+         */
+        this.polyDragStart = new core_1.EventEmitter();
+        /**
+         * This event is fired when the DOM mousedown event is fired on the Polygon.
+         */
+        this.polyMouseDown = new core_1.EventEmitter();
+        /**
+         * This event is fired when the DOM mousemove event is fired on the Polygon.
+         */
+        this.polyMouseMove = new core_1.EventEmitter();
+        /**
+         * This event is fired on Polygon mouseout.
+         */
+        this.polyMouseOut = new core_1.EventEmitter();
+        /**
+         * This event is fired on Polygon mouseover.
+         */
+        this.polyMouseOver = new core_1.EventEmitter();
+        /**
+         * This event is fired whe the DOM mouseup event is fired on the Polygon
+         */
+        this.polyMouseUp = new core_1.EventEmitter();
+        /**
+         * This even is fired when the Polygon is right-clicked on.
+         */
+        this.polyRightClick = new core_1.EventEmitter();
+        this._polygonAddedToManager = false;
+        this._subscriptions = [];
+    }
+    /** @internal */
+    SebmGoogleMapPolygon.prototype.ngAfterContentInit = function () {
+        if (!this._polygonAddedToManager) {
+            this._init();
+        }
+    };
+    SebmGoogleMapPolygon.prototype.ngOnChanges = function (changes) {
+        if (!this._polygonAddedToManager) {
+            this._init();
+            return;
+        }
+        this._polygonManager.setPolygonOptions(this, this._updatePolygonOptions(changes));
+    };
+    SebmGoogleMapPolygon.prototype._init = function () {
+        this._polygonManager.addPolygon(this);
+        this._polygonAddedToManager = true;
+        this._addEventListeners();
+    };
+    SebmGoogleMapPolygon.prototype._addEventListeners = function () {
+        var _this = this;
+        var handlers = [
+            { name: 'click', handler: function (ev) { return _this.polyClick.emit(ev); } },
+            { name: 'dbclick', handler: function (ev) { return _this.polyDblClick.emit(ev); } },
+            { name: 'drag', handler: function (ev) { return _this.polyDrag.emit(ev); } },
+            { name: 'dragend', handler: function (ev) { return _this.polyDragEnd.emit(ev); } },
+            { name: 'dragstart', handler: function (ev) { return _this.polyDragStart.emit(ev); } },
+            { name: 'mousedown', handler: function (ev) { return _this.polyMouseDown.emit(ev); } },
+            { name: 'mousemove', handler: function (ev) { return _this.polyMouseMove.emit(ev); } },
+            { name: 'mouseout', handler: function (ev) { return _this.polyMouseOut.emit(ev); } },
+            { name: 'mouseover', handler: function (ev) { return _this.polyMouseOver.emit(ev); } },
+            { name: 'mouseup', handler: function (ev) { return _this.polyMouseUp.emit(ev); } },
+            { name: 'rightclick', handler: function (ev) { return _this.polyRightClick.emit(ev); } },
+        ];
+        handlers.forEach(function (obj) {
+            var os = _this._polygonManager.createEventObservable(obj.name, _this).subscribe(obj.handler);
+            _this._subscriptions.push(os);
+        });
+    };
+    SebmGoogleMapPolygon.prototype._updatePolygonOptions = function (changes) {
+        return Object.keys(changes)
+            .filter(function (k) { return SebmGoogleMapPolygon._polygonOptionsAttributes.indexOf(k) !== -1; })
+            .reduce(function (obj, k) {
+            obj[k] = changes[k].currentValue;
+            return obj;
+        }, {});
+    };
+    /** @internal */
+    SebmGoogleMapPolygon.prototype.id = function () { return this._id; };
+    /** @internal */
+    SebmGoogleMapPolygon.prototype.ngOnDestroy = function () {
+        this._polygonManager.deletePolygon(this);
+        // unsubscribe all registered observable subscriptions
+        this._subscriptions.forEach(function (s) { return s.unsubscribe(); });
+    };
+    SebmGoogleMapPolygon._polygonOptionsAttributes = [
+        'clickable', 'draggable', 'editable', 'fillColor', 'fillOpacity', 'geodesic', 'icon', 'map',
+        'paths', 'strokeColor', 'strokeOpacity', 'strokeWeight', 'visible', 'zIndex', 'draggable',
+        'editable', 'visible'
+    ];
+    SebmGoogleMapPolygon.decorators = [
+        { type: core_1.Directive, args: [{
+                    selector: 'sebm-map-polygon',
+                    inputs: [
+                        'clickable',
+                        'draggable: polyDraggable',
+                        'editable',
+                        'fillColor',
+                        'fillOpacity',
+                        'geodesic',
+                        'paths',
+                        'strokeColor',
+                        'strokeOpacity',
+                        'strokeWeight',
+                        'visible',
+                        'zIndex',
+                    ],
+                    outputs: [
+                        'polyClick', 'polyDblClick', 'polyDrag', 'polyDragEnd', 'polyMouseDown', 'polyMouseMove',
+                        'polyMouseOut', 'polyMouseOver', 'polyMouseUp', 'polyRightClick'
+                    ]
+                },] },
+    ];
+    /** @nocollapse */
+    SebmGoogleMapPolygon.ctorParameters = function () { return [
+        { type: polygon_manager_1.PolygonManager, },
+    ]; };
+    return SebmGoogleMapPolygon;
+}());
+exports.SebmGoogleMapPolygon = SebmGoogleMapPolygon;
+//# sourceMappingURL=google-map-polygon.js.map
+
+/***/ }),
+
+/***/ 121:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var core_1 = __webpack_require__(0);
+var polyline_manager_1 = __webpack_require__(109);
+var google_map_polyline_point_1 = __webpack_require__(112);
+var polylineId = 0;
+/**
+ * SebmGoogleMapPolyline renders a polyline on a {@link SebmGoogleMap}
+ *
+ * ### Example
+ * ```typescript
+ * import { Component } from 'angular2/core';
+ * import { SebmGoogleMap, SebmGooglePolyline, SebmGooglePolylinePoint } from
+ * 'angular2-google-maps/core';
+ *
+ * @Component({
+ *  selector: 'my-map-cmp',
+ *  directives: [SebmGoogleMap, SebmGooglePolyline, SebmGooglePolylinePoint],
+ *  styles: [`
+ *    .sebm-google-map-container {
+ *      height: 300px;
+ *    }
+ * `],
+ *  template: `
+ *    <sebm-google-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
+ *      <sebm-google-map-polyline>
+ *          <sebm-google-map-polyline-point [latitude]="latA" [longitude]="lngA">
+ *          </sebm-google-map-polyline-point>
+ *          <sebm-google-map-polyline-point [latitude]="latB" [longitude]="lngB">
+ *          </sebm-google-map-polyline-point>
+ *      </sebm-google-map-polyline>
+ *    </sebm-google-map>
+ *  `
+ * })
+ * ```
+ */
+var SebmGoogleMapPolyline = (function () {
+    function SebmGoogleMapPolyline(_polylineManager) {
+        this._polylineManager = _polylineManager;
+        /**
+         * Indicates whether this Polyline handles mouse events. Defaults to true.
+         */
+        this.clickable = true;
+        /**
+         * If set to true, the user can drag this shape over the map. The geodesic property defines the
+         * mode of dragging. Defaults to false.
+         */
+        this.draggable = false;
+        /**
+         * If set to true, the user can edit this shape by dragging the control points shown at the
+         * vertices and on each segment. Defaults to false.
+         */
+        this.editable = false;
+        /**
+         * When true, edges of the polygon are interpreted as geodesic and will follow the curvature of
+         * the Earth. When false, edges of the polygon are rendered as straight lines in screen space.
+         * Note that the shape of a geodesic polygon may appear to change when dragged, as the dimensions
+         * are maintained relative to the surface of the earth. Defaults to false.
+         */
+        this.geodesic = false;
+        /**
+         * Whether this polyline is visible on the map. Defaults to true.
+         */
+        this.visible = true;
+        /**
+         * This event is fired when the DOM click event is fired on the Polyline.
+         */
+        this.lineClick = new core_1.EventEmitter();
+        /**
+         * This event is fired when the DOM dblclick event is fired on the Polyline.
+         */
+        this.lineDblClick = new core_1.EventEmitter();
+        /**
+         * This event is repeatedly fired while the user drags the polyline.
+         */
+        this.lineDrag = new core_1.EventEmitter();
+        /**
+         * This event is fired when the user stops dragging the polyline.
+         */
+        this.lineDragEnd = new core_1.EventEmitter();
+        /**
+         * This event is fired when the user starts dragging the polyline.
+         */
+        this.lineDragStart = new core_1.EventEmitter();
+        /**
+         * This event is fired when the DOM mousedown event is fired on the Polyline.
+         */
+        this.lineMouseDown = new core_1.EventEmitter();
+        /**
+         * This event is fired when the DOM mousemove event is fired on the Polyline.
+         */
+        this.lineMouseMove = new core_1.EventEmitter();
+        /**
+         * This event is fired on Polyline mouseout.
+         */
+        this.lineMouseOut = new core_1.EventEmitter();
+        /**
+         * This event is fired on Polyline mouseover.
+         */
+        this.lineMouseOver = new core_1.EventEmitter();
+        /**
+         * This event is fired whe the DOM mouseup event is fired on the Polyline
+         */
+        this.lineMouseUp = new core_1.EventEmitter();
+        /**
+         * This even is fired when the Polyline is right-clicked on.
+         */
+        this.lineRightClick = new core_1.EventEmitter();
+        this._polylineAddedToManager = false;
+        this._subscriptions = [];
+        this._id = (polylineId++).toString();
+    }
+    /** @internal */
+    SebmGoogleMapPolyline.prototype.ngAfterContentInit = function () {
+        var _this = this;
+        if (this.points.length) {
+            this.points.forEach(function (point) {
+                var s = point.positionChanged.subscribe(function () { _this._polylineManager.updatePolylinePoints(_this); });
+                _this._subscriptions.push(s);
+            });
+        }
+        if (!this._polylineAddedToManager) {
+            this._init();
+        }
+        var s = this.points.changes.subscribe(function () { return _this._polylineManager.updatePolylinePoints(_this); });
+        this._subscriptions.push(s);
+        this._polylineManager.updatePolylinePoints(this);
+    };
+    SebmGoogleMapPolyline.prototype.ngOnChanges = function (changes) {
+        if (!this._polylineAddedToManager) {
+            this._init();
+            return;
+        }
+        var options = {};
+        var optionKeys = Object.keys(changes).filter(function (k) { return SebmGoogleMapPolyline._polylineOptionsAttributes.indexOf(k) !== -1; });
+        optionKeys.forEach(function (k) { return options[k] = changes[k].currentValue; });
+        this._polylineManager.setPolylineOptions(this, options);
+    };
+    SebmGoogleMapPolyline.prototype._init = function () {
+        this._polylineManager.addPolyline(this);
+        this._polylineAddedToManager = true;
+        this._addEventListeners();
+    };
+    SebmGoogleMapPolyline.prototype._addEventListeners = function () {
+        var _this = this;
+        var handlers = [
+            { name: 'click', handler: function (ev) { return _this.lineClick.emit(ev); } },
+            { name: 'dbclick', handler: function (ev) { return _this.lineDblClick.emit(ev); } },
+            { name: 'drag', handler: function (ev) { return _this.lineDrag.emit(ev); } },
+            { name: 'dragend', handler: function (ev) { return _this.lineDragEnd.emit(ev); } },
+            { name: 'dragstart', handler: function (ev) { return _this.lineDragStart.emit(ev); } },
+            { name: 'mousedown', handler: function (ev) { return _this.lineMouseDown.emit(ev); } },
+            { name: 'mousemove', handler: function (ev) { return _this.lineMouseMove.emit(ev); } },
+            { name: 'mouseout', handler: function (ev) { return _this.lineMouseOut.emit(ev); } },
+            { name: 'mouseover', handler: function (ev) { return _this.lineMouseOver.emit(ev); } },
+            { name: 'mouseup', handler: function (ev) { return _this.lineMouseUp.emit(ev); } },
+            { name: 'rightclick', handler: function (ev) { return _this.lineRightClick.emit(ev); } },
+        ];
+        handlers.forEach(function (obj) {
+            var os = _this._polylineManager.createEventObservable(obj.name, _this).subscribe(obj.handler);
+            _this._subscriptions.push(os);
+        });
+    };
+    /** @internal */
+    SebmGoogleMapPolyline.prototype._getPoints = function () {
+        if (this.points) {
+            return this.points.toArray();
+        }
+        return [];
+    };
+    /** @internal */
+    SebmGoogleMapPolyline.prototype.id = function () { return this._id; };
+    /** @internal */
+    SebmGoogleMapPolyline.prototype.ngOnDestroy = function () {
+        this._polylineManager.deletePolyline(this);
+        // unsubscribe all registered observable subscriptions
+        this._subscriptions.forEach(function (s) { return s.unsubscribe(); });
+    };
+    SebmGoogleMapPolyline._polylineOptionsAttributes = [
+        'draggable', 'editable', 'visible', 'geodesic', 'strokeColor', 'strokeOpacity', 'strokeWeight',
+        'zIndex'
+    ];
+    SebmGoogleMapPolyline.decorators = [
+        { type: core_1.Directive, args: [{
+                    selector: 'sebm-google-map-polyline',
+                    inputs: [
+                        'clickable', 'draggable: polylineDraggable', 'editable', 'geodesic', 'strokeColor',
+                        'strokeWeight', 'strokeOpacity', 'visible', 'zIndex'
+                    ],
+                    outputs: [
+                        'lineClick', 'lineDblClick', 'lineDrag', 'lineDragEnd', 'lineMouseDown', 'lineMouseMove',
+                        'lineMouseOut', 'lineMouseOver', 'lineMouseUp', 'lineRightClick'
+                    ]
+                },] },
+    ];
+    /** @nocollapse */
+    SebmGoogleMapPolyline.ctorParameters = function () { return [
+        { type: polyline_manager_1.PolylineManager, },
+    ]; };
+    SebmGoogleMapPolyline.propDecorators = {
+        'points': [{ type: core_1.ContentChildren, args: [google_map_polyline_point_1.SebmGoogleMapPolylinePoint,] },],
+    };
+    return SebmGoogleMapPolyline;
+}());
+exports.SebmGoogleMapPolyline = SebmGoogleMapPolyline;
+//# sourceMappingURL=google-map-polyline.js.map
+
+/***/ }),
+
+/***/ 122:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var WindowRef = (function () {
+    function WindowRef() {
+    }
+    WindowRef.prototype.getNativeWindow = function () { return window; };
+    return WindowRef;
+}());
+exports.WindowRef = WindowRef;
+var DocumentRef = (function () {
+    function DocumentRef() {
+    }
+    DocumentRef.prototype.getNativeDocument = function () { return document; };
+    return DocumentRef;
+}());
+exports.DocumentRef = DocumentRef;
+exports.BROWSER_GLOBALS_PROVIDERS = [WindowRef, DocumentRef];
+//# sourceMappingURL=browser-globals.js.map
 
 /***/ }),
 
 /***/ 124:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ResultPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__actions_attractions_actions__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ngrx_store__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__place_place__ = __webpack_require__(104);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__explanation_explanation__ = __webpack_require__(115);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__feedback_feedback__ = __webpack_require__(116);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_ionic_angular__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__utils_common_util__ = __webpack_require__(102);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__services_alert_service__ = __webpack_require__(40);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 
-
-
-
-
-
-
-
-
-var ResultPage = (function () {
-    function ResultPage(navCtrl, store, navParams, attractionsActions, alertService, modalCtrl, app) {
-        this.navCtrl = navCtrl;
-        this.store = store;
-        this.navParams = navParams;
-        this.attractionsActions = attractionsActions;
-        this.alertService = alertService;
-        this.modalCtrl = modalCtrl;
-        this.app = app;
-        this.explanation = "This is an explanation page";
-        this.place = "Place";
-        this.recomms = this.navParams.get("recomms");
-    }
-    ResultPage.prototype.details = function (place) {
-        this.store.dispatch(this.attractionsActions.selectPlace(place));
-        this.app.getRootNav().push(__WEBPACK_IMPORTED_MODULE_2__place_place__["a" /* PlacePage */]);
-    };
-    ResultPage.prototype.explain = function () {
-        var modal = this.modalCtrl.create(__WEBPACK_IMPORTED_MODULE_3__explanation_explanation__["a" /* ExplanationPage */], {
-            explanation: this.explanation
-        });
-        modal.present();
-    };
-    ResultPage.prototype.onModelChange = function (value) {
-        this.starToText(value);
-    };
-    ResultPage.prototype.starToText = function (value) {
-        if (value == 1)
-            this.comment = "Sangat Buruk";
-        else if (value == 2)
-            this.comment = "Buruk";
-        else if (value == 3)
-            this.comment = "Cukup";
-        else if (value == 4)
-            this.comment = "Baik";
-        else
-            this.comment = "Sangat Baik";
-    };
-    ResultPage.prototype.navigate = function () {
-        var check = __WEBPACK_IMPORTED_MODULE_7__utils_common_util__["d" /* isFormFilled */]({ rate: this.rate });
-        if (check)
-            this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_4__feedback_feedback__["a" /* FeedbackPage */], {
-                rate: this.rate
-            });
-        else
-            this.alertService.presentAlert("", "Harap beri penilaian terhadap hasil rekomendasi terlebih dahulu");
-    };
-    return ResultPage;
-}());
-ResultPage = __decorate([
-    __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["f" /* IonicPage */](),
-    __WEBPACK_IMPORTED_MODULE_5__angular_core__["Component"]({
-        selector: 'page-result',
-        template: "\n    <ion-header>\n      <ion-navbar color=\"sky\">\n        <button ion-button menuToggle>\n          <ion-icon name=\"menu\"></ion-icon>\n        </button>\n        <ion-title>Rekomendasi Terpilih</ion-title>\n      </ion-navbar>\n    </ion-header>\n    <ion-content>\n      <ion-card style=\"text-align: center\">\n        <ion-card-header>\n          Berikan penilaian anda terhadap <br>\n          rekomendasi yang dihasilkan\n        </ion-card-header>\n        <ion-card-content>\n          {{comment}}\n          <rating [(ngModel)]=\"rate\"\n                  readOnly=\"false\"\n                  max=\"5\"\n                  emptyStarIconName=\"star-outline\"\n                  halfStarIconName=\"star-half\"\n                  starIconName=\"star\"\n                  nullable=\"false\"\n                  (ngModelChange)=\"onModelChange($event)\">\n          </rating>\n        </ion-card-content>\n      </ion-card>\n      <hr>\n      <div class=\"pins\">\n        <ion-card (click)=\"details(recomm)\" class=\"pin\" *ngFor=\"let recomm of recomms\">\n          <img [src]=\"recomm.photo\"/>\n          <div *ngIf=\"recomm.description\" class=\"post-description\">\n            <small>{{ recomm.description }}</small>\n          </div>\n          <ion-item>\n            <small>{{recomm.name}}</small>\n            <p>\n              <small>{{recomm.formatted_address}}</small>\n            </p>\n          </ion-item>\n        </ion-card>\n      </div>\n    </ion-content>\n    <ion-footer style=\"height: 10%;\">\n    <button style=\"height: 100%;\" color=\"fire\" ion-button block (click)=\"navigate()\">Lanjut</button>\n    </ion-footer>\n\n  "
-    }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_6_ionic_angular__["k" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_1__ngrx_store__["a" /* Store */],
-        __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["l" /* NavParams */],
-        __WEBPACK_IMPORTED_MODULE_0__actions_attractions_actions__["a" /* AttractionsActions */],
-        __WEBPACK_IMPORTED_MODULE_8__services_alert_service__["a" /* AlertService */],
-        __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["i" /* ModalController */],
-        __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["b" /* App */]])
-], ResultPage);
-
-//# sourceMappingURL=result.js.map
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+// main modules
+__export(__webpack_require__(125));
+__export(__webpack_require__(126));
+// Google Maps types
+// core module
+// we explicitly export the module here to prevent this Ionic 2 bug:
+// http://stevemichelotti.com/integrate-angular-2-google-maps-into-ionic-2/
+var core_module_1 = __webpack_require__(128);
+exports.AgmCoreModule = core_module_1.AgmCoreModule;
+//# sourceMappingURL=index.js.map
 
 /***/ }),
 
-/***/ 130:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ 125:
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ResultSelectionPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_ionic_angular__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__actions_recomm_actions__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__result_result__ = __webpack_require__(124);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__place_place__ = __webpack_require__(104);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_recommendation_service__ = __webpack_require__(42);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_common_util__ = __webpack_require__(102);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ngrx_store__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__actions_attractions_actions__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__services_place_service__ = __webpack_require__(43);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__services_loading_service__ = __webpack_require__(41);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__services_alert_service__ = __webpack_require__(40);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 
-
-
-
-
-
-
-
-
-
-
-
-
-var ResultSelectionPage = (function () {
-    function ResultSelectionPage(attractionsActions, store, navCtrl, placeService, app, navParams, recommActions, recommService, loadingService, alertService) {
-        var _this = this;
-        this.attractionsActions = attractionsActions;
-        this.store = store;
-        this.navCtrl = navCtrl;
-        this.placeService = placeService;
-        this.app = app;
-        this.navParams = navParams;
-        this.recommActions = recommActions;
-        this.recommService = recommService;
-        this.loadingService = loadingService;
-        this.alertService = alertService;
-        this.selectedClasses = [];
-        this.selectedPlaces = [];
-        this.storedPlaces = [];
-        this.mode = 0;
-        this.submitText = "";
-        this.selectedRecomms = [];
-        this.staticTitle = "";
-        this.title = "Hasil Rekomendasi";
-        this.places = [];
-        this.limit = 15;
-        this.offset = 0;
-        this.loadingService.presentLoading();
-        this.params = this.navParams.get("params");
-        console.log("PARAMS", this.params);
-        var places = this.navParams.get("places");
-        console.log("selected", this.places);
-        if (places) {
-            this.selectedPlaces = places;
-            this.mode = 2;
-            this.submitText = "Selesai";
-            this.title = this.selectedPlaces.length + " Hasil Rekomendasi";
-            this.staticTitle = this.title;
-            this.loadingService.stopLoading();
-        }
-        else if (this.params)
-            if (this.params.assigned)
-                // if (this.params.assigned.length > 0)
-                this.recommService.upPropagation(this.params).subscribe(function (data) {
-                    _this.mode = 2;
-                    _this.submitText = "Lanjut";
-                    console.log("data", data);
-                    _this.selectedPlaces = data;
-                    _this.title = _this.selectedPlaces.length + " Hasil Rekomendasi";
-                    _this.staticTitle = _this.title;
-                    _this.loadingService.stopLoading();
-                });
-    }
-    ResultSelectionPage.prototype.reset = function () {
-        this.navCtrl.setRoot('MethodSelectionPage');
-    };
-    ResultSelectionPage.prototype.check = function (data, value) {
-        if (data.checked) {
-            this.selectedRecomms.push(value.name);
-            this.storedPlaces.push(value);
-        }
-        else {
-            var idx = this.selectedRecomms.indexOf(value.name);
-            if (idx > -1)
-                this.selectedRecomms.splice(idx, 1);
-            var idx2 = this.storedPlaces.indexOf(value);
-            if (idx2 > -1)
-                this.storedPlaces.splice(idx2, 1);
-        }
-        if (this.selectedRecomms.length > 0)
-            this.title = this.selectedRecomms.length + " Rekomendasi Terpilih";
-        else
-            this.title = this.staticTitle;
-        console.log("recomms", this.selectedRecomms);
-        console.log("stored places", this.storedPlaces);
-    };
-    ResultSelectionPage.prototype.navigate = function () {
-        var _this = this;
-        var check = __WEBPACK_IMPORTED_MODULE_6__utils_common_util__["d" /* isFormFilled */]({ recomms: this.selectedRecomms });
-        if (check) {
-            // if (this.selectedRecomms.length > 0) {
-            // 	let recomms: Place[];
-            // 	for (let i = 0; i < this.selectedPlaces.length; i++) {
-            // 		if (this.selectedRecomms[i] == this.selectedPlaces[i].name) {
-            // 			recomms.push(this.selectedPlaces[i]);
-            // 		}
-            // 	}
-            // 	this.navCtrl.push(ResultPage, { recomm: recomm });
-            // }
-            var filtered = this.selectedPlaces.filter(function (place) {
-                return _this.selectedRecomms.indexOf(place.name) > -1;
-            });
-            console.log("FILTERED", filtered);
-            this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_2__result_result__["a" /* ResultPage */], { recomms: filtered });
-        }
-        else {
-            this.alertService.presentAlertWithCallback("", "Anda tidak memilih rekomendasi, apakah anda ingin mengulangi proses rekomendasi dari awal?", "Tidak", "Iya, ulangi").then(function (status) {
-                if (status)
-                    _this.navCtrl.setRoot('MethodSelectionPage');
-            });
-        }
-    };
-    ResultSelectionPage.prototype.details = function (place) {
-        this.store.dispatch(this.attractionsActions.selectPlace(place));
-        this.app.getRootNav().push(__WEBPACK_IMPORTED_MODULE_3__place_place__["a" /* PlacePage */]);
-        // this.navCtrl.push(PlacePage);
-    };
-    return ResultSelectionPage;
-}());
-ResultSelectionPage = __decorate([
-    __WEBPACK_IMPORTED_MODULE_0_ionic_angular__["f" /* IonicPage */](),
-    __WEBPACK_IMPORTED_MODULE_4__angular_core__["Component"]({
-        selector: 'page-result-selection',
-        template: "\n    <ion-header>\n      <ion-navbar color=\"sky\">\n        <button ion-button menuToggle>\n          <ion-icon name=\"menu\"></ion-icon>\n        </button>\n        <ion-title>{{title}}</ion-title>\n      </ion-navbar>\n    </ion-header>\n    <ion-content padding>\n      <ion-list style=\"padding-bottom: 10%\">\n\n        <ion-item (click)=\"details(place)\" *ngFor=\"let place of selectedPlaces\">\n          <ion-avatar item-start>\n            <img [src]=\"place.photo\">\n          </ion-avatar>\n          <ion-label item-inner>\n            <h2>{{place.name}}</h2>\n            <p>{{place.formatted_address}}</p>\n            <p *ngIf=\"place.utilization\">Utilisasi: {{place.utilization}}</p>\n          </ion-label>\n          <ion-checkbox item-end (ionChange)=\"check($event, place)\" color=\"sky\" checked=\"false\"></ion-checkbox>\n\n        </ion-item>\n\n      </ion-list>\n      <div *ngIf=\"selectedPlaces.length == 0\" style=\"text-align: center\">\n        <p>Tidak ditemukan rekomendasi dalam preferensi anda, ingin mengulangi proses rekomendasi dari awal?</p>\n        <button (click)=\"reset()\" color=\"fire\" ion-button icon-left>\n          <ion-icon name=\"refresh\"></ion-icon>\n          Ulangi Proses Rekomendasi\n        </button>\n      </div>\n      <!--<p style=\"text-align: center\" *ngIf=\"mode == 2\">-->\n        <!--Dengan menekan tombol selesai, anda akan mengakhiri proses rekomendasi <br>-->\n        <!--dan dianggap puas dengan hasil rekomendasi yang ada.-->\n      <!--</p>-->\n    </ion-content>\n    <ion-footer *ngIf=\"selectedPlaces.length > 0\" style=\"height: 10%;\">\n      <button color=\"fire\" style=\"height: 100%;\" ion-button block (click)=\"navigate()\">{{submitText}}</button>\n    </ion-footer>\n\n  "
-    }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_8__actions_attractions_actions__["a" /* AttractionsActions */],
-        __WEBPACK_IMPORTED_MODULE_7__ngrx_store__["a" /* Store */],
-        __WEBPACK_IMPORTED_MODULE_0_ionic_angular__["k" /* NavController */], __WEBPACK_IMPORTED_MODULE_9__services_place_service__["a" /* PlaceService */],
-        __WEBPACK_IMPORTED_MODULE_0_ionic_angular__["b" /* App */], __WEBPACK_IMPORTED_MODULE_0_ionic_angular__["l" /* NavParams */],
-        __WEBPACK_IMPORTED_MODULE_1__actions_recomm_actions__["a" /* RecommActions */],
-        __WEBPACK_IMPORTED_MODULE_5__services_recommendation_service__["a" /* RecommendationService */],
-        __WEBPACK_IMPORTED_MODULE_10__services_loading_service__["a" /* LoadingService */],
-        __WEBPACK_IMPORTED_MODULE_11__services_alert_service__["a" /* AlertService */]])
-], ResultSelectionPage);
-
-//# sourceMappingURL=result.selection.js.map
+var google_map_1 = __webpack_require__(116);
+exports.SebmGoogleMap = google_map_1.SebmGoogleMap;
+var google_map_circle_1 = __webpack_require__(117);
+exports.SebmGoogleMapCircle = google_map_circle_1.SebmGoogleMapCircle;
+var google_map_info_window_1 = __webpack_require__(111);
+exports.SebmGoogleMapInfoWindow = google_map_info_window_1.SebmGoogleMapInfoWindow;
+var google_map_kml_layer_1 = __webpack_require__(118);
+exports.SebmGoogleMapKmlLayer = google_map_kml_layer_1.SebmGoogleMapKmlLayer;
+var google_map_marker_1 = __webpack_require__(119);
+exports.SebmGoogleMapMarker = google_map_marker_1.SebmGoogleMapMarker;
+var google_map_polygon_1 = __webpack_require__(120);
+exports.SebmGoogleMapPolygon = google_map_polygon_1.SebmGoogleMapPolygon;
+var google_map_polyline_1 = __webpack_require__(121);
+exports.SebmGoogleMapPolyline = google_map_polyline_1.SebmGoogleMapPolyline;
+var google_map_polyline_point_1 = __webpack_require__(112);
+exports.SebmGoogleMapPolylinePoint = google_map_polyline_point_1.SebmGoogleMapPolylinePoint;
+//# sourceMappingURL=directives.js.map
 
 /***/ }),
 
-/***/ 94:
+/***/ 126:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var google_maps_api_wrapper_1 = __webpack_require__(103);
+exports.GoogleMapsAPIWrapper = google_maps_api_wrapper_1.GoogleMapsAPIWrapper;
+var circle_manager_1 = __webpack_require__(106);
+exports.CircleManager = circle_manager_1.CircleManager;
+var info_window_manager_1 = __webpack_require__(107);
+exports.InfoWindowManager = info_window_manager_1.InfoWindowManager;
+var marker_manager_1 = __webpack_require__(105);
+exports.MarkerManager = marker_manager_1.MarkerManager;
+var polygon_manager_1 = __webpack_require__(108);
+exports.PolygonManager = polygon_manager_1.PolygonManager;
+var polyline_manager_1 = __webpack_require__(109);
+exports.PolylineManager = polyline_manager_1.PolylineManager;
+var kml_layer_manager_1 = __webpack_require__(110);
+exports.KmlLayerManager = kml_layer_manager_1.KmlLayerManager;
+var lazy_maps_api_loader_1 = __webpack_require__(113);
+exports.GoogleMapsScriptProtocol = lazy_maps_api_loader_1.GoogleMapsScriptProtocol;
+exports.LAZY_MAPS_API_CONFIG = lazy_maps_api_loader_1.LAZY_MAPS_API_CONFIG;
+exports.LazyMapsAPILoader = lazy_maps_api_loader_1.LazyMapsAPILoader;
+var maps_api_loader_1 = __webpack_require__(104);
+exports.MapsAPILoader = maps_api_loader_1.MapsAPILoader;
+var noop_maps_api_loader_1 = __webpack_require__(127);
+exports.NoOpMapsAPILoader = noop_maps_api_loader_1.NoOpMapsAPILoader;
+//# sourceMappingURL=services.js.map
+
+/***/ }),
+
+/***/ 127:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+/**
+ * When using the NoOpMapsAPILoader, the Google Maps API must be added to the page via a `<script>`
+ * Tag.
+ * It's important that the Google Maps API script gets loaded first on the page.
+ */
+var NoOpMapsAPILoader = (function () {
+    function NoOpMapsAPILoader() {
+    }
+    NoOpMapsAPILoader.prototype.load = function () {
+        if (!window.google || !window.google.maps) {
+            throw new Error('Google Maps API not loaded on page. Make sure window.google.maps is available!');
+        }
+        return Promise.resolve();
+    };
+    ;
+    return NoOpMapsAPILoader;
+}());
+exports.NoOpMapsAPILoader = NoOpMapsAPILoader;
+//# sourceMappingURL=noop-maps-api-loader.js.map
+
+/***/ }),
+
+/***/ 128:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var core_1 = __webpack_require__(0);
+var google_map_kml_layer_1 = __webpack_require__(118);
+var google_map_1 = __webpack_require__(116);
+var google_map_circle_1 = __webpack_require__(117);
+var google_map_info_window_1 = __webpack_require__(111);
+var google_map_marker_1 = __webpack_require__(119);
+var google_map_polygon_1 = __webpack_require__(120);
+var google_map_polyline_1 = __webpack_require__(121);
+var google_map_polyline_point_1 = __webpack_require__(112);
+var lazy_maps_api_loader_1 = __webpack_require__(113);
+var lazy_maps_api_loader_2 = __webpack_require__(113);
+var maps_api_loader_1 = __webpack_require__(104);
+var browser_globals_1 = __webpack_require__(122);
+/**
+ * @internal
+ */
+function coreDirectives() {
+    return [
+        google_map_1.SebmGoogleMap, google_map_marker_1.SebmGoogleMapMarker, google_map_info_window_1.SebmGoogleMapInfoWindow, google_map_circle_1.SebmGoogleMapCircle,
+        google_map_polygon_1.SebmGoogleMapPolygon, google_map_polyline_1.SebmGoogleMapPolyline, google_map_polyline_point_1.SebmGoogleMapPolylinePoint, google_map_kml_layer_1.SebmGoogleMapKmlLayer
+    ];
+}
+exports.coreDirectives = coreDirectives;
+;
+/**
+ * The angular2-google-maps core module. Contains all Directives/Services/Pipes
+ * of the core module. Please use `AgmCoreModule.forRoot()` in your app module.
+ */
+var AgmCoreModule = (function () {
+    function AgmCoreModule() {
+    }
+    /**
+     * Please use this method when you register the module at the root level.
+     */
+    AgmCoreModule.forRoot = function (lazyMapsAPILoaderConfig) {
+        return {
+            ngModule: AgmCoreModule,
+            providers: browser_globals_1.BROWSER_GLOBALS_PROVIDERS.concat([
+                { provide: maps_api_loader_1.MapsAPILoader, useClass: lazy_maps_api_loader_1.LazyMapsAPILoader },
+                { provide: lazy_maps_api_loader_2.LAZY_MAPS_API_CONFIG, useValue: lazyMapsAPILoaderConfig }
+            ]),
+        };
+    };
+    AgmCoreModule.decorators = [
+        { type: core_1.NgModule, args: [{ declarations: coreDirectives(), exports: coreDirectives() },] },
+    ];
+    /** @nocollapse */
+    AgmCoreModule.ctorParameters = function () { return []; };
+    return AgmCoreModule;
+}());
+exports.AgmCoreModule = AgmCoreModule;
+//# sourceMappingURL=core-module.js.map
+
+/***/ }),
+
+/***/ 88:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ResultSelectionPageModule", function() { return ResultSelectionPageModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__result_selection__ = __webpack_require__(130);
+
+// CONCATENATED MODULE: ./src/pages/maps/maps.ts
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ngrx_store__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_common_util__ = __webpack_require__(40);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var MapsPage = (function () {
+    function MapsPage(store, navCtrl) {
+        this.store = store;
+        this.navCtrl = navCtrl;
+        this.zoom = 14;
+        this.place = __WEBPACK_IMPORTED_MODULE_3__utils_common_util__["a" /* captureState */](this.store).attractions.selectedPlace;
+    }
+    return MapsPage;
+}());
+MapsPage = __decorate([
+    __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["f" /* IonicPage */](),
+    __WEBPACK_IMPORTED_MODULE_1__angular_core__["Component"]({
+        selector: 'page-maps',
+        template: "\n    <sebm-google-map [zoom]=\"zoom\" [latitude]=\"place.lat\" [longitude]=\"place.lng\">\n        <sebm-google-map-marker [latitude]=\"place.lat\" [longitude]=\"place.lng\"></sebm-google-map-marker>\n    </sebm-google-map>\n  ",
+        styles: ["\n    .sebm-google-map-container {\n        height: 800px;\n        width: 100%;\n    }\n  "]
+    }),
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__ngrx_store__["a" /* Store */],
+        __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["k" /* NavController */]])
+], MapsPage);
+
+//# sourceMappingURL=maps.js.map
+// CONCATENATED MODULE: ./src/pages/maps/maps.module.ts
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MapsPageModule", function() { return MapsPageModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_constants__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angular2_google_maps_core__ = __webpack_require__(124);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angular2_google_maps_core___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_angular2_google_maps_core__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ionic_angular__ = __webpack_require__(9);
+var maps_module___decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
@@ -638,20 +2481,30 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var ResultSelectionPageModule = (function () {
-    function ResultSelectionPageModule() {
-    }
-    return ResultSelectionPageModule;
-}());
-ResultSelectionPageModule = __decorate([
-    __WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"]({
-        declarations: [__WEBPACK_IMPORTED_MODULE_2__result_selection__["a" /* ResultSelectionPage */]],
-        imports: [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__result_selection__["a" /* ResultSelectionPage */])],
-        entryComponents: [__WEBPACK_IMPORTED_MODULE_2__result_selection__["a" /* ResultSelectionPage */]]
-    })
-], ResultSelectionPageModule);
 
-//# sourceMappingURL=result.selection.module.js.map
+
+var MapsPageModule = (function () {
+    function MapsPageModule() {
+    }
+    return MapsPageModule;
+}());
+MapsPageModule = maps_module___decorate([
+    __WEBPACK_IMPORTED_MODULE_3__angular_core__["NgModule"]({
+        declarations: [MapsPage],
+        imports: [
+            __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["g" /* IonicPageModule */].forChild(MapsPage),
+            __WEBPACK_IMPORTED_MODULE_1_angular2_google_maps_core__["AgmCoreModule"].forRoot({
+                apiKey: __WEBPACK_IMPORTED_MODULE_0__utils_constants__["b" /* GOOGLE_API_KEY */]
+            })
+        ],
+        entryComponents: [MapsPage],
+        exports: [
+            MapsPage
+        ]
+    })
+], MapsPageModule);
+
+//# sourceMappingURL=maps.module.js.map
 
 /***/ })
 

@@ -22,6 +22,10 @@ export interface PhotosResponse{
   name: string;
 }
 
+export interface DistanceResponse{
+  distance: number;
+}
+
 export interface RadarSearchResponse{
   html_attributions: string[];
   results: Result[];
