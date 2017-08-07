@@ -93,9 +93,9 @@ export class ResultSelectionPage {
 
     this.loadingService.presentLoading();
     this.params = this.navParams.get("params");
-    console.log("PARAMS", this.params);
+    // console.log("PARAMS", this.params);
     let places = this.navParams.get("places");
-    console.log("selected", this.places);
+    // console.log("selected", this.places);
     if(places){
       this.selectedPlaces = places;
       this.mode = 2;
@@ -110,7 +110,7 @@ export class ResultSelectionPage {
         this.recommService.upPropagation(this.params).subscribe(data => {
           this.mode = 2;
           this.submitText = "Lanjut";
-          console.log("data", data);
+          // console.log("data", data);
           this.selectedPlaces = data;
           this.title = `${this.selectedPlaces.length} Hasil Rekomendasi`;
           this.staticTitle = this.title;
@@ -137,8 +137,8 @@ export class ResultSelectionPage {
       this.title = `${this.selectedRecomms.length} Rekomendasi Terpilih`;
     else
       this.title = this.staticTitle;
-    console.log("recomms", this.selectedRecomms);
-    console.log("stored places", this.storedPlaces);
+    // console.log("recomms", this.selectedRecomms);
+    // console.log("stored places", this.storedPlaces);
   }
 
   navigate() {
@@ -158,7 +158,7 @@ export class ResultSelectionPage {
         return this.selectedRecomms.indexOf(place.name) > -1
       });
 
-      console.log("FILTERED", filtered);
+      // console.log("FILTERED", filtered);
 
       this.navCtrl.push(ResultPage, {recomms: filtered });
     } else {

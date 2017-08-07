@@ -441,9 +441,9 @@ var ResultSelectionPage = (function () {
         this.offset = 0;
         this.loadingService.presentLoading();
         this.params = this.navParams.get("params");
-        console.log("PARAMS", this.params);
+        // console.log("PARAMS", this.params);
         var places = this.navParams.get("places");
-        console.log("selected", this.places);
+        // console.log("selected", this.places);
         if (places) {
             this.selectedPlaces = places;
             this.mode = 2;
@@ -458,7 +458,7 @@ var ResultSelectionPage = (function () {
                 this.recommService.upPropagation(this.params).subscribe(function (data) {
                     _this.mode = 2;
                     _this.submitText = "Lanjut";
-                    console.log("data", data);
+                    // console.log("data", data);
                     _this.selectedPlaces = data;
                     _this.title = _this.selectedPlaces.length + " Hasil Rekomendasi";
                     _this.staticTitle = _this.title;
@@ -485,8 +485,8 @@ var ResultSelectionPage = (function () {
             this.title = this.selectedRecomms.length + " Rekomendasi Terpilih";
         else
             this.title = this.staticTitle;
-        console.log("recomms", this.selectedRecomms);
-        console.log("stored places", this.storedPlaces);
+        // console.log("recomms", this.selectedRecomms);
+        // console.log("stored places", this.storedPlaces);
     };
     ResultSelectionPage.prototype.navigate = function () {
         var _this = this;
@@ -504,7 +504,7 @@ var ResultSelectionPage = (function () {
             var filtered = this.selectedPlaces.filter(function (place) {
                 return _this.selectedRecomms.indexOf(place.name) > -1;
             });
-            console.log("FILTERED", filtered);
+            // console.log("FILTERED", filtered);
             this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_2__result_result__["a" /* ResultPage */], { recomms: filtered });
         }
         else {
