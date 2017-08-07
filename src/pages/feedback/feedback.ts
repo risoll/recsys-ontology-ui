@@ -95,8 +95,8 @@ export class FeedbackPage {
   profession: string;
   age: number;
   questions = [
-    "Petunjuk (kalimat dalam model ini) yang diberikan mudah dimengerti",
-    "Saya mengerti dengan baik semua petunjuk yang diberikan",
+    "Petunjuk/instruksi yang diberikan mudah dimengerti",
+    "Saya mengerti dengan sangat baik semua petunjuk yang diberikan",
     "Saya dapat melihat rincian informasi suatu destinasi wisata dengan mudah",
     "Secara umum saya kesulitan menemukan destinasi wisata yang saya inginkan",
     "Saya dapat menemukan destinasi wisata yang saya inginkan dengan cepat",
