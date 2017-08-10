@@ -42,17 +42,20 @@ var IntroPage = (function () {
             {
                 title: "Halo",
                 description: "Perkenalkan, saya <b>Rizky Solechudin</b>, mahasiswa S1 Teknik Informatika Telkom University tahun angkatan 2013",
-                image: "assets/images/intro/1.jpg",
+                // image: "assets/images/intro/1.jpg",
+                image: "https://dl.dropboxusercontent.com/s/tbtpq1d9n20tfz3/1-min.jpg?dl=0",
             },
             {
                 title: "Selamat datang!",
                 description: "Aplikasi ini merupakan Sistem Rekomendasi Tempat Wisata yang ada di Bandung Raya",
-                image: "assets/images/intro/2.jpg",
+                // image: "assets/images/intro/2.jpg",
+                image: "https://dl.dropboxusercontent.com/s/9x15eqv6rgwpwfw/2-min.jpg?dl=0",
             },
             {
                 title: "Bantu saya",
                 description: "Anda dapat membantu saya dalam pengerjaan Tugas Akhir ini dengan menggunakan aplikasi ini dan mengisi survei yang ada, terimakasih!",
-                image: "assets/images/intro/3.jpg",
+                // image: "assets/images/intro/3.jpg",
+                image: "https://dl.dropboxusercontent.com/s/kwenljyondqm2cb/3-min.jpg?dl=0",
             }
         ];
     }
@@ -65,7 +68,7 @@ IntroPage = __decorate([
     __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* IonicPage */](),
     __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"]({
         selector: 'page-intro',
-        template: "\n    <ion-content padding>\n        <ion-slides pager>\n            <ion-slide *ngFor=\"let slide of slides\">\n                <img style=\"width: 60%\" [src]=\"slide.image\" class=\"slide-image\"/>\n                <h2 class=\"slide-title\" [innerHTML]=\"slide.title\"></h2>\n                <p [innerHTML]=\"slide.description\"></p>\n            </ion-slide>\n            <ion-slide>\n                <img src=\"assets/images/intro/4.jpg\" class=\"slide-image\"/>\n                <h2 class=\"slide-title\">Anda siap?</h2>\n                <button (click)=goToHome() ion-button large clear icon-end color=\"primary\">\n                    Lanjut\n                    <ion-icon name=\"arrow-forward\"></ion-icon>\n                </button>\n            </ion-slide>\n        </ion-slides>\n    </ion-content>\n  "
+        template: "\n    <ion-content padding>\n        <ion-slides pager>\n            <ion-slide *ngFor=\"let slide of slides\">\n                <img style=\"width: 60%\" [src]=\"slide.image\" class=\"slide-image\"/>\n                <h2 class=\"slide-title\" [innerHTML]=\"slide.title\"></h2>\n                <p [innerHTML]=\"slide.description\"></p>\n            </ion-slide>\n            <ion-slide>\n                <!--<img src=\"assets/images/intro/4.jpg\" class=\"slide-image\"/>-->\n                <img src=\"https://dl.dropboxusercontent.com/s/lwbtsxnxb50zf9q/4-min.jpg?dl=0\" class=\"slide-image\"/>\n                <h2 class=\"slide-title\">Anda siap?</h2>\n                <button (click)=goToHome() ion-button large clear icon-end color=\"primary\">\n                    Lanjut\n                    <ion-icon name=\"arrow-forward\"></ion-icon>\n                </button>\n            </ion-slide>\n        </ion-slides>\n    </ion-content>\n  "
     }),
     __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavController */]])
 ], IntroPage);
