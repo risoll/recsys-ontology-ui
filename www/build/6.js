@@ -57,14 +57,14 @@ var FeedbackPage = (function () {
         this.professions = [
             "Mahasiswa", "Dosen", "Karyawan", "Wiraswasta", "Lainnya"
         ];
-        this.answerTypes = [
-            { label: "Setuju", color: "secondary", value: 1 },
-            { label: "Tidak Setuju", color: "danger", value: 0 }
-        ];
+        // answerTypes = [
+        //   { label: "Setuju", color: "secondary", value: 1 },
+        //   { label: "Tidak Setuju", color: "danger", value: 0 }
+        // ];
         this.answers = [];
         this.male = false;
         this.female = false;
-        this.likertScales = [
+        this.answerTypes = [
             { label: "Sangat setuju", value: 5 },
             { label: "Setuju", value: 4 },
             { label: "Netral", value: 3 },

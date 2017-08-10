@@ -111,10 +111,10 @@ export class FeedbackPage {
     "Mahasiswa", "Dosen", "Karyawan", "Wiraswasta", "Lainnya"
   ];
 
-  answerTypes = [
-    { label: "Setuju", color: "secondary", value: 1 },
-    { label: "Tidak Setuju", color: "danger", value: 0 }
-  ];
+  // answerTypes = [
+  //   { label: "Setuju", color: "secondary", value: 1 },
+  //   { label: "Tidak Setuju", color: "danger", value: 0 }
+  // ];
 
   answers = [];
   univ: string;
@@ -134,7 +134,7 @@ export class FeedbackPage {
 
   staticData: Static;
 
-  private likertScales = [
+  private answerTypes = [
     { label: "Sangat setuju", value: 5 },
     { label: "Setuju", value: 4 },
     { label: "Netral", value: 3 },
